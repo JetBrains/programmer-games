@@ -12,4 +12,4 @@ Run the following commands in your terminal to download this project and start a
 	cd programmer-games
 	elm-reactor
 
-Now go to http://localhost:8000/.
+Now go to http://localhost:8000/ and click on elm_1.elm.
