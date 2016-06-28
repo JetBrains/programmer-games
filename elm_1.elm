@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Html exposing (Html, div, button, text)
 import Html.Events exposing (onClick)
-import Html.App as Html
+import Html.App
 import Mouse
 
 -- MODEL
