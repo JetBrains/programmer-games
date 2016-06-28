@@ -10,6 +10,8 @@ Run the following commands in your terminal to download this project and start a
 
 	git clone https://github.com/JetBrains/programmer-games.git 
 	cd programmer-games
+	elm-package install elm-lang/html         # Install latest version
+	elm package install elm-lang/mouse
 	elm-reactor
 
 Now go to http://localhost:8000/ and click on elm_1.elm.
