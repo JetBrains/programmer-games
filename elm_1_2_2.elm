@@ -46,10 +46,16 @@ height = 1000
 -- VIEW 
 view : Model -> Html Msg
 view model =
-      div []
+      div [] 
           [ button [ onClick Decrement ] [ Html.text "-" ]
-          , div [] [ Html.text (toString model.currentN) ]
-          , button [ onClick Increment ] [ Html.text "+" ]
+            , div [] [ Html.text (toString model.currentN) ]
+            , button [ onClick Increment ] [ Html.text "+" ]
+          {-
+          collage 2000 50 
+              [ rect (toFloat 2000) (toFloat 50) |> filled black
+              ]
+              |> Element.toHtml
+          -}
           , collage 
               (floor width) (floor height) 
               ( [rect width height |> filled clearGrey] ++
@@ -75,7 +81,8 @@ update msg model =
                 if model.currentN < 12 then ( { model | currentN = model.currentN + 1 }, Cmd.none ) 
                 else ( model, Cmd.none )
            MouseMsg pos ->
-                ( { model | figures = model.figures ++ [Figure pos.x pos.y model.currentN]}, Cmd.none )
+                if pos.y <= 79 then ( model, Cmd.none ) 
+                else ( { model | figures = model.figures ++ [Figure pos.x pos.y model.currentN]}, Cmd.none )
 
 
 -- SUBSCRIPTIONS
