@@ -30,7 +30,7 @@ type alias Model =
 
 init : (Model, Cmd Msg)
 init =
-        (Model 3 20 blue [] , Cmd.none)
+        (Model 3 20 red [] , Cmd.none)
 
 
 -- MESSAGES 
@@ -59,7 +59,7 @@ view model =
           , div [] [ Html.text (toString model.currentN) ]
           , button [ onClick Increment ] [ Html.text "+" ]
           , collage 
-               2000 60 
+               300 60 
                [ rect 40 40 
                    |> filled red 
                , rect 40 40 
@@ -95,9 +95,9 @@ update msg model =
                 if model.currentN < 12 then ( { model | currentN = model.currentN + 1 }, Cmd.none ) 
                 else ( model, Cmd.none )
            MouseMsg pos ->
-                if pos.y >= 90 && pos.y <= 130 && pos.x >= 980 && pos.x < 1020 then ( { model | currentC = red }, Cmd.none)
-                else if pos.y >= 90 && pos.y <= 130 && pos.x >= 1040 && pos.x < 1080 then ( { model | currentC = green }, Cmd.none)
-                else if pos.y >= 90 && pos.y <= 130 && pos.x >= 1100 && pos.x < 1140 then ( { model | currentC = yellow }, Cmd.none)
+                if pos.y >= 90 && pos.y <= 130 && pos.x >= 130 && pos.x < 170 then ( { model | currentC = red }, Cmd.none)
+                else if pos.y >= 90 && pos.y <= 130 && pos.x >= 190 && pos.x < 230 then ( { model | currentC = green }, Cmd.none)
+                else if pos.y >= 90 && pos.y <= 130 && pos.x >= 250 && pos.x < 290 then ( { model | currentC = yellow }, Cmd.none)
                 else if pos.y <= 139 || pos.x > 1000 then ( model, Cmd.none )
                 else ( { model | figures = model.figures ++ [Figure pos.x pos.y model.currentN model.currentR model.currentC]}, Random.generate NewRadius (Random.int 20 100) )
            NewRadius newR ->
