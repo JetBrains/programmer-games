@@ -1,7 +1,7 @@
 {
     "version": "0.0.5",
     "summary": " Learn Elm #1. Draw N-polygon on mouse click.",
-    "repository": "https://github.com/JetBrains/programmer-games",
+    "repository": "https://github.com/JetBrains/programmer-games.git",
     "license": "BSD3",
     "source-directories": [
         "src"
