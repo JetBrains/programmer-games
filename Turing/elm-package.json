@@ -4,7 +4,7 @@
     "repository": "https://github.com/JetBrains/programmer-games.git",
     "license": "BSD3",
     "source-directories": [
-        "Turing/src"
+        "src"
     ],
     "exposed-modules": [],
     "dependencies": {

@@ -16,15 +16,15 @@ testMachine =
         , rejectState = Black  -- = 3
         }
  
-t : Kitten -> Maybe BallOfWool -> (Kitten, BallOfWool, Turing3.Direction)
+t : Kitten -> Maybe BallOfWool -> (Kitten, BallOfWool, Turing.Direction)
 t st sm =
         case st of
                 LightGrey -> case sm of
                         Just x -> (LightGrey, x, MoveRight)
-                        Nothing -> (Grey, Red, Turing3.MoveLeft)
+                        Nothing -> (Grey, Red, Turing.MoveLeft)
                 Grey -> case sm of
-                        Just x -> (Grey, x, Turing3.MoveLeft)
-                        Nothing -> (Brown, Blue, Turing3.MoveRight)
+                        Just x -> (Grey, x, Turing.MoveLeft)
+                        Nothing -> (Brown, Blue, Turing.MoveRight)
                 _ -> (Black, Yellow, Turing3.MoveLeft)
 
 main =
