@@ -12,7 +12,7 @@ Run the following commands in your terminal to download this projects and start 
 
 Run the project 1:
 
-	  git clone https://github.com/JetBrains/programmer-games.git 
+    git clone https://github.com/JetBrains/programmer-games.git 
 
     cd programmer-games/LearnElm_1
 
