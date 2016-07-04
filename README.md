@@ -12,16 +12,21 @@ Run the following commands in your terminal to download this projects and start 
 
 Run the project 1:
 
-	git clone https://github.com/JetBrains/programmer-games.git 
-  cd programmer-games/LearnElm_1
-  elm-reactor
+	  git clone https://github.com/JetBrains/programmer-games.git 
+
+    cd programmer-games/LearnElm_1
+
+    elm-reactor
 
 Now go to http://localhost:8000/, click on directory LearnElm_1, click src and then choose Main.elm file.
 
 Run the project 2:
-  git clone https://github.com/JetBrains/programmer-games.git
-  cd programmer-games/Turing                                              
-  elm-reactor 
+
+    git clone https://github.com/JetBrains/programmer-games.git
+
+    cd programmer-games/Turing    
+
+    elm-reactor 
 
 Now go to http://localhost:8000/, click on directory Turing, click src and then choose Main.elm file.
 
