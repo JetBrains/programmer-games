@@ -1,5 +1,5 @@
 import Html exposing (Html, div, button, text)
-import Turing3 exposing(..)
+import Turing exposing(..)
 
 
 -- Symbol is a ball of wool with special color

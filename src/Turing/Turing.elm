@@ -1,4 +1,4 @@
-module Turing3 exposing (..)
+module Turing exposing (..)
 
 import Html exposing (Html, div, button, text)
 import Array exposing (..)
