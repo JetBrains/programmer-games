@@ -18,7 +18,7 @@ Run the project 1:
 
     elm-reactor
 
-Now go to http://localhost:8000/, click on directory LearnElm_1, click src and then choose Main.elm file.
+Now go to http://localhost:8000/, click src and then choose Main.elm file.
 
 Run the project 2:
 
@@ -28,5 +28,5 @@ Run the project 2:
 
     elm-reactor 
 
-Now go to http://localhost:8000/, click on directory Turing, click src and then choose Main.elm file.
+Now go to http://localhost:8000/, click src and then choose Main.elm file.
 
