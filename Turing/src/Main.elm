@@ -25,7 +25,7 @@ t st sm =
                 Grey -> case sm of
                         Just x -> (Grey, x, Turing.MoveLeft)
                         Nothing -> (Brown, Blue, Turing.MoveRight)
-                _ -> (Black, Yellow, Turing3.MoveLeft)
+                _ -> (Black, Yellow, Turing.MoveLeft)
 
 main =
         text (runMachine testMachine [Red, Orange, Yellow, Green, Blue])
