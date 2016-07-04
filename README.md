@@ -15,7 +15,9 @@ Run the following commands in your terminal to download this projects and start 
 	git clone https://github.com/JetBrains/programmer-games.git 
 	
   cd programmer-games/LearnElm_1
+
       or
+      
   cd programmer-games/Turing                                              
 
   elm-reactor 
