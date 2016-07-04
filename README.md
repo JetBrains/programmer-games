@@ -8,19 +8,20 @@ The project Turing:
 
 Implementation of Turing machine. Use function "runMachine" in Main.elm, give it machine and input word. It will print tape and final state for you. 
 
-Run the project:
-
 Run the following commands in your terminal to download this projects and start a server that compiles them for you:
 
+Run the project 1:
+
 	git clone https://github.com/JetBrains/programmer-games.git 
-
   cd programmer-games/LearnElm_1
+  elm-reactor
 
-  or
+Now go to http://localhost:8000/, click on directory LearnElm_1, click src and then choose Main.elm file.
 
+Run the project 2:
+  git clone https://github.com/JetBrains/programmer-games.git
   cd programmer-games/Turing                                              
-
   elm-reactor 
 
-Now go to http://localhost:8000/, click on directory LearnElm_1 or Turing, click src and then choose Main.elm file.
+Now go to http://localhost:8000/, click on directory Turing, click src and then choose Main.elm file.
 
