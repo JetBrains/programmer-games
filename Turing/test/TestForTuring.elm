@@ -171,7 +171,6 @@ t6 st sm =
         Just x   -> (3, '!', MoveLeft)
     _ -> (3, '!', MoveLeft) 
 
-
 tests : Test                                                                    
 tests =                                                                         
   suite "A Test Suite"                                                        
@@ -197,12 +196,11 @@ tests =
     -- Check if stop when get rejuct state
     , test "6"
     <| assertEqual (runMachine testMachine4 ['1']) "'1' q2"
-    -- another test on change(inverse) numbers on the tape. Another uinput word
+    -- another test on change(inverse) numbers on the tape. Another input word
     , test "7"
     <| assertEqual (runMachine testMachine2 ['1','1','1','1','1','1','1','1','1'
     ,'1','1']) "'+''0''0''0''0''0''0''0''0''0''0''0''*' q2" 
     -- Check get 000000000000 1111111 from 001101011101
-    -- "'0''0''0''1''0''1''0''1''1''1''0''1''+''1' q6"
     , test "8"
     <| assertEqual (runMachine testMachine5 ['0','0','1','1','0','1','0','1',
     '1','1','0','1']) "'_''0''0''0''0''0''0''0''0''0''0''0''0''_''1''1''1''1''1''1''1' q5"
