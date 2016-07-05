@@ -30,3 +30,14 @@ Run the project 2:
 
 Now go to http://localhost:8000/, click src and then choose Main.elm file.
 
+For running tests from Turing/test:
+
+    git clone https://github.com/JetBrains/programmer-games.git
+
+    cd programmer-games/Turing
+
+    elm-make test/TestRunner.elm --output test.js
+
+    node test.js
+
+Then you will see the results of the tests running.
