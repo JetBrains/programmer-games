@@ -88,8 +88,56 @@ t4 st sm =
     0 ->                                                                      
       case sm of                                                              
         Nothing -> (1, '*', MoveLeft)                                        
-        Just y -> (1, y, MoveLeft)                                          
+        Just '0' -> (1, '0', MoveLeft)
+        Just y -> (2, y, MoveLeft)
     _ -> (2, 'E', MoveLeft)
+
+
+testMachine5 =                                                                  
+  { transition = t5                                                             
+  , startState = 0                                                              
+  , acceptState = 5                                                           
+  , rejectState = 6                                                             
+  }                                                                             
+
+
+t5 : Int -> Maybe Char -> (Int, Char, Direction)                                
+t5 st sm =                                                                      
+  case st of                                                                  
+    0 ->                                                                      
+      case sm of                                                              
+        Just '0' -> (0, '0', MoveRight)                                       
+        Just '1' -> (1, '0', MoveRight)                                       
+        Nothing  -> (5, '_', MoveLeft)                                        
+        Just '_' -> (5, '_', MoveLeft)
+        Just y   -> (6, '!', MoveLeft)                                          
+    1 ->                                                                      
+      case sm of                                                              
+        Just '0' -> (1, '0', MoveRight)                                        
+        Just '1' -> (1, '1', MoveRight)                                        
+        Nothing  -> (2, '_' , MoveRight)
+        Just '_' -> (2, '_' , MoveRight)
+        Just y   -> (6, '!', MoveLeft)
+    2 ->
+      case sm of
+        Just '1' -> (2, '1', MoveRight)                                          
+        Nothing  -> (3, '1' , MoveLeft)  
+        Just '_' -> (3, '1' , MoveLeft)
+        Just y   -> (6, '!', MoveLeft)
+    3 -> 
+      case sm of
+        Just '1' -> (3, '1', MoveLeft)                                         
+        Just '_' -> (4, '_' , MoveLeft)
+        Just y   -> (6, '!', MoveLeft)
+        Nothing  -> (6, '!' , MoveLeft)
+    4 ->
+      case sm of
+        Just '0' -> (4, '0', MoveLeft)
+        Just '1' -> (4, '1', MoveLeft)                                         
+        Nothing  -> (0, '_' , MoveRight)                                         
+        Just '_' -> (0, '_', MoveRight)
+        Just y   -> (6, '!', MoveLeft)
+    _ -> (6, '!' , MoveLeft)
 
 
 tests : Test                                                                    
@@ -109,8 +157,23 @@ tests =
     "'0''0''1''1''0''1''1' q0"
     -- Check if work with empty input, write 1 symb and end
     , test "4"
-    <| assertEqual (runMachine testMachine4 [])
-    "'*' q1"
+    <| assertEqual (runMachine testMachine4 []) "'*' q1"
+    -- Check if work with one-symbol input
+    -- in initTapeCfg line (x::xs) -> ...(Array.fromList xs) when xs is empty
+    , test "5"
+    <| assertEqual (runMachine testMachine4 ['0']) "'0' q1" 
+    -- Check if stop when get rejuct state
+    , test "6"
+    <| assertEqual (runMachine testMachine4 ['1']) "'1' q2"
+    -- another test on change(inverse) numbers on the tape. Another uinput word
+    , test "7"
+    <| assertEqual (runMachine testMachine2 ['1','1','1','1','1','1','1','1','1'
+    ,'1','1']) "'+''0''0''0''0''0''0''0''0''0''0''0''*' q2" 
+    -- Check get 000000000000 1111111 from 001101011101
+    -- "'0''0''0''1''0''1''0''1''1''1''0''1''+''1' q6"
+    , test "8"
+    <| assertEqual (runMachine testMachine5 ['0','0','1','1','0','1','0','1',
+    '1','1','0','1']) "'_''0''0''0''0''0''0''0''0''0''0''0''0''_''1''1''1''1''1''1''1' q5"
   ] 
 
 
