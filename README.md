@@ -38,6 +38,8 @@ For running tests from Turing/test:
 
     elm-make test/TestRunner.elm --output test.js
 
+Agree to upgrade plan (install some packages)
+
     node test.js
 
 Then you will see the results of the tests running.
