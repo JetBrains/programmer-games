@@ -140,6 +140,38 @@ t5 st sm =
     _ -> (6, '!' , MoveLeft)
 
 
+testMachine6 =                                                                  
+  { transition = t6                                                             
+  , startState = 0                                                              
+  , acceptState = 2                                                             
+  , rejectState = 3                                                             
+  }                                                                             
+
+
+t6 : Int -> Maybe Char -> (Int, Char, Direction)                                
+t6 st sm =                                                                      
+  case st of                                                                    
+    0 ->                                                                        
+      case sm of 
+        Just y -> (0, y, MoveRight)
+        Nothing -> (1, ' ', MoveLeft)
+    1 ->
+      case sm of
+        Just '0' -> (2, '1', MoveLeft)
+        Just '1' -> (2, '2', MoveLeft)
+        Just '2' -> (2, '3', MoveLeft)
+        Just '3' -> (2, '4', MoveLeft)
+        Just '4' -> (2, '5', MoveLeft)
+        Just '5' -> (2, '6', MoveLeft)
+        Just '6' -> (2, '7', MoveLeft)
+        Just '7' -> (2, '8', MoveLeft)
+        Just '8' -> (2, '9', MoveLeft)
+        Just '9' -> (1, '0', MoveLeft)
+        Nothing  -> (2, '1', MoveLeft)
+        Just x   -> (3, '!', MoveLeft)
+    _ -> (3, '!', MoveLeft) 
+
+
 tests : Test                                                                    
 tests =                                                                         
   suite "A Test Suite"                                                        
@@ -174,6 +206,12 @@ tests =
     , test "8"
     <| assertEqual (runMachine testMachine5 ['0','0','1','1','0','1','0','1',
     '1','1','0','1']) "'_''0''0''0''0''0''0''0''0''0''0''0''0''_''1''1''1''1''1''1''1' q5"
+    -- Check if machine can do +1 to the number on the tape
+    , test "9"
+    <| assertEqual (runMachine testMachine6 ['1','2','3']) "'1''2''4'' ' q2"
+    -- Check the previous example with another input word
+    , test "10"
+    <| assertEqual (runMachine testMachine6 ['9','9','9']) "'1''0''0''0'' ' q2"
   ] 
 
 
