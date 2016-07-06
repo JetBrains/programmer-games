@@ -1,0 +1,451 @@
+var _evancz$elm_graphics$Element$justified = _evancz$elm_graphics$Native_Element.block('justify');
+var _evancz$elm_graphics$Element$centered = _evancz$elm_graphics$Native_Element.block('center');
+var _evancz$elm_graphics$Element$rightAligned = _evancz$elm_graphics$Native_Element.block('right');
+var _evancz$elm_graphics$Element$leftAligned = _evancz$elm_graphics$Native_Element.block('left');
+var _evancz$elm_graphics$Element$show = function (value) {
+	return _evancz$elm_graphics$Element$leftAligned(
+		_evancz$elm_graphics$Text$monospace(
+			_evancz$elm_graphics$Text$fromString(
+				_elm_lang$core$Basics$toString(value))));
+};
+var _evancz$elm_graphics$Element$newElement = _evancz$elm_graphics$Native_Element.newElement;
+var _evancz$elm_graphics$Element$sizeOf = function (_p0) {
+	var _p1 = _p0;
+	var _p2 = _p1._0;
+	return {ctor: '_Tuple2', _0: _p2.props.width, _1: _p2.props.height};
+};
+var _evancz$elm_graphics$Element$heightOf = function (_p3) {
+	var _p4 = _p3;
+	return _p4._0.props.height;
+};
+var _evancz$elm_graphics$Element$widthOf = function (_p5) {
+	var _p6 = _p5;
+	return _p6._0.props.width;
+};
+var _evancz$elm_graphics$Element$toHtml = _evancz$elm_graphics$Native_Element.toHtml;
+var _evancz$elm_graphics$Element$Properties = F6(
+	function (a, b, c, d, e, f) {
+		return {width: a, height: b, opacity: c, color: d, href: e, tag: f};
+	});
+var _evancz$elm_graphics$Element$RawPosition = F4(
+	function (a, b, c, d) {
+		return {horizontal: a, vertical: b, x: c, y: d};
+	});
+var _evancz$elm_graphics$Element$Element_elm_builtin = function (a) {
+	return {ctor: 'Element_elm_builtin', _0: a};
+};
+var _evancz$elm_graphics$Element$width = F2(
+	function (newWidth, _p7) {
+		var _p8 = _p7;
+		var _p11 = _p8._0.props;
+		var _p10 = _p8._0.element;
+		var newHeight = function () {
+			var _p9 = _p10;
+			switch (_p9.ctor) {
+				case 'Image':
+					return _elm_lang$core$Basics$round(
+						(_elm_lang$core$Basics$toFloat(_p9._2) / _elm_lang$core$Basics$toFloat(_p9._1)) * _elm_lang$core$Basics$toFloat(newWidth));
+				case 'RawHtml':
+					return _elm_lang$core$Basics$snd(
+						A2(_evancz$elm_graphics$Native_Element.htmlHeight, newWidth, _p10));
+				default:
+					return _p11.height;
+			}
+		}();
+		return _evancz$elm_graphics$Element$Element_elm_builtin(
+			{
+				element: _p10,
+				props: _elm_lang$core$Native_Utils.update(
+					_p11,
+					{width: newWidth, height: newHeight})
+			});
+	});
+var _evancz$elm_graphics$Element$height = F2(
+	function (newHeight, _p12) {
+		var _p13 = _p12;
+		return _evancz$elm_graphics$Element$Element_elm_builtin(
+			{
+				element: _p13._0.element,
+				props: _elm_lang$core$Native_Utils.update(
+					_p13._0.props,
+					{height: newHeight})
+			});
+	});
+var _evancz$elm_graphics$Element$size = F3(
+	function (w, h, e) {
+		return A2(
+			_evancz$elm_graphics$Element$height,
+			h,
+			A2(_evancz$elm_graphics$Element$width, w, e));
+	});
+var _evancz$elm_graphics$Element$opacity = F2(
+	function (givenOpacity, _p14) {
+		var _p15 = _p14;
+		return _evancz$elm_graphics$Element$Element_elm_builtin(
+			{
+				element: _p15._0.element,
+				props: _elm_lang$core$Native_Utils.update(
+					_p15._0.props,
+					{opacity: givenOpacity})
+			});
+	});
+var _evancz$elm_graphics$Element$color = F2(
+	function (clr, _p16) {
+		var _p17 = _p16;
+		return _evancz$elm_graphics$Element$Element_elm_builtin(
+			{
+				element: _p17._0.element,
+				props: _elm_lang$core$Native_Utils.update(
+					_p17._0.props,
+					{
+						color: _elm_lang$core$Maybe$Just(clr)
+					})
+			});
+	});
+var _evancz$elm_graphics$Element$tag = F2(
+	function (name, _p18) {
+		var _p19 = _p18;
+		return _evancz$elm_graphics$Element$Element_elm_builtin(
+			{
+				element: _p19._0.element,
+				props: _elm_lang$core$Native_Utils.update(
+					_p19._0.props,
+					{tag: name})
+			});
+	});
+var _evancz$elm_graphics$Element$link = F2(
+	function (href, _p20) {
+		var _p21 = _p20;
+		return _evancz$elm_graphics$Element$Element_elm_builtin(
+			{
+				element: _p21._0.element,
+				props: _elm_lang$core$Native_Utils.update(
+					_p21._0.props,
+					{href: href})
+			});
+	});
+var _evancz$elm_graphics$Element$Custom = {ctor: 'Custom'};
+var _evancz$elm_graphics$Element$RawHtml = {ctor: 'RawHtml'};
+var _evancz$elm_graphics$Element$Spacer = {ctor: 'Spacer'};
+var _evancz$elm_graphics$Element$spacer = F2(
+	function (w, h) {
+		return A3(_evancz$elm_graphics$Element$newElement, w, h, _evancz$elm_graphics$Element$Spacer);
+	});
+var _evancz$elm_graphics$Element$empty = A2(_evancz$elm_graphics$Element$spacer, 0, 0);
+var _evancz$elm_graphics$Element$Flow = F2(
+	function (a, b) {
+		return {ctor: 'Flow', _0: a, _1: b};
+	});
+var _evancz$elm_graphics$Element$flow = F2(
+	function (dir, es) {
+		var newFlow = F2(
+			function (w, h) {
+				return A3(
+					_evancz$elm_graphics$Element$newElement,
+					w,
+					h,
+					A2(_evancz$elm_graphics$Element$Flow, dir, es));
+			});
+		var maxOrZero = function (list) {
+			return A2(
+				_elm_lang$core$Maybe$withDefault,
+				0,
+				_elm_lang$core$List$maximum(list));
+		};
+		var hs = A2(_elm_lang$core$List$map, _evancz$elm_graphics$Element$heightOf, es);
+		var ws = A2(_elm_lang$core$List$map, _evancz$elm_graphics$Element$widthOf, es);
+		if (_elm_lang$core$Native_Utils.eq(
+			es,
+			_elm_lang$core$Native_List.fromArray(
+				[]))) {
+			return _evancz$elm_graphics$Element$empty;
+		} else {
+			var _p22 = dir;
+			switch (_p22.ctor) {
+				case 'DUp':
+					return A2(
+						newFlow,
+						maxOrZero(ws),
+						_elm_lang$core$List$sum(hs));
+				case 'DDown':
+					return A2(
+						newFlow,
+						maxOrZero(ws),
+						_elm_lang$core$List$sum(hs));
+				case 'DLeft':
+					return A2(
+						newFlow,
+						_elm_lang$core$List$sum(ws),
+						maxOrZero(hs));
+				case 'DRight':
+					return A2(
+						newFlow,
+						_elm_lang$core$List$sum(ws),
+						maxOrZero(hs));
+				case 'DIn':
+					return A2(
+						newFlow,
+						maxOrZero(ws),
+						maxOrZero(hs));
+				default:
+					return A2(
+						newFlow,
+						maxOrZero(ws),
+						maxOrZero(hs));
+			}
+		}
+	});
+var _evancz$elm_graphics$Element$Container = F2(
+	function (a, b) {
+		return {ctor: 'Container', _0: a, _1: b};
+	});
+var _evancz$elm_graphics$Element$container = F4(
+	function (w, h, _p23, e) {
+		var _p24 = _p23;
+		return A3(
+			_evancz$elm_graphics$Element$newElement,
+			w,
+			h,
+			A2(_evancz$elm_graphics$Element$Container, _p24._0, e));
+	});
+var _evancz$elm_graphics$Element$Image = F4(
+	function (a, b, c, d) {
+		return {ctor: 'Image', _0: a, _1: b, _2: c, _3: d};
+	});
+var _evancz$elm_graphics$Element$Tiled = {ctor: 'Tiled'};
+var _evancz$elm_graphics$Element$tiledImage = F3(
+	function (w, h, src) {
+		return A3(
+			_evancz$elm_graphics$Element$newElement,
+			w,
+			h,
+			A4(_evancz$elm_graphics$Element$Image, _evancz$elm_graphics$Element$Tiled, w, h, src));
+	});
+var _evancz$elm_graphics$Element$Cropped = function (a) {
+	return {ctor: 'Cropped', _0: a};
+};
+var _evancz$elm_graphics$Element$croppedImage = F4(
+	function (pos, w, h, src) {
+		return A3(
+			_evancz$elm_graphics$Element$newElement,
+			w,
+			h,
+			A4(
+				_evancz$elm_graphics$Element$Image,
+				_evancz$elm_graphics$Element$Cropped(pos),
+				w,
+				h,
+				src));
+	});
+var _evancz$elm_graphics$Element$Fitted = {ctor: 'Fitted'};
+var _evancz$elm_graphics$Element$fittedImage = F3(
+	function (w, h, src) {
+		return A3(
+			_evancz$elm_graphics$Element$newElement,
+			w,
+			h,
+			A4(_evancz$elm_graphics$Element$Image, _evancz$elm_graphics$Element$Fitted, w, h, src));
+	});
+var _evancz$elm_graphics$Element$Plain = {ctor: 'Plain'};
+var _evancz$elm_graphics$Element$image = F3(
+	function (w, h, src) {
+		return A3(
+			_evancz$elm_graphics$Element$newElement,
+			w,
+			h,
+			A4(_evancz$elm_graphics$Element$Image, _evancz$elm_graphics$Element$Plain, w, h, src));
+	});
+var _evancz$elm_graphics$Element$N = {ctor: 'N'};
+var _evancz$elm_graphics$Element$Z = {ctor: 'Z'};
+var _evancz$elm_graphics$Element$P = {ctor: 'P'};
+var _evancz$elm_graphics$Element$Relative = function (a) {
+	return {ctor: 'Relative', _0: a};
+};
+var _evancz$elm_graphics$Element$relative = _evancz$elm_graphics$Element$Relative;
+var _evancz$elm_graphics$Element$Absolute = function (a) {
+	return {ctor: 'Absolute', _0: a};
+};
+var _evancz$elm_graphics$Element$absolute = _evancz$elm_graphics$Element$Absolute;
+var _evancz$elm_graphics$Element$Position = function (a) {
+	return {ctor: 'Position', _0: a};
+};
+var _evancz$elm_graphics$Element$middle = _evancz$elm_graphics$Element$Position(
+	{
+		horizontal: _evancz$elm_graphics$Element$Z,
+		vertical: _evancz$elm_graphics$Element$Z,
+		x: _evancz$elm_graphics$Element$Relative(0.5),
+		y: _evancz$elm_graphics$Element$Relative(0.5)
+	});
+var _evancz$elm_graphics$Element$topLeft = _evancz$elm_graphics$Element$Position(
+	{
+		horizontal: _evancz$elm_graphics$Element$N,
+		vertical: _evancz$elm_graphics$Element$P,
+		x: _evancz$elm_graphics$Element$Absolute(0),
+		y: _evancz$elm_graphics$Element$Absolute(0)
+	});
+var _evancz$elm_graphics$Element$topRight = _evancz$elm_graphics$Element$Position(
+	{
+		horizontal: _evancz$elm_graphics$Element$P,
+		vertical: _evancz$elm_graphics$Element$P,
+		x: _evancz$elm_graphics$Element$Absolute(0),
+		y: _evancz$elm_graphics$Element$Absolute(0)
+	});
+var _evancz$elm_graphics$Element$bottomLeft = _evancz$elm_graphics$Element$Position(
+	{
+		horizontal: _evancz$elm_graphics$Element$N,
+		vertical: _evancz$elm_graphics$Element$N,
+		x: _evancz$elm_graphics$Element$Absolute(0),
+		y: _evancz$elm_graphics$Element$Absolute(0)
+	});
+var _evancz$elm_graphics$Element$bottomRight = _evancz$elm_graphics$Element$Position(
+	{
+		horizontal: _evancz$elm_graphics$Element$P,
+		vertical: _evancz$elm_graphics$Element$N,
+		x: _evancz$elm_graphics$Element$Absolute(0),
+		y: _evancz$elm_graphics$Element$Absolute(0)
+	});
+var _evancz$elm_graphics$Element$midLeft = _evancz$elm_graphics$Element$Position(
+	{
+		horizontal: _evancz$elm_graphics$Element$N,
+		vertical: _evancz$elm_graphics$Element$Z,
+		x: _evancz$elm_graphics$Element$Absolute(0),
+		y: _evancz$elm_graphics$Element$Relative(0.5)
+	});
+var _evancz$elm_graphics$Element$midRight = _evancz$elm_graphics$Element$Position(
+	{
+		horizontal: _evancz$elm_graphics$Element$P,
+		vertical: _evancz$elm_graphics$Element$Z,
+		x: _evancz$elm_graphics$Element$Absolute(0),
+		y: _evancz$elm_graphics$Element$Relative(0.5)
+	});
+var _evancz$elm_graphics$Element$midTop = _evancz$elm_graphics$Element$Position(
+	{
+		horizontal: _evancz$elm_graphics$Element$Z,
+		vertical: _evancz$elm_graphics$Element$P,
+		x: _evancz$elm_graphics$Element$Relative(0.5),
+		y: _evancz$elm_graphics$Element$Absolute(0)
+	});
+var _evancz$elm_graphics$Element$midBottom = _evancz$elm_graphics$Element$Position(
+	{
+		horizontal: _evancz$elm_graphics$Element$Z,
+		vertical: _evancz$elm_graphics$Element$N,
+		x: _evancz$elm_graphics$Element$Relative(0.5),
+		y: _evancz$elm_graphics$Element$Absolute(0)
+	});
+var _evancz$elm_graphics$Element$middleAt = F2(
+	function (x, y) {
+		return _evancz$elm_graphics$Element$Position(
+			{horizontal: _evancz$elm_graphics$Element$Z, vertical: _evancz$elm_graphics$Element$Z, x: x, y: y});
+	});
+var _evancz$elm_graphics$Element$topLeftAt = F2(
+	function (x, y) {
+		return _evancz$elm_graphics$Element$Position(
+			{horizontal: _evancz$elm_graphics$Element$N, vertical: _evancz$elm_graphics$Element$P, x: x, y: y});
+	});
+var _evancz$elm_graphics$Element$topRightAt = F2(
+	function (x, y) {
+		return _evancz$elm_graphics$Element$Position(
+			{horizontal: _evancz$elm_graphics$Element$P, vertical: _evancz$elm_graphics$Element$P, x: x, y: y});
+	});
+var _evancz$elm_graphics$Element$bottomLeftAt = F2(
+	function (x, y) {
+		return _evancz$elm_graphics$Element$Position(
+			{horizontal: _evancz$elm_graphics$Element$N, vertical: _evancz$elm_graphics$Element$N, x: x, y: y});
+	});
+var _evancz$elm_graphics$Element$bottomRightAt = F2(
+	function (x, y) {
+		return _evancz$elm_graphics$Element$Position(
+			{horizontal: _evancz$elm_graphics$Element$P, vertical: _evancz$elm_graphics$Element$N, x: x, y: y});
+	});
+var _evancz$elm_graphics$Element$midLeftAt = F2(
+	function (x, y) {
+		return _evancz$elm_graphics$Element$Position(
+			{horizontal: _evancz$elm_graphics$Element$N, vertical: _evancz$elm_graphics$Element$Z, x: x, y: y});
+	});
+var _evancz$elm_graphics$Element$midRightAt = F2(
+	function (x, y) {
+		return _evancz$elm_graphics$Element$Position(
+			{horizontal: _evancz$elm_graphics$Element$P, vertical: _evancz$elm_graphics$Element$Z, x: x, y: y});
+	});
+var _evancz$elm_graphics$Element$midTopAt = F2(
+	function (x, y) {
+		return _evancz$elm_graphics$Element$Position(
+			{horizontal: _evancz$elm_graphics$Element$Z, vertical: _evancz$elm_graphics$Element$P, x: x, y: y});
+	});
+var _evancz$elm_graphics$Element$midBottomAt = F2(
+	function (x, y) {
+		return _evancz$elm_graphics$Element$Position(
+			{horizontal: _evancz$elm_graphics$Element$Z, vertical: _evancz$elm_graphics$Element$N, x: x, y: y});
+	});
+var _evancz$elm_graphics$Element$DOut = {ctor: 'DOut'};
+var _evancz$elm_graphics$Element$layers = function (es) {
+	var hs = A2(_elm_lang$core$List$map, _evancz$elm_graphics$Element$heightOf, es);
+	var ws = A2(_elm_lang$core$List$map, _evancz$elm_graphics$Element$widthOf, es);
+	return A3(
+		_evancz$elm_graphics$Element$newElement,
+		A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$maximum(ws)),
+		A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$maximum(hs)),
+		A2(_evancz$elm_graphics$Element$Flow, _evancz$elm_graphics$Element$DOut, es));
+};
+var _evancz$elm_graphics$Element$outward = _evancz$elm_graphics$Element$DOut;
+var _evancz$elm_graphics$Element$DIn = {ctor: 'DIn'};
+var _evancz$elm_graphics$Element$inward = _evancz$elm_graphics$Element$DIn;
+var _evancz$elm_graphics$Element$DRight = {ctor: 'DRight'};
+var _evancz$elm_graphics$Element$right = _evancz$elm_graphics$Element$DRight;
+var _evancz$elm_graphics$Element$beside = F2(
+	function (lft, rht) {
+		return A3(
+			_evancz$elm_graphics$Element$newElement,
+			_evancz$elm_graphics$Element$widthOf(lft) + _evancz$elm_graphics$Element$widthOf(rht),
+			A2(
+				_elm_lang$core$Basics$max,
+				_evancz$elm_graphics$Element$heightOf(lft),
+				_evancz$elm_graphics$Element$heightOf(rht)),
+			A2(
+				_evancz$elm_graphics$Element$Flow,
+				_evancz$elm_graphics$Element$right,
+				_elm_lang$core$Native_List.fromArray(
+					[lft, rht])));
+	});
+var _evancz$elm_graphics$Element$DLeft = {ctor: 'DLeft'};
+var _evancz$elm_graphics$Element$left = _evancz$elm_graphics$Element$DLeft;
+var _evancz$elm_graphics$Element$DDown = {ctor: 'DDown'};
+var _evancz$elm_graphics$Element$above = F2(
+	function (hi, lo) {
+		return A3(
+			_evancz$elm_graphics$Element$newElement,
+			A2(
+				_elm_lang$core$Basics$max,
+				_evancz$elm_graphics$Element$widthOf(hi),
+				_evancz$elm_graphics$Element$widthOf(lo)),
+			_evancz$elm_graphics$Element$heightOf(hi) + _evancz$elm_graphics$Element$heightOf(lo),
+			A2(
+				_evancz$elm_graphics$Element$Flow,
+				_evancz$elm_graphics$Element$DDown,
+				_elm_lang$core$Native_List.fromArray(
+					[hi, lo])));
+	});
+var _evancz$elm_graphics$Element$below = F2(
+	function (lo, hi) {
+		return A3(
+			_evancz$elm_graphics$Element$newElement,
+			A2(
+				_elm_lang$core$Basics$max,
+				_evancz$elm_graphics$Element$widthOf(hi),
+				_evancz$elm_graphics$Element$widthOf(lo)),
+			_evancz$elm_graphics$Element$heightOf(hi) + _evancz$elm_graphics$Element$heightOf(lo),
+			A2(
+				_evancz$elm_graphics$Element$Flow,
+				_evancz$elm_graphics$Element$DDown,
+				_elm_lang$core$Native_List.fromArray(
+					[hi, lo])));
+	});
+var _evancz$elm_graphics$Element$down = _evancz$elm_graphics$Element$DDown;
+var _evancz$elm_graphics$Element$DUp = {ctor: 'DUp'};
+var _evancz$elm_graphics$Element$up = _evancz$elm_graphics$Element$DUp;
