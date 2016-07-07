@@ -1,0 +1,17 @@
+{
+    "version": "1.0.0",
+    "summary": "LearnElm_2: draw figures on mouse click (implement with SVG)",
+    "repository": "https://github.com/JetBrains/programmer-games.git",
+    "license": "BSD3",
+    "source-directories": [
+        "src"
+    ],
+    "exposed-modules": [],
+    "dependencies": {
+        "elm-lang/core": "4.0.1 <= v < 5.0.0",
+        "elm-lang/html": "1.0.0 <= v < 2.0.0",
+        "elm-lang/svg": "1.1.0 <= v < 2.0.0",
+        "elm-lang/virtual-dom": "1.1.0 <= v < 2.0.0"
+    },
+    "elm-version": "0.17.0 <= v < 0.18.0"
+}
