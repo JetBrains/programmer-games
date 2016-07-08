@@ -1,0 +1,18 @@
+var _evancz$elm_graphics$Transform$multiply = _evancz$elm_graphics$Native_Transform.multiply;
+var _evancz$elm_graphics$Transform$rotation = _evancz$elm_graphics$Native_Transform.rotation;
+var _evancz$elm_graphics$Transform$matrix = _evancz$elm_graphics$Native_Transform.matrix;
+var _evancz$elm_graphics$Transform$translation = F2(
+	function (x, y) {
+		return A6(_evancz$elm_graphics$Transform$matrix, 1, 0, 0, 1, x, y);
+	});
+var _evancz$elm_graphics$Transform$scale = function (s) {
+	return A6(_evancz$elm_graphics$Transform$matrix, s, 0, 0, s, 0, 0);
+};
+var _evancz$elm_graphics$Transform$scaleX = function (x) {
+	return A6(_evancz$elm_graphics$Transform$matrix, x, 0, 0, 1, 0, 0);
+};
+var _evancz$elm_graphics$Transform$scaleY = function (y) {
+	return A6(_evancz$elm_graphics$Transform$matrix, 1, 0, 0, y, 0, 0);
+};
+var _evancz$elm_graphics$Transform$identity = _evancz$elm_graphics$Native_Transform.identity;
+var _evancz$elm_graphics$Transform$Transform = {ctor: 'Transform'};

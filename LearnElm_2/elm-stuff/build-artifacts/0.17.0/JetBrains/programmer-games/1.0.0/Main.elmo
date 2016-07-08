@@ -1,0 +1,312 @@
+var _JetBrains$programmer_games$Main$curCUpd = F3(
+	function (m, c, p) {
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				m,
+				{currentC: c}),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
+var _JetBrains$programmer_games$Main$newRMsgProccessing = F2(
+	function (model, r) {
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				model,
+				{currentR: r}),
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
+var _JetBrains$programmer_games$Main$getRUTriangPoint = F3(
+	function (x, y, r) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(x + r),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				' ',
+				_elm_lang$core$Basics$toString(y - r)));
+	});
+var _JetBrains$programmer_games$Main$getMDTriangPoint = F3(
+	function (x, y, r) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(x),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				' ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(y + r),
+					',')));
+	});
+var _JetBrains$programmer_games$Main$getLUTriangPoint = F3(
+	function (x, y, r) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(x - r),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				' ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(y - r),
+					',')));
+	});
+var _JetBrains$programmer_games$Main$getTriangPoints = F3(
+	function (x, y, r) {
+		return _elm_lang$svg$Svg_Attributes$points(
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A3(_JetBrains$programmer_games$Main$getLUTriangPoint, x, y, r),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A3(_JetBrains$programmer_games$Main$getMDTriangPoint, x, y, r),
+					A3(_JetBrains$programmer_games$Main$getRUTriangPoint, x, y, r))));
+	});
+var _JetBrains$programmer_games$Main$drawFigure = function (f) {
+	return A2(
+		_elm_lang$svg$Svg$polygon,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$svg$Svg_Attributes$fill(f.c),
+				_elm_lang$svg$Svg_Attributes$x('0'),
+				_elm_lang$svg$Svg_Attributes$y('0'),
+				_elm_lang$svg$Svg_Attributes$stroke('black'),
+				A3(_JetBrains$programmer_games$Main$getTriangPoints, f.pos.x, f.pos.y, f.r)
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[]));
+};
+var _JetBrains$programmer_games$Main$drawAllFigures = function (model) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (f) {
+			return _JetBrains$programmer_games$Main$drawFigure(f);
+		},
+		model.figures);
+};
+var _JetBrains$programmer_games$Main$colorSqH = 30;
+var _JetBrains$programmer_games$Main$colorSqW = 30;
+var _JetBrains$programmer_games$Main$calcColorSqLX = function (ind) {
+	return (ind * _JetBrains$programmer_games$Main$colorSqW) + (ind * 10);
+};
+var _JetBrains$programmer_games$Main$calcColorSqRX = function (ind) {
+	return ((ind * _JetBrains$programmer_games$Main$colorSqW) + (ind * 10)) + _JetBrains$programmer_games$Main$colorSqW;
+};
+var _JetBrains$programmer_games$Main$addColorSquare = F2(
+	function (c, sx) {
+		return A2(
+			_elm_lang$svg$Svg$rect,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$svg$Svg_Attributes$fill(c),
+					_elm_lang$svg$Svg_Attributes$x(sx),
+					_elm_lang$svg$Svg_Attributes$y('0'),
+					_elm_lang$svg$Svg_Attributes$stroke('black'),
+					_elm_lang$svg$Svg_Attributes$width(
+					_elm_lang$core$Basics$toString(_JetBrains$programmer_games$Main$colorSqW)),
+					_elm_lang$svg$Svg_Attributes$height(
+					_elm_lang$core$Basics$toString(_JetBrains$programmer_games$Main$colorSqH))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
+	});
+var _JetBrains$programmer_games$Main$addColorPanel = _elm_lang$core$Native_List.fromArray(
+	[
+		A2(
+		_JetBrains$programmer_games$Main$addColorSquare,
+		'#FF0000',
+		_elm_lang$core$Basics$toString(
+			_JetBrains$programmer_games$Main$calcColorSqLX(0))),
+		A2(
+		_JetBrains$programmer_games$Main$addColorSquare,
+		'#7FD13B',
+		_elm_lang$core$Basics$toString(
+			_JetBrains$programmer_games$Main$calcColorSqLX(1))),
+		A2(
+		_JetBrains$programmer_games$Main$addColorSquare,
+		'#FFFF00',
+		_elm_lang$core$Basics$toString(
+			_JetBrains$programmer_games$Main$calcColorSqLX(2))),
+		A2(
+		_JetBrains$programmer_games$Main$addColorSquare,
+		'#0000FF',
+		_elm_lang$core$Basics$toString(
+			_JetBrains$programmer_games$Main$calcColorSqLX(3)))
+	]);
+var _JetBrains$programmer_games$Main$mainRectH = 600;
+var _JetBrains$programmer_games$Main$mainRectW = 800;
+var _JetBrains$programmer_games$Main$addMainPanel = function (model) {
+	return A2(
+		_elm_lang$svg$Svg$svg,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$svg$Svg_Attributes$version('1.1'),
+				_elm_lang$svg$Svg_Attributes$width(
+				_elm_lang$core$Basics$toString(_JetBrains$programmer_games$Main$mainRectW)),
+				_elm_lang$svg$Svg_Attributes$height(
+				_elm_lang$core$Basics$toString(_JetBrains$programmer_games$Main$mainRectH)),
+				_elm_lang$svg$Svg_Attributes$x('0'),
+				_elm_lang$svg$Svg_Attributes$y('0'),
+				_elm_lang$svg$Svg_Attributes$viewBox(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'0 0 ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(_JetBrains$programmer_games$Main$mainRectW),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							' ',
+							_elm_lang$core$Basics$toString(_JetBrains$programmer_games$Main$mainRectH)))))
+			]),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$svg$Svg$rect,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$svg$Svg_Attributes$fill('#87CEFA'),
+							_elm_lang$svg$Svg_Attributes$x('0'),
+							_elm_lang$svg$Svg_Attributes$y('0'),
+							_elm_lang$svg$Svg_Attributes$width(
+							_elm_lang$core$Basics$toString(_JetBrains$programmer_games$Main$mainRectW)),
+							_elm_lang$svg$Svg_Attributes$height(
+							_elm_lang$core$Basics$toString(_JetBrains$programmer_games$Main$mainRectH))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[]))
+				]),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_JetBrains$programmer_games$Main$drawAllFigures(model),
+				_JetBrains$programmer_games$Main$addColorPanel)));
+};
+var _JetBrains$programmer_games$Main$windowH = 980;
+var _JetBrains$programmer_games$Main$marginTop = _elm_lang$core$Basics$ceiling(
+	0.17 * _elm_lang$core$Basics$toFloat(_JetBrains$programmer_games$Main$windowH));
+var _JetBrains$programmer_games$Main$windowW = 1855;
+var _JetBrains$programmer_games$Main$marginLeft = _elm_lang$core$Basics$ceiling(
+	0.27 * _elm_lang$core$Basics$toFloat(_JetBrains$programmer_games$Main$windowW));
+var _JetBrains$programmer_games$Main$divStyle = _elm_lang$html$Html_Attributes$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			{ctor: '_Tuple2', _0: 'position', _1: 'absolute'},
+			{ctor: '_Tuple2', _0: 'top', _1: '17%'},
+			{ctor: '_Tuple2', _0: 'left', _1: '27%'},
+			{
+			ctor: '_Tuple2',
+			_0: 'width',
+			_1: _elm_lang$core$Basics$toString(_JetBrains$programmer_games$Main$mainRectW)
+		},
+			{
+			ctor: '_Tuple2',
+			_0: 'height',
+			_1: _elm_lang$core$Basics$toString(_JetBrains$programmer_games$Main$mainRectH)
+		},
+			{ctor: '_Tuple2', _0: 'border', _1: '1px solid #000000'},
+			{ctor: '_Tuple2', _0: 'background-color', _1: '#87CEFA'}
+		]));
+var _JetBrains$programmer_games$Main$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[_JetBrains$programmer_games$Main$divStyle]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_JetBrains$programmer_games$Main$addMainPanel(model)
+			]));
+};
+var _JetBrains$programmer_games$Main$Figure = F3(
+	function (a, b, c) {
+		return {pos: a, r: b, c: c};
+	});
+var _JetBrains$programmer_games$Main$Model = F3(
+	function (a, b, c) {
+		return {currentR: a, currentC: b, figures: c};
+	});
+var _JetBrains$programmer_games$Main$init = {
+	ctor: '_Tuple2',
+	_0: A3(
+		_JetBrains$programmer_games$Main$Model,
+		20,
+		'blue',
+		_elm_lang$core$Native_List.fromArray(
+			[])),
+	_1: _elm_lang$core$Platform_Cmd$none
+};
+var _JetBrains$programmer_games$Main$Position = F2(
+	function (a, b) {
+		return {x: a, y: b};
+	});
+var _JetBrains$programmer_games$Main$NewRadius = function (a) {
+	return {ctor: 'NewRadius', _0: a};
+};
+var _JetBrains$programmer_games$Main$addNewFigure = F2(
+	function (m, p) {
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Native_Utils.update(
+				m,
+				{
+					figures: A2(
+						_elm_lang$core$Basics_ops['++'],
+						m.figures,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A3(_JetBrains$programmer_games$Main$Figure, p, m.currentR, m.currentC)
+							]))
+				}),
+			_1: A2(
+				_elm_lang$core$Random$generate,
+				_JetBrains$programmer_games$Main$NewRadius,
+				A2(_elm_lang$core$Random$int, 20, 100))
+		};
+	});
+var _JetBrains$programmer_games$Main$clickMsgProccessing = F2(
+	function (model, pos) {
+		return ((_elm_lang$core$Native_Utils.cmp(pos.y, 0) > -1) && ((_elm_lang$core$Native_Utils.cmp(pos.y, _JetBrains$programmer_games$Main$colorSqH) < 1) && ((_elm_lang$core$Native_Utils.cmp(
+			pos.x,
+			_JetBrains$programmer_games$Main$calcColorSqLX(0)) > -1) && (_elm_lang$core$Native_Utils.cmp(
+			pos.x,
+			_JetBrains$programmer_games$Main$calcColorSqRX(0)) < 1)))) ? A3(_JetBrains$programmer_games$Main$curCUpd, model, '#FF0000', pos) : (((_elm_lang$core$Native_Utils.cmp(pos.y, 0) > -1) && ((_elm_lang$core$Native_Utils.cmp(pos.y, _JetBrains$programmer_games$Main$colorSqH) < 1) && ((_elm_lang$core$Native_Utils.cmp(
+			pos.x,
+			_JetBrains$programmer_games$Main$calcColorSqLX(1)) > -1) && (_elm_lang$core$Native_Utils.cmp(
+			pos.x,
+			_JetBrains$programmer_games$Main$calcColorSqRX(1)) < 1)))) ? A3(_JetBrains$programmer_games$Main$curCUpd, model, '#008000', pos) : (((_elm_lang$core$Native_Utils.cmp(pos.y, 0) > -1) && ((_elm_lang$core$Native_Utils.cmp(pos.y, _JetBrains$programmer_games$Main$colorSqH) < 1) && ((_elm_lang$core$Native_Utils.cmp(
+			pos.x,
+			_JetBrains$programmer_games$Main$calcColorSqLX(2)) > -1) && (_elm_lang$core$Native_Utils.cmp(
+			pos.x,
+			_JetBrains$programmer_games$Main$calcColorSqRX(2)) < 1)))) ? A3(_JetBrains$programmer_games$Main$curCUpd, model, '#FFFF00', pos) : (((_elm_lang$core$Native_Utils.cmp(pos.y, 0) > -1) && ((_elm_lang$core$Native_Utils.cmp(pos.y, _JetBrains$programmer_games$Main$colorSqH) < 1) && ((_elm_lang$core$Native_Utils.cmp(
+			pos.x,
+			_JetBrains$programmer_games$Main$calcColorSqLX(3)) > -1) && (_elm_lang$core$Native_Utils.cmp(
+			pos.x,
+			_JetBrains$programmer_games$Main$calcColorSqRX(3)) < 1)))) ? A3(_JetBrains$programmer_games$Main$curCUpd, model, '#0000FF', pos) : (((_elm_lang$core$Native_Utils.cmp(pos.y, 0) < 0) || ((_elm_lang$core$Native_Utils.cmp(pos.y, _JetBrains$programmer_games$Main$mainRectH) > 0) || ((_elm_lang$core$Native_Utils.cmp(pos.x, 0) < 0) || (_elm_lang$core$Native_Utils.cmp(pos.x, _JetBrains$programmer_games$Main$mainRectW) > 0)))) ? {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none} : A2(_JetBrains$programmer_games$Main$addNewFigure, model, pos)))));
+	});
+var _JetBrains$programmer_games$Main$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		if (_p0.ctor === 'Click') {
+			var _p1 = _p0._0;
+			return A2(
+				_JetBrains$programmer_games$Main$clickMsgProccessing,
+				model,
+				A2(_JetBrains$programmer_games$Main$Position, _p1.x - _JetBrains$programmer_games$Main$marginLeft, _p1.y - _JetBrains$programmer_games$Main$marginTop));
+		} else {
+			return A2(_JetBrains$programmer_games$Main$newRMsgProccessing, model, _p0._0);
+		}
+	});
+var _JetBrains$programmer_games$Main$Click = function (a) {
+	return {ctor: 'Click', _0: a};
+};
+var _JetBrains$programmer_games$Main$subscriptions = function (model) {
+	return _elm_lang$mouse$Mouse$clicks(_JetBrains$programmer_games$Main$Click);
+};
+var _JetBrains$programmer_games$Main$main = {
+	main: _elm_lang$html$Html_App$program(
+		{init: _JetBrains$programmer_games$Main$init, view: _JetBrains$programmer_games$Main$view, update: _JetBrains$programmer_games$Main$update, subscriptions: _JetBrains$programmer_games$Main$subscriptions})
+};

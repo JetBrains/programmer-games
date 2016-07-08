@@ -1,0 +1,279 @@
+var _evancz$elm_graphics$Text$wrap = F3(
+	function (maybeHref, styles, insides) {
+		var linkedInsides = function () {
+			var _p0 = maybeHref;
+			if (_p0.ctor === 'Nothing') {
+				return insides;
+			} else {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					'<a href=\"',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_p0._0,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'\">',
+							A2(_elm_lang$core$Basics_ops['++'], insides, '</a>'))));
+			}
+		}();
+		return _elm_lang$core$Native_Utils.eq(styles, '') ? linkedInsides : A2(
+			_elm_lang$core$Basics_ops['++'],
+			'<span style=\"',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				styles,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'\">',
+					A2(_elm_lang$core$Basics_ops['++'], linkedInsides, '</span>'))));
+	});
+var _evancz$elm_graphics$Text$replace = F3(
+	function (from, to, str) {
+		return A4(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex(from),
+			function (_p1) {
+				return to;
+			},
+			str);
+	});
+var _evancz$elm_graphics$Text$toHtmlString = function (text) {
+	return A3(_evancz$elm_graphics$Text$toHtmlStringHelp, _elm_lang$core$Maybe$Nothing, '', text);
+};
+var _evancz$elm_graphics$Text$toHtmlStringHelp = F3(
+	function (maybeHref, styles, text) {
+		toHtmlStringHelp:
+		while (true) {
+			var _p2 = text;
+			switch (_p2.ctor) {
+				case 'Str':
+					return A3(
+						_evancz$elm_graphics$Text$wrap,
+						maybeHref,
+						styles,
+						A2(
+							_elm_lang$core$String$join,
+							'<br>',
+							A2(
+								_elm_lang$core$List$map,
+								A2(_evancz$elm_graphics$Text$replace, ' ', '&nbsp;'),
+								_elm_lang$core$String$lines(
+									A3(
+										_evancz$elm_graphics$Text$replace,
+										'>',
+										'&#62;',
+										A3(
+											_evancz$elm_graphics$Text$replace,
+											'<',
+											'&#60;',
+											A3(
+												_evancz$elm_graphics$Text$replace,
+												'\'',
+												'&#39;',
+												A3(_evancz$elm_graphics$Text$replace, '\"', '&#34;', _p2._0))))))));
+				case 'Append':
+					return A3(
+						_evancz$elm_graphics$Text$wrap,
+						maybeHref,
+						styles,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_evancz$elm_graphics$Text$toHtmlString(_p2._0),
+							_evancz$elm_graphics$Text$toHtmlString(_p2._1)));
+				case 'Link':
+					var _v2 = _elm_lang$core$Maybe$Just(
+						A2(_elm_lang$core$Maybe$withDefault, _p2._0, maybeHref)),
+						_v3 = styles,
+						_v4 = _p2._1;
+					maybeHref = _v2;
+					styles = _v3;
+					text = _v4;
+					continue toHtmlStringHelp;
+				default:
+					var _v5 = maybeHref,
+						_v6 = A2(
+						_elm_lang$core$Basics_ops['++'],
+						styles,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_p2._0,
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								':',
+								A2(_elm_lang$core$Basics_ops['++'], _p2._1, ';')))),
+						_v7 = _p2._2;
+					maybeHref = _v5;
+					styles = _v6;
+					text = _v7;
+					continue toHtmlStringHelp;
+			}
+		}
+	});
+var _evancz$elm_graphics$Text$colorToCss = function (color) {
+	var _p3 = _elm_lang$core$Color$toRgb(color);
+	var red = _p3.red;
+	var green = _p3.green;
+	var blue = _p3.blue;
+	var alpha = _p3.alpha;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'rgba(',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(red),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				', ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(green),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						', ',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(blue),
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								', ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_elm_lang$core$Basics$toString(alpha),
+									')'))))))));
+};
+var _evancz$elm_graphics$Text$typefacesToString = function (faces) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'\'',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			A2(_elm_lang$core$String$join, '\', \'', faces),
+			'\''));
+};
+var _evancz$elm_graphics$Text$maybeAdd = F3(
+	function (add, maybeValue, text) {
+		var _p4 = maybeValue;
+		if (_p4.ctor === 'Nothing') {
+			return text;
+		} else {
+			return A2(add, _p4._0, text);
+		}
+	});
+var _evancz$elm_graphics$Text$defaultStyle = {
+	typeface: _elm_lang$core$Native_List.fromArray(
+		[]),
+	height: _elm_lang$core$Maybe$Nothing,
+	color: _elm_lang$core$Color$black,
+	bold: false,
+	italic: false,
+	line: _elm_lang$core$Maybe$Nothing
+};
+var _evancz$elm_graphics$Text$Style = F6(
+	function (a, b, c, d, e, f) {
+		return {typeface: a, height: b, color: c, bold: d, italic: e, line: f};
+	});
+var _evancz$elm_graphics$Text$Meta = F3(
+	function (a, b, c) {
+		return {ctor: 'Meta', _0: a, _1: b, _2: c};
+	});
+var _evancz$elm_graphics$Text$typeface = F2(
+	function (faces, text) {
+		var _p5 = faces;
+		if (_p5.ctor === '[]') {
+			return text;
+		} else {
+			return A3(
+				_evancz$elm_graphics$Text$Meta,
+				'font-family',
+				_evancz$elm_graphics$Text$typefacesToString(faces),
+				text);
+		}
+	});
+var _evancz$elm_graphics$Text$monospace = function (text) {
+	return A3(_evancz$elm_graphics$Text$Meta, 'font-family', 'monospace', text);
+};
+var _evancz$elm_graphics$Text$height = F2(
+	function (px, text) {
+		return A3(
+			_evancz$elm_graphics$Text$Meta,
+			'font-size',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(px),
+				'px'),
+			text);
+	});
+var _evancz$elm_graphics$Text$color = F2(
+	function (color, text) {
+		return A3(
+			_evancz$elm_graphics$Text$Meta,
+			'color',
+			_evancz$elm_graphics$Text$colorToCss(color),
+			text);
+	});
+var _evancz$elm_graphics$Text$bold = function (text) {
+	return A3(_evancz$elm_graphics$Text$Meta, 'font-weight', 'bold', text);
+};
+var _evancz$elm_graphics$Text$italic = function (text) {
+	return A3(_evancz$elm_graphics$Text$Meta, 'font-style', 'italic', text);
+};
+var _evancz$elm_graphics$Text$line = F2(
+	function (lineTag, text) {
+		var decoration = function () {
+			var _p6 = lineTag;
+			switch (_p6.ctor) {
+				case 'Under':
+					return 'underline';
+				case 'Over':
+					return 'overline';
+				default:
+					return 'line-through';
+			}
+		}();
+		return A3(_evancz$elm_graphics$Text$Meta, 'text-decoration', decoration, text);
+	});
+var _evancz$elm_graphics$Text$style = F2(
+	function (sty, text) {
+		return A3(
+			_evancz$elm_graphics$Text$maybeAdd,
+			_evancz$elm_graphics$Text$height,
+			sty.height,
+			A3(
+				_evancz$elm_graphics$Text$maybeAdd,
+				_evancz$elm_graphics$Text$line,
+				sty.line,
+				(sty.italic ? _evancz$elm_graphics$Text$italic : _elm_lang$core$Basics$identity)(
+					(sty.bold ? _evancz$elm_graphics$Text$bold : _elm_lang$core$Basics$identity)(
+						A2(
+							_evancz$elm_graphics$Text$typeface,
+							sty.typeface,
+							A2(_evancz$elm_graphics$Text$color, sty.color, text))))));
+	});
+var _evancz$elm_graphics$Text$Link = F2(
+	function (a, b) {
+		return {ctor: 'Link', _0: a, _1: b};
+	});
+var _evancz$elm_graphics$Text$link = _evancz$elm_graphics$Text$Link;
+var _evancz$elm_graphics$Text$Append = F2(
+	function (a, b) {
+		return {ctor: 'Append', _0: a, _1: b};
+	});
+var _evancz$elm_graphics$Text$append = _evancz$elm_graphics$Text$Append;
+var _evancz$elm_graphics$Text$Str = function (a) {
+	return {ctor: 'Str', _0: a};
+};
+var _evancz$elm_graphics$Text$fromString = _evancz$elm_graphics$Text$Str;
+var _evancz$elm_graphics$Text$empty = _evancz$elm_graphics$Text$fromString('');
+var _evancz$elm_graphics$Text$concat = function (texts) {
+	return A3(_elm_lang$core$List$foldr, _evancz$elm_graphics$Text$append, _evancz$elm_graphics$Text$empty, texts);
+};
+var _evancz$elm_graphics$Text$join = F2(
+	function (seperator, texts) {
+		return _evancz$elm_graphics$Text$concat(
+			A2(_elm_lang$core$List$intersperse, seperator, texts));
+	});
+var _evancz$elm_graphics$Text$Through = {ctor: 'Through'};
+var _evancz$elm_graphics$Text$Over = {ctor: 'Over'};
+var _evancz$elm_graphics$Text$Under = {ctor: 'Under'};
