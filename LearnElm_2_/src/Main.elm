@@ -8,6 +8,7 @@ import Html.App
 import Random
 import Mouse
 
+
 type alias Figure =
   { pos : Position
   , r : Int    -- radius for figure 
@@ -186,7 +187,8 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
   Click pos ->
-    ( clickMsgProccessing model ( Position (pos.x - marginLeft) (pos.y - marginTop) ) )
+    ( Position (pos.x - marginLeft) (pos.y - marginTop) )
+    |> clickMsgProccessing model 
   NewRadius newR ->
     ( newRMsgProccessing model newR )
 
@@ -206,6 +208,8 @@ clickMsgProccessing model pos =
   else if pos.y >= 0 && pos.y <= colorSqH 
           && pos.x >= (calcColorSqLX 3) && pos.x <= (calcColorSqRX 3)          
             then ( curCUpd model "#0000FF" pos )
+  else if pos.y < 0 || pos.y > mainRectH || pos.x < 0 || pos.x > mainRectW
+          then ( model, Cmd.none )
   else ( addNewFigure model pos )  
 
 
