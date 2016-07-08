@@ -6,8 +6,9 @@ import Html exposing (Html, div, text)
 import Html.Attributes exposing (..)
 import Html.App
 import Random
+import Window
+import Task
 import Mouse
-
 
 type alias Figure =
   { pos : Position
@@ -18,7 +19,8 @@ type alias Figure =
 
 -- MODEL 
 type alias Model =
-  { currentR : Int          -- current value of radius
+  { size : Window.Size
+  , currentR : Int          -- current value of radius
   , currentC : String       -- current value of color
   , figures : List Figure   -- figures to draw 
   }
@@ -30,53 +32,51 @@ type alias Position =
 
 -- MESSAGES 
 type Msg
-  = Click Mouse.Position  -- mouse click message
+  = Click Position  -- mouse click message
   | NewRadius Int   -- random radius message
+  | WindowSize Window.Size
 
 
 init : (Model, Cmd Msg)                                                         
 init =                                                                          
-    ( Model 20 "blue" [], Cmd.none ) 
+  ( Model (Window.Size 1855 980) 20 "blue" []
+  , Task.perform (\_ -> Debug.crash "task") WindowSize Window.size
+  ) 
 
 
-divStyle : Html.Attribute msg
-divStyle =
-  Html.Attributes.style
-    [ ("position", "absolute")
-    , ("top", "17%")
-    , ("left", "27%")
-    , ("width", (toString mainRectW))
-    , ("height", (toString mainRectH))
-    , ("border", "1px solid #000000")
-    , ("background-color", "#87CEFA")
-    ]
+topMargin : Model -> String
+topMargin model = 
+  ((toString ((model.size.height - mainRectH)//2))++"px") 
+
+
+leftMargin : Model -> String
+leftMargin model = 
+  ((toString ((model.size.width - mainRectW)//2))++"px")
 
 
 -- VIEW 
 view : Model -> Html Msg
 view model =
   div
-    [ divStyle]
+    [ 
+      Html.Attributes.style                                                         
+            [ ( "position", "absolute" )                                                
+            , ( "top", (topMargin model) )                
+            , ( "left", (leftMargin model) )                
+            , ( "width", (toString mainRectW) )                                         
+            , ( "height", (toString mainRectH) )                                        
+            , ( "border", "1px solid #000000" )                                         
+            , ( "background-color", "#87CEFA" )                                         
+            ] 
+    ]
     [ (addMainPanel model) ] 
 
-
-windowW : Int
-windowW = 1855
-
-windowH : Int
-windowH = 980
 
 mainRectW : Int
 mainRectW = 800
 
 mainRectH : Int
 mainRectH = 600
-
-marginLeft : Int
-marginLeft = ceiling (0.27 * (toFloat windowW))
-
-marginTop : Int
-marginTop = ceiling (0.17 * (toFloat windowH))
 
 colorSqW : Int
 colorSqW = 30
@@ -94,7 +94,7 @@ calcColorSqRX ind = ind*colorSqW + ind*10 + colorSqW
 addColorPanel : List (Svg.Svg msg)
 addColorPanel = 
       [ ( addColorSquare "#FF0000" (toString (calcColorSqLX 0)) )
-      , ( addColorSquare "#7FD13B" (toString (calcColorSqLX 1)) )
+      , ( addColorSquare "#008000" (toString (calcColorSqLX 1)) )
       , ( addColorSquare "#FFFF00" (toString (calcColorSqLX 2)) )
       , ( addColorSquare "#0000FF" (toString (calcColorSqLX 3)) )
       ]   
@@ -187,10 +187,15 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
   Click pos ->
-    ( Position (pos.x - marginLeft) (pos.y - marginTop) )
+    ( Position 
+          ( pos.x - ((model.size.width - mainRectW)//2) ) 
+          ( pos.y - ((model.size.height - mainRectH)//2) )
+    )
     |> clickMsgProccessing model 
   NewRadius newR ->
     ( newRMsgProccessing model newR )
+  WindowSize { width, height } ->
+    ( { model | size = (Window.Size (width) (height)) }, Cmd.none )
 
 
 -- process mouse message
@@ -236,7 +241,10 @@ addNewFigure m p =
 -- SUBSCRIPTIONS
 subscriptions : Model -> Sub Msg
 subscriptions model = 
-  Mouse.clicks Click 
+  Sub.batch
+    [ Mouse.clicks Click 
+    , Window.resizes WindowSize
+    ]
 
 
 -- MAIN
