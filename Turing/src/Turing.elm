@@ -1,10 +1,11 @@
 -- BlueRedOrangeYellowGreenBlueRed qBrown 
-module Turing exposing (..)
+module Turing2 exposing (..)
 
 import Html exposing (Html, div, button, text)
 import Array exposing (..)
 import String exposing (..)
 import List exposing (..)
+import Dict exposing (..)
 
 
 -- | Tape head movement direction.
@@ -24,7 +25,7 @@ type alias Machine a b =
   -- If @smb@ is 'Nothing', that means that the tape head is over a             
   -- tape position that has not been initialised yet.
 
-  transition    : b -> Maybe a -> (b, a, Direction)
+  transition    : (b, Maybe a) -> (b, a, Direction)
   , startState  : b
   , acceptState : b 
   , rejectState : b
@@ -32,8 +33,8 @@ type alias Machine a b =
 
 
 type alias TapeCfg a =                                                          
-  { leftSyms : Array a    --  symbols to the left of tape head                   
-  , currSym : Maybe a     --  symbol under the tape head                          
+  { leftSyms  : Array a   --  symbols to the left of tape head                   
+  , currSym   : Maybe a   --  symbol under the tape head                          
   , rightSyms : Array a   --  symbols to the right of tape head                 
   } 
 
@@ -42,6 +43,15 @@ type alias MachineCfg a b =
   { currState : b         -- current state of machine
   , tapeCfg   : TapeCfg a
   }
+
+
+type alias KeyValue a b =
+  { key : (b, Maybe a)
+  , value : (b, a, Direction)
+  }
+
+type alias TransTable a b = 
+  List (KeyValue a b)
 
 
 -- | Replace symbol under tape head with new symbol, then move tape head.
@@ -53,7 +63,7 @@ updateTapeCfg {leftSyms, currSym, rightSyms} newSym dir =
         -- Add element to the left end of a sequence to the right of tape head 
         right = (Array.append (Array.repeat 1 newSym) rightSyms) 
       in
-        if (Array.isEmpty leftSyms) then (TapeCfg empty Nothing right) 
+        if (Array.isEmpty leftSyms) then (TapeCfg Array.empty Nothing right) 
         else (TapeCfg (Array.slice 0 -1 leftSyms) 
              (Array.get ((Array.length leftSyms)-1) leftSyms) right)
     MoveRight ->
@@ -61,7 +71,7 @@ updateTapeCfg {leftSyms, currSym, rightSyms} newSym dir =
         -- Add element to the right end of a sequence to the left of tape head
         left = (Array.push newSym leftSyms)
       in
-        if (Array.isEmpty rightSyms) then (TapeCfg left Nothing empty)
+        if (Array.isEmpty rightSyms) then (TapeCfg left Nothing Array.empty)
         else (TapeCfg left (Array.get 0 rightSyms) 
              (Array.slice 1 (Array.length rightSyms) rightSyms))
 
@@ -69,7 +79,7 @@ updateTapeCfg {leftSyms, currSym, rightSyms} newSym dir =
 -- | Execute one transition step for given machine and config. 
 updateMachineCfg : Machine a b -> MachineCfg a b -> MachineCfg a b
 updateMachineCfg m {currState, tapeCfg} =
-  let (state', newSym, dir) = m.transition currState tapeCfg.currSym
+  let (state', newSym, dir) = m.transition (currState, tapeCfg.currSym)
   in (updateTapeCfg tapeCfg newSym dir)
      |> MachineCfg state' 
 
@@ -116,7 +126,6 @@ printTapeCfg {leftSyms, currSym, rightSyms} =
 -- print machine --> return it as a string with the tape and the last state
 printMachineCfg : MachineCfg a b -> String 
 printMachineCfg {currState, tapeCfg} =
--- (repeat (Array.length tapeCfg.leftSyms) " ") ++ "| q" ++ (toString currState)
   case tapeCfg.currSym of
     Just x -> 
       String.concat [String.concat (printTapeCfg tapeCfg), 
@@ -128,11 +137,23 @@ printMachineCfg {currState, tapeCfg} =
                     " current_symbol_on_the_tape: Nothing"]
 
 
+-- | A transition function
+transFunc : TransTable a b -> (b, a, Direction) -> (b, Maybe a) -> (b, a, Direction)
+transFunc tt def key = 
+  case (head tt) of
+    Just h -> if h.key == key 
+                 then h.value
+              else 
+                case (tail tt) of 
+                  Just t -> (transFunc t def key)
+                  Nothing -> def
+    Nothing -> def
+
+
 -- | Return all machine configs for given input word until final state.
 runMachine : Machine a b -> List a -> String
 runMachine m w = 
   let 
     init = (initMachineCfg m w)
   in 
---    String.join (String.fromChar '\n') (List.map printMachineCfg (run m init [init]))
     String.join " /// " (List.map printMachineCfg (run m init [init]))

@@ -1,30 +1,30 @@
 import Html exposing (Html, div, button, text)
-import Turing exposing(..)
+import Turing2 exposing(..)
 
--- Symbol is a ball of wool with special color                                  
--- Tape head is a kitten  
-type BallOfWool = Red | Orange | Yellow | Green | Blue 
+type BallOfWool = Red | Orange | Yellow | Green | Blue | DarkGrey
 type Kitten = Grey | Black | Brown | LightGrey
 
--- | A test Turing machine
 testMachine =
-  { transition = t
+  { transition = (transFunc transTable (Black, DarkGrey, MoveLeft))
   , startState = LightGrey 
   , acceptState = Brown 
   , rejectState = Black
   }
- 
--- | A transition function
-t : Kitten -> Maybe BallOfWool -> (Kitten, BallOfWool, Turing.Direction)
-t st sm =
-  case st of
-    LightGrey -> case sm of
-      Just x -> (LightGrey, x, MoveRight)
-      Nothing -> (Grey, Red, Turing.MoveLeft)
-    Grey -> case sm of
-      Just x -> (Grey, x, Turing.MoveLeft)
-      Nothing -> (Brown, Blue, Turing.MoveRight)
-    _ -> (Black, Yellow, Turing.MoveLeft)
+
+transTable = 
+  [ { key = (LightGrey, Just Red), value = (LightGrey, Red, MoveRight)}
+  , { key = (LightGrey, Just Orange), value = (LightGrey, Orange, MoveRight)}
+  , { key = (LightGrey, Just Yellow), value = (LightGrey, Yellow, MoveRight)}
+  , { key = (LightGrey, Just Green), value = (LightGrey, Green, MoveRight)}
+  , { key = (LightGrey, Just Blue), value = (LightGrey, Blue, MoveRight)}
+  , { key = (LightGrey, Nothing), value = (Grey, Red, MoveLeft)}
+  , { key = (Grey, Just Red), value = (Grey, Red, MoveLeft)}
+  , { key = (Grey, Just Orange), value = (Grey, Orange, MoveLeft)}
+  , { key = (Grey, Just Yellow), value = (Grey, Yellow, MoveLeft)}
+  , { key = (Grey, Just Green), value = (Grey, Green, MoveLeft)}
+  , { key = (Grey, Just Blue), value = (Grey, Blue, MoveLeft)}
+  , { key = (Grey, Nothing), value = (Brown, Blue, MoveRight)}
+  ] 
 
 main =
   text (runMachine testMachine [Red, Orange, Yellow, Green, Blue])
