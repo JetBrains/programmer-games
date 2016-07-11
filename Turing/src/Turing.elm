@@ -1,5 +1,5 @@
 -- BlueRedOrangeYellowGreenBlueRed qBrown 
-module Turing2 exposing (..)
+module Turing exposing (..)
 
 import Html exposing (Html, div, button, text)
 import Array exposing (..)

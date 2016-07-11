@@ -1,5 +1,5 @@
 import Html exposing (Html, div, button, text)
-import Turing2 exposing(..)
+import Turing exposing(..)
 
 type BallOfWool = Red | Orange | Yellow | Green | Blue | DarkGrey
 type Kitten = Grey | Black | Brown | LightGrey
