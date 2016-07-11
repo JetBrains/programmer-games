@@ -108,16 +108,24 @@ printTapeCfg : TapeCfg a -> List String
 printTapeCfg {leftSyms, currSym, rightSyms} = 
   case currSym of
     Just c -> (Array.toList (Array.map toString leftSyms)) ++ [toString c] ++
-                     (Array.toList (Array.map toString rightSyms)) ++ [" "]
+                     (Array.toList (Array.map toString rightSyms))
     Nothing -> (Array.toList (Array.map toString leftSyms)) ++ 
-               (Array.toList (Array.map toString rightSyms)) ++ [" "]
+               (Array.toList (Array.map toString rightSyms))
 
 
 -- print machine --> return it as a string with the tape and the last state
 printMachineCfg : MachineCfg a b -> String 
 printMachineCfg {currState, tapeCfg} =
 -- (repeat (Array.length tapeCfg.leftSyms) " ") ++ "| q" ++ (toString currState)
-  String.concat [String.concat (printTapeCfg tapeCfg), "q", (toString currState)]
+  case tapeCfg.currSym of
+    Just x -> 
+      String.concat [String.concat (printTapeCfg tapeCfg), 
+                    " current_machine_state: q", (toString currState),
+                    " current_symbol_on_the_tape: ", (toString x)]
+    Nothing -> 
+      String.concat [String.concat (printTapeCfg tapeCfg),                      
+                    " current_machine_state: q", (toString currState),          
+                    " current_symbol_on_the_tape: Nothing"]
 
 
 -- | Return all machine configs for given input word until final state.
