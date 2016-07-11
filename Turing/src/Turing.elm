@@ -120,7 +120,7 @@ printMachineCfg {currState, tapeCfg} =
   case tapeCfg.currSym of
     Just x -> 
       String.concat [String.concat (printTapeCfg tapeCfg), 
-                    " current_machine_state: q", (toString currState),
+                    " current_machine_state: ", (toString currState),
                     " current_symbol_on_the_tape: ", (toString x)]
     Nothing -> 
       String.concat [String.concat (printTapeCfg tapeCfg),                      
