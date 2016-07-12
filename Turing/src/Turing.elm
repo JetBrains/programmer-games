@@ -76,7 +76,7 @@ withoutLast leftS =
 
 moveLeft : Array (Maybe a) -> Array (Maybe a) -> TapeCfg a 
 moveLeft leftSyms right =
-  if leftSyms == empty then (TapeCfg empty Nothing right)    
+  if leftSyms == Arr.empty then (TapeCfg Arr.empty Nothing right)    
   else (TapeCfg (withoutLast leftSyms) (getLast leftSyms) right) 
 
 
@@ -94,7 +94,7 @@ getFirst rightS =
 
 moveRight : Array (Maybe a) -> Array (Maybe a) -> TapeCfg a 
 moveRight rightSyms left =
-  if rightSyms == empty then (TapeCfg left Nothing empty)    
+  if rightSyms == Arr.empty then (TapeCfg left Nothing Arr.empty)    
   else (TapeCfg left (getFirst rightSyms) (getTail rightSyms))    
 
 
@@ -137,11 +137,8 @@ updateMachineCfg m mcfg =
 initTapeCfg : List (Maybe a) -> TapeCfg a
 initTapeCfg w = 
   case w of 
-    -- if not Array.empty but Array.fromList [Nothing]
-    -- [] -> TapeCfg Array.empty Nothing Array.empty 
-    -- (x::xs) -> TapeCfg Array.empty x (Array.fromList xs)  
-    [] -> TapeCfg empty Nothing empty
-    (x::xs) -> TapeCfg empty x (Arr.fromList xs)
+    [] -> TapeCfg Arr.empty Nothing Arr.empty
+    (x::xs) -> TapeCfg Arr.empty x (Arr.fromList xs)
 
 
 -- | Initialise machine config with input word.
@@ -157,7 +154,7 @@ initMachineCfg m input = MachineCfg (m.startState) (initTapeCfg input)
 printTapeCfg : TapeCfg a -> List String                                         
 printTapeCfg {leftSyms, currSym, rightSyms} =                                   
   (Arr.toList (Arr.map toString leftSyms)) ++ [toString currSym] ++       
-  (Arr.toList (Arr.map toString rightSyms))                  
+  (Arr.toList (Arr.map toString rightSyms))
 
 
 -- print machine --> return it as a string with the tape and the last state     
