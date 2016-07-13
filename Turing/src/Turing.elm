@@ -153,8 +153,9 @@ initMachineCfg m input = MachineCfg (m.startState) (initTapeCfg input)
 -- print tape --> return tape as a list of strings                              
 printTapeCfg : TapeCfg a -> List String                                         
 printTapeCfg {leftSyms, currSym, rightSyms} =                                   
-  (Arr.toList (Arr.map toString leftSyms)) ++ [toString currSym] ++       
-  (Arr.toList (Arr.map toString rightSyms))
+  (["("] ++ Arr.toList (Arr.map toString leftSyms)) ++ [")"] ++ 
+  ["["] ++ [toString currSym] ++ ["]"] ++ 
+  ["("] ++ (Arr.toList (Arr.map toString rightSyms) ++ [")"])
 
 
 -- print machine --> return it as a string with the tape and the last state     
