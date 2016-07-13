@@ -13,7 +13,6 @@ tests =
   , AddSame.tests
   , CatWoolTest.tests
   , ChangeAndReplace.tests
-  , ChangeLast.tests
   ] 
 
 
