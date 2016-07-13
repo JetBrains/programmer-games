@@ -5,7 +5,11 @@
     "license": "BSD3",
     "source-directories": [
         "src",
-        "test"
+	      "test/",
+        "test/changeLast",
+        "test/addSame",
+        "test/runWithCatWool",
+        "test/changeAndReplace"
     ],
     "exposed-modules": [],
     "dependencies": {
