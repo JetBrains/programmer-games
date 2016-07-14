@@ -1,4 +1,5 @@
-module Turing exposing (Direction(..), Machine, TransTable, runMachine, transFunc)
+module Turing exposing ( Direction(..), Machine, MachineCfg, TapeCfg, TransTable, 
+                         initMachineCfg, run, runMachine, transFunc)
 
 import Array exposing (Array, fromList, toList, append, repeat, push, length, get, slice, empty, map)
 import String exposing (join, concat)
