@@ -1,8 +1,8 @@
-module Turing exposing (..)
+module Turing exposing (Direction(..), Machine, TransTable, runMachine, transFunc)
 
-import Array as Arr exposing (..)
-import String as Str exposing (..)
-import List exposing (..) 
+import Array exposing (Array, fromList, toList, append, repeat, push, length, get, slice, empty, map)
+import String exposing (join, concat)
+import List exposing (map, head, tail) 
 
 
 --TYPES BLOCK------------------------------------------------------------------
@@ -48,53 +48,49 @@ type alias TransTable a b =
 --HELPERS TO UPDATE BLOCK-----------------------------------------------------
 ------------------------------------------------------------------------------
 
-empty : Array (Maybe a)
-empty = Arr.fromList [Nothing] 
-
-
 getNewRight : Array (Maybe a) -> Maybe a -> Array (Maybe a)
 getNewRight right sym =
-  (Arr.append (Arr.repeat 1 sym) right)
+  (append (repeat 1 sym) right)
 
 
 getNewLeft : Array (Maybe a) -> Maybe a -> Array (Maybe a) 
 getNewLeft left sym = 
-  (Arr.push sym left)  
+  (push sym left)  
 
 
 getLast : Array (Maybe a) -> Maybe a
 getLast leftS =
-  case (Arr.get ((Arr.length leftS)-1) leftS) of
+  case (get ((length leftS)-1) leftS) of
     Just x -> x
     Nothing -> Nothing
 
 
 withoutLast : Array (Maybe a) -> Array (Maybe a)
 withoutLast leftS = 
-  (Arr.slice 0 -1 leftS)
+  (slice 0 -1 leftS)
 
 
 moveLeft : Array (Maybe a) -> Array (Maybe a) -> TapeCfg a 
 moveLeft leftSyms right =
-  if leftSyms == Arr.empty then (TapeCfg Arr.empty Nothing right)    
+  if leftSyms == empty then (TapeCfg empty Nothing right)    
   else (TapeCfg (withoutLast leftSyms) (getLast leftSyms) right) 
 
 
 getTail : Array (Maybe a) -> Array (Maybe a)
 getTail rightS =
-  (Arr.slice 1 (Arr.length rightS) rightS)
+  (slice 1 (length rightS) rightS)
 
 
 getFirst : Array (Maybe a) -> Maybe a
 getFirst rightS =
-  case (Arr.get 0 rightS) of
+  case (get 0 rightS) of
     Just x -> x
     Nothing -> Nothing
 
 
 moveRight : Array (Maybe a) -> Array (Maybe a) -> TapeCfg a 
 moveRight rightSyms left =
-  if rightSyms == Arr.empty then (TapeCfg left Nothing Arr.empty)    
+  if rightSyms == empty then (TapeCfg left Nothing empty)    
   else (TapeCfg left (getFirst rightSyms) (getTail rightSyms))    
 
 
@@ -137,8 +133,8 @@ updateMachineCfg m mcfg =
 initTapeCfg : List (Maybe a) -> TapeCfg a
 initTapeCfg w = 
   case w of 
-    [] -> TapeCfg Arr.empty Nothing Arr.empty
-    (x::xs) -> TapeCfg Arr.empty x (Arr.fromList xs)
+    [] -> TapeCfg empty Nothing empty
+    (x::xs) -> TapeCfg empty x (fromList xs)
 
 
 -- | Initialise machine config with input word.
@@ -153,17 +149,17 @@ initMachineCfg m input = MachineCfg (m.startState) (initTapeCfg input)
 -- print tape --> return tape as a list of strings                              
 printTapeCfg : TapeCfg a -> List String                                         
 printTapeCfg {leftSyms, currSym, rightSyms} =                                   
-  (["("] ++ Arr.toList (Arr.map toString leftSyms)) ++ [")"] ++ 
+  (["("] ++ toList (Array.map toString leftSyms)) ++ [")"] ++ 
   ["["] ++ [toString currSym] ++ ["]"] ++ 
-  ["("] ++ (Arr.toList (Arr.map toString rightSyms) ++ [")"])
+  ["("] ++ (toList (Array.map toString rightSyms) ++ [")"])
 
 
 -- print machine --> return it as a string with the tape and the last state     
 printMachineCfg : MachineCfg a b -> String                                      
 printMachineCfg {currState, tapeCfg} =                                          
-  Str.concat [ Str.join " " (printTapeCfg tapeCfg), 
-               " current_machine_state: ", (toString currState),           
-               " current_symbol_on_the_tape: ", (toString tapeCfg.currSym)]              
+  concat [ join " " (printTapeCfg tapeCfg), 
+               " <", (toString currState), ">"          
+             ]              
 ------------------------------------------------------------------------------
 
 
@@ -205,5 +201,5 @@ runMachine m w =
   let 
     init = (initMachineCfg m w)
   in 
-    Str.join " /// " (List.map printMachineCfg (run m init [init]))
+    join " /// " (List.map printMachineCfg (run m init [init]))
 ------------------------------------------------------------------------------
