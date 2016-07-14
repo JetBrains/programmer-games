@@ -1,5 +1,6 @@
 import Html exposing (text)
-import Turing exposing (Direction(..), Machine, TransTable, runMachine, transFunc)
+import TuringTypes exposing (Direction(..), Machine, TransTable)
+import RunTuring exposing (runMachine, transFunc)                          
 
 
 type BallOfWool = Red | Orange | Yellow | Green | Blue -- a

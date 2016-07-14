@@ -5,8 +5,10 @@ module ChangeAndReplace exposing (tests)
 
 import ElmTest exposing (..)
 import Array exposing (fromList, empty)
-import Turing exposing ( Machine, MachineCfg, TapeCfg, Direction(..),            
-                         TransTable, run, initMachineCfg, transFunc)      
+
+import TuringTypes exposing (Machine, MachineCfg, TapeCfg, Direction(..), TransTable,)
+import RunTuring exposing (run, transFunc)                                      
+import InitUpdate exposing (initMachineCfg) 
 
 
 --TEST DATA-------------------------------------------------------------------
