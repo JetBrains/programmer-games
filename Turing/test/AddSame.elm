@@ -10,6 +10,8 @@ import Turing exposing ( Machine, MachineCfg, TapeCfg, Direction(..),
 
 --TEST DATA------------------------------------------------------------------- 
 
+-- Test data for all tests (machine, transition table, input)                   
+
 testMachine : Machine Char Int                                                  
 testMachine =                                                                   
   { transition = (transFunc transTable (4, Nothing, MoveLeft))                  
