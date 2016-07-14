@@ -6,7 +6,7 @@ module CatWoolTest exposing (tests)
 import ElmTest exposing (..)
 import Array exposing (fromList, empty)   
 
-import TuringTypes exposing (Machine, MachineCfg, TapeCfg, Direction(..), TransTable,)
+import TuringTypes exposing (Machine, MachineCfg, TapeCfg, Direction(..), TransTable)
 import RunTuring exposing (run, transFunc)                                      
 import InitUpdate exposing (initMachineCfg)  
 
