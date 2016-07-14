@@ -1,10 +1,10 @@
--- Add same item (_ _ 0 _ _ -> _ _ 0 0 _) 
+-- Replace all items with one item type (_ 1 2 3 _ -> _ 0 0 0 _)
 
-module AddSame exposing (tests)
+module ReplAllWithOne exposing (tests)
 
 import ElmTest exposing (..)
 import Array exposing (fromList, empty)
-import List exposing (head, tail, reverse, length, drop, take) 
+import List exposing (head, tail, reverse, length)
 
 import TuringTypes exposing (Machine, MachineCfg, TapeCfg, Direction(..), TransTable)
 import RunTuring exposing (run, transFunc)
@@ -17,24 +17,24 @@ import InitUpdate exposing (initMachineCfg)
 
 testMachine : Machine Char Int                                                  
 testMachine =                                                                   
-  { transition = (transFunc transTable (4, Nothing, MoveLeft))                  
+  { transition = (transFunc transTable (3, Nothing, MoveLeft))                  
   , startState = 0                                                              
-  , acceptState = 3                                                             
-  , rejectState = 4                                                             
+  , acceptState = 2 
+  , rejectState = 3                                                             
   }                                                                             
-  
+ 
 transTable : TransTable Char Int                                                
 transTable =                                                                    
-  [ { key = (0, Nothing),  value = (0, Nothing, MoveRight)}                     
-  , { key = (0, Just '0'), value = (1, Just '0', MoveRight)}                    
-  , { key = (1, Nothing),  value = (2, Just '0', MoveLeft)}                     
-  , { key = (2, Just '0'), value = (2, Just '0', MoveLeft)}                     
-  , { key = (2, Nothing),  value = (3, Nothing, MoveRight)}                     
+  [ { key = (0, Nothing), value = (0, Nothing, MoveRight)}                     
+  , { key = (0, Just '1'), value = (0, Just '0', MoveRight)}        
+  , { key = (0, Just '2'), value = (0, Just '0', MoveRight)}
+  , { key = (0, Just '3'), value = (1, Just '0', MoveRight)}
+  , { key = (1, Nothing), value = (2, Nothing, MoveLeft)} 
   ]                                                                             
                                                                                  
 input : List (Maybe Char)                                                       
 input =                                                                         
-  [Nothing, Nothing, Just '0', Nothing, Nothing]                                
+  [Nothing, Just '1', Just '2', Just '3', Nothing]                                
 
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
@@ -86,67 +86,6 @@ headTCfg inp =
 ------------------------------------------------------------------------------
 
 
---MIDDLE----------------------------------------------------------------------
-
--- Check if do transition in two important cases:                               
--- 1) go to state 1 when read Just '0'                                          
--- 2) go to state 2 from state 1 when read Nothing after Just '0'               
---    (and replace this Nothing with new Just '0')      
-
-fstTransCfgForCheck : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int) 
-fstTransCfgForCheck m inp =                                                         
-  (head (drop 3 (runRes m inp))) -- 4 config in list                                             
-
-
-fstTransCfgCorrect : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
-fstTransCfgCorrect m inp = Just (fstTransMCfg m inp)                                    
-
-
-fstTransMCfg : Machine Char Int -> List (Maybe Char) -> MachineCfg Char Int             
-fstTransMCfg m inp =                                                                    
-  { currState = 1                                                                       
-  , tapeCfg = (fstTransTCfg inp)                                                        
-  }                                                                                     
-
-fstTransTCfg : List (Maybe Char) -> TapeCfg Char                                        
-fstTransTCfg inp =                                                                      
-  { leftSyms = fromList (take 3 inp)                                 
-  , currSym =                                                                   
-      case (head (drop 3 inp)) of                                     
-        Just h -> h                                                             
-        Nothing -> Nothing                                                      
-  , rightSyms = fromList (drop 4 inp)                                
-  }                                                                             
-                                                                                 
-------------------------------------------------------------------------------  
-
-sndTransCfgForCheck : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
-sndTransCfgForCheck m inp =                                                     
-  (head (drop 4 (runRes m inp))) -- 5 config in list                  
-                                                                                    
-sndTransCfgCorrect : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
-sndTransCfgCorrect m inp = Just (sndTransMCfg m inp)                            
-
-sndTransMCfg : Machine Char Int -> List (Maybe Char) -> MachineCfg Char Int     
-sndTransMCfg m inp =                                                            
-  { currState = 2                                                               
-  , tapeCfg = (sndTransTCfg inp)                                                
-  }                                                                             
-
-sndTransTCfg : List (Maybe Char) -> TapeCfg Char                                
-sndTransTCfg inp =                                                              
-  { leftSyms = fromList (take 2 inp)                                 
-  , currSym =                                                                   
-      case (head (drop 2 inp)) of                                     
-        Just h -> h                                                             
-        Nothing -> Nothing                                                      
-  , rightSyms = fromList ([Just '0'] ++ (drop 4 inp))                
-  }                                                                             
-    
------------------------------------------------------------------------------
-------------------------------------------------------------------------------
-
-
 --LAST------------------------------------------------------------------------ 
 
 -- Check the last MachineConfig in the list of configs 
@@ -166,12 +105,9 @@ lastMCfg m inp =
 
 lastTCfg : List (Maybe Char) -> TapeCfg Char                                    
 lastTCfg inp =                                                                  
-  { leftSyms = (fromList (take 2 inp))                             
-  , currSym =                                                                 
-      case (head (drop 2 inp)) of                                    
-        Just c -> c                                                           
-        Nothing -> Nothing                                                    
-  , rightSyms = ( fromList ([Just '0'] ++ (drop 4 inp)) )          
+  { leftSyms = (fromList [Nothing, Just '0', Just '0'])                            
+  , currSym = Just '0'
+  , rightSyms = (fromList [Nothing])
   }     
 
 ------------------------------------------------------------------------------
@@ -183,15 +119,9 @@ tests =
   [ test "head"     
     <| assertEqual ( headCfgForCheck testMachine input ) 
                    ( headCfgCorrect testMachine input )
-  , test "first transition (see in the middle block)"                                                                 
-    <| assertEqual ( fstTransCfgForCheck testMachine input )                       
-                   ( fstTransCfgCorrect testMachine input )  
-  , test "second transition (see in the middle block)"                           
-    <| assertEqual ( sndTransCfgForCheck testMachine input )                    
-                   ( sndTransCfgCorrect testMachine input )  
   , test "last"                                                                    
     <| assertEqual ( lastCfgForCheck testMachine input ) 
                    ( lastCfgCorrect testMachine input )
   , test "count"
-    <| assertEqual (length (runRes testMachine input)) 7
+    <| assertEqual (length (runRes testMachine input)) 6
   ] 

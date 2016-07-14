@@ -6,6 +6,8 @@ import AddSame
 import CatWoolTest  
 import ChangeAndReplace  
 import ChangeLast
+import ChangeEachSnd
+import ReplAllWithOne
 
 tests : Test
 tests = 
@@ -14,6 +16,8 @@ tests =
   , AddSame.tests
   , CatWoolTest.tests
   , ChangeAndReplace.tests
+  , ChangeEachSnd.tests
+  , ReplAllWithOne.tests
   ] 
 
 

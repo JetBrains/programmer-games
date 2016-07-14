@@ -5,6 +5,7 @@ module CatWoolTest exposing (tests)
 
 import ElmTest exposing (..)
 import Array exposing (fromList, empty)   
+import List exposing (head, tail, reverse, length, drop, take)
 
 import TuringTypes exposing (Machine, MachineCfg, TapeCfg, Direction(..), TransTable)
 import RunTuring exposing (run, transFunc)                                      
@@ -70,7 +71,7 @@ runRes m inp =
 
 headCfgForCheck : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Maybe (MachineCfg BallOfWool Kitten)
 headCfgForCheck m inp =                                                         
-  (List.head (runRes m inp))                                                    
+  (head (runRes m inp))                                                    
                                                                                 
 headCfgCorrect : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Maybe (MachineCfg BallOfWool Kitten)
 headCfgCorrect m inp = Just (headMCfg m inp)                                    
@@ -83,15 +84,15 @@ headMCfg m inp =
                                                                                 
 headTCfg : List (Maybe BallOfWool) -> TapeCfg BallOfWool                        
 headTCfg inp =                                                                  
-  { leftSyms =  Array.empty                                                     
+  { leftSyms = empty                                                     
   , currSym =                                                                   
-      case (List.head inp) of                                                   
+      case (head inp) of                                                   
         Just h -> h                                                             
         Nothing -> Nothing                                                      
   , rightSyms =                                                                 
-      case (List.tail inp) of                                                   
-        Just t -> (Array.fromList t)                                            
-        Nothing -> Array.empty                                                  
+      case (tail inp) of                                                   
+        Just t -> (fromList t)                                            
+        Nothing -> empty                                                  
                                                                                 
   }     
 
@@ -106,7 +107,7 @@ headTCfg inp =
                                                                                 
 fstTransCfgForCheck : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Maybe (MachineCfg BallOfWool Kitten)
 fstTransCfgForCheck m inp =                                                     
-  (List.head (List.drop 2 (runRes m inp))) -- 3 config in list                                                
+  (head (drop 2 (runRes m inp))) -- 3 config in list                                                
                                                                                 
 fstTransCfgCorrect : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Maybe (MachineCfg BallOfWool Kitten)
 fstTransCfgCorrect m inp = Just (fstTransMCfg m inp)                            
@@ -119,12 +120,12 @@ fstTransMCfg m inp =
                                                                                 
 fstTransTCfg : List (Maybe BallOfWool) -> TapeCfg BallOfWool                    
 fstTransTCfg inp =                                                              
-  { leftSyms = Array.empty                                                      
+  { leftSyms = empty                                                      
   , currSym =                                                                   
-      case (List.head inp) of                                                   
+      case (head inp) of                                                   
         Just h -> h                                                             
         Nothing -> Nothing                                                      
-  , rightSyms = Array.fromList ([Just Red] ++ (List.drop 2 inp))                
+  , rightSyms = fromList ([Just Red] ++ (drop 2 inp))                
   } 
 
 ------------------------------------------------------------------------------   
@@ -137,7 +138,7 @@ fstTransTCfg inp =
 
 lastCfgForCheck : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Maybe (MachineCfg BallOfWool Kitten)
 lastCfgForCheck m inp =                                                         
-  (List.head (List.reverse (runRes m inp)))                                     
+  (head (reverse (runRes m inp)))                                     
                                                                                 
 lastCfgCorrect : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Maybe (MachineCfg BallOfWool Kitten)
 lastCfgCorrect m inp = Just (lastMCfg m inp)                                    
@@ -150,12 +151,12 @@ lastMCfg m inp =
                                                                                 
 lastTCfg : List (Maybe BallOfWool) -> TapeCfg BallOfWool                        
 lastTCfg inp =                                                                  
-  { leftSyms = (Array.fromList [Just Blue])                                     
+  { leftSyms = (fromList [Just Blue])                                     
   , currSym =                                                                   
-      case (List.head inp) of                                                   
+      case (head inp) of                                                   
         Just c -> c                                                             
         Nothing -> Nothing                                                      
-  , rightSyms = ( Array.fromList ([Just Red] ++ (List.drop 2 inp)) )            
+  , rightSyms = ( fromList ([Just Red] ++ (drop 2 inp)) )            
   } 
 
 ------------------------------------------------------------------------------   
@@ -174,7 +175,7 @@ tests =
     <| assertEqual ( lastCfgForCheck testMachine input ) 
                    ( lastCfgCorrect testMachine input )
   , test "count"
-    <| assertEqual (List.length (runRes testMachine input)) 5
+    <| assertEqual (length (runRes testMachine input)) 5
   ] 
 
 

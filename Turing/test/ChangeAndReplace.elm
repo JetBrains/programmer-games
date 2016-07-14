@@ -5,6 +5,7 @@ module ChangeAndReplace exposing (tests)
 
 import ElmTest exposing (..)
 import Array exposing (fromList, empty)
+import List exposing (head, tail, reverse, length, drop, take)
 
 import TuringTypes exposing (Machine, MachineCfg, TapeCfg, Direction(..), TransTable)
 import RunTuring exposing (run, transFunc)                                      
@@ -69,7 +70,7 @@ runRes m inp =
 
 headCfgForCheck : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
 headCfgForCheck m inp =                                                         
-  (List.head (runRes m inp))                                                    
+  (head (runRes m inp))                                                    
                                                                                 
 headCfgCorrect : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
 headCfgCorrect m inp = Just (headMCfg m inp)                                    
@@ -82,15 +83,15 @@ headMCfg m inp =
                                                                                 
 headTCfg : List (Maybe Char) -> TapeCfg Char                                    
 headTCfg inp =                                                                  
-  { leftSyms =  Array.empty                                                     
+  { leftSyms = empty                                                     
   , currSym =                                                                   
-      case (List.head inp) of                                                   
+      case (head inp) of                                                   
         Just h -> h                                                             
         Nothing -> Nothing                                                      
   , rightSyms =                                                                 
-      case (List.tail inp) of                                                   
-        Just t -> (Array.fromList t)                                            
-        Nothing -> Array.empty                                                  
+      case (tail inp) of                                                   
+        Just t -> (fromList t)                                            
+        Nothing -> empty                                                  
                                                                                 
   } 
 
@@ -108,7 +109,7 @@ headTCfg inp =
 
 fstTransCfgForCheckC : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
 fstTransCfgForCheckC m inp =                                                    
-  (List.head (List.drop 3 (runRes m inp))) -- 4 config in list                                               
+  (head (drop 3 (runRes m inp))) -- 4 config in list                                               
                                                                                 
 fstTransCfgCorrectC : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
 fstTransCfgCorrectC m inp = Just (fstTransMCfgC m inp)                          
@@ -121,16 +122,16 @@ fstTransMCfgC m inp =
                                                                                 
 fstTransTCfgC : List (Maybe Char) -> TapeCfg Char                               
 fstTransTCfgC inp =                                                             
-  { leftSyms = Array.fromList ((List.take 2 inp) ++ [Just '1'])                 
+  { leftSyms = fromList ((take 2 inp) ++ [Just '1'])                 
   , currSym = Nothing                                                           
-  , rightSyms = Array.fromList (List.drop 4 inp)                                
+  , rightSyms = fromList (drop 4 inp)                                
   }                                                                             
                                                                                 
 ------------------------------------------------------------------------------  
 
 sndTransCfgForCheckC : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
 sndTransCfgForCheckC m inp =                                                    
-  (List.head (List.drop 4 (runRes m inp))) -- 5 config in list                  
+  (head (drop 4 (runRes m inp))) -- 5 config in list                  
                                                                                 
 sndTransCfgCorrectC : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
 sndTransCfgCorrectC m inp = Just (sndTransMCfgC m inp)                          
@@ -143,16 +144,16 @@ sndTransMCfgC m inp =
                                                                                 
 sndTransTCfgC : List (Maybe Char) -> TapeCfg Char                               
 sndTransTCfgC inp =                                                             
-  { leftSyms = Array.fromList (List.take 2 inp)                                 
+  { leftSyms = fromList (take 2 inp)                                 
   , currSym = Just '1'                                                          
-  , rightSyms = Array.fromList (List.drop 3 inp)                                
+  , rightSyms = fromList (drop 3 inp)                                
   }                                                                             
                                                                                 
 ------------------------------------------------------------------------------  
 
 fstTransCfgForCheckR : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
 fstTransCfgForCheckR m inp =                                                    
-  (List.head (List.drop 3 (runRes m inp))) -- 4 config in list                                               
+  (head (drop 3 (runRes m inp))) -- 4 config in list                                               
                                                                                 
 fstTransCfgCorrectR : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
 fstTransCfgCorrectR m inp = Just (fstTransMCfgR m inp)                          
@@ -165,16 +166,16 @@ fstTransMCfgR m inp =
                                                                                 
 fstTransTCfgR : List (Maybe Char) -> TapeCfg Char                               
 fstTransTCfgR inp =                                                             
-  { leftSyms = Array.fromList ((List.take 2 inp) ++ [Just '1'])                 
+  { leftSyms = fromList ((take 2 inp) ++ [Just '1'])                 
   , currSym = Just '1'                                                          
-  , rightSyms = Array.fromList (List.drop 4 inp)                                
+  , rightSyms = fromList (drop 4 inp)                                
   }                                                                             
                                                                                 
 ------------------------------------------------------------------------------  
                                                                                 
 sndTransCfgForCheckR : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
 sndTransCfgForCheckR m inp =                                                    
-  (List.head (List.drop 5 (runRes m inp))) -- 6 config in list                  
+  (head (drop 5 (runRes m inp))) -- 6 config in list                  
                                                                                 
 sndTransCfgCorrectR : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
 sndTransCfgCorrectR m inp = Just (sndTransMCfgR m inp)                          
@@ -187,9 +188,9 @@ sndTransMCfgR m inp =
                                                                                 
 sndTransTCfgR : List (Maybe Char) -> TapeCfg Char                               
 sndTransTCfgR inp =                                                             
-  { leftSyms = Array.fromList ((List.take 2 inp) ++ [Just '1'])                 
+  { leftSyms = fromList ((take 2 inp) ++ [Just '1'])                 
   , currSym = Just '0'                                                          
-  , rightSyms = Array.fromList (List.drop 4 inp)                                
+  , rightSyms = fromList (drop 4 inp)                                
   }
 
 ------------------------------------------------------------------------------  
@@ -202,7 +203,7 @@ sndTransTCfgR inp =
 
 lastCfgForCheck : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
 lastCfgForCheck m inp =                                                         
-  (List.head (List.reverse (runRes m inp)))                                     
+  (head (reverse (runRes m inp)))                                     
                                                                                 
 lastCfgCorrectC : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
 lastCfgCorrectC m inp = Just (lastMCfgC m inp)                                  
@@ -215,9 +216,9 @@ lastMCfgC m inp =
                                                                                 
 lastTCfgC : List (Maybe Char) -> TapeCfg Char                                   
 lastTCfgC inp =                                                                 
-    { leftSyms = (Array.fromList (List.take 2 inp))                             
+    { leftSyms = (fromList (take 2 inp))                             
     , currSym = Just '1'                                                        
-    , rightSyms = (Array.fromList (List.drop 3 inp))                            
+    , rightSyms = (fromList (drop 3 inp))                            
     }                                                                           
                                                                                 
 ------------------------------------------------------------------------------  
@@ -233,9 +234,9 @@ lastMCfgR m inp =
                                                                                 
 lastTCfgR : List (Maybe Char) -> TapeCfg Char                                   
 lastTCfgR inp =                                                                 
-  { leftSyms = (Array.fromList (List.take 2 inp))                               
+  { leftSyms = (fromList (take 2 inp))                               
   , currSym = Just '1'                                                          
-  , rightSyms = (Array.fromList ([Just '0'] ++ (List.drop 4 inp)) )             
+  , rightSyms = (fromList ([Just '0'] ++ (drop 4 inp)) )             
   }                                                                             
      
 ------------------------------------------------------------------------------  
@@ -271,7 +272,7 @@ tests =
     <| assertEqual ( lastCfgForCheck testMachine inputForRepl )                        
                    ( lastCfgCorrectR testMachine inputForRepl )  
   , test "count for change"
-    <| assertEqual (List.length (runRes testMachine inputForCh)) 7
+    <| assertEqual (length (runRes testMachine inputForCh)) 7
   , test "count for replace"                                                     
     <| assertEqual (List.length (runRes testMachine inputForRepl)) 9
   ] 
