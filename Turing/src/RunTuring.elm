@@ -1,4 +1,4 @@
-module RunTuring exposing (runMachine, run, transFunc)
+module RunTuring exposing (debugRun, runMachine, transFunc)
                                
 import List exposing (map, head, tail) 
 import String exposing (join)
@@ -14,13 +14,13 @@ machineCfgFinal m mcfg =
                                                                                 
                                                                                 
 -- run machine while not in final state.                                        
-run : Machine a b -> MachineCfg a b -> List (MachineCfg a b) -> List (MachineCfg a b)
-run m mcfg res =                                                                
+runMachine : Machine a b -> MachineCfg a b -> List (MachineCfg a b) -> List (MachineCfg a b)
+runMachine m mcfg res =                                                                
   let                                                                           
       upd = (updateMachineCfg m mcfg)                                           
   in                                                                            
      if (machineCfgFinal m mcfg) then res                                       
-     else ( run m upd (res ++ [upd]) )                                          
+     else ( runMachine m upd (res ++ [upd]) )                                          
                                                                                 
                                                                                 
 -- | A transition function                                                      
@@ -37,9 +37,9 @@ transFunc tt def key =
                                                                                 
                                                                                 
 -- | Return all machine configs for given input word until final state.         
-runMachine : Machine a b -> List (Maybe a) -> String                            
-runMachine m w =                                                                
+debugRun : Machine a b -> List (Maybe a) -> Int -> String                            
+debugRun m w hpos =                                                                
   let                                                                           
-    init = (initMachineCfg m w)                                                 
+    init = (initMachineCfg m w hpos)                                                 
   in                                                                            
-    join " /// " (map printMachineCfg (run m init [init]))             
+    join " /// " (map printMachineCfg (runMachine m init [init]))             

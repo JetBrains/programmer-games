@@ -7,8 +7,9 @@ import ElmTest exposing (..)
 import Array exposing (fromList, empty)   
 import List exposing (head, tail, reverse, length, drop, take)
 
-import TuringTypes exposing (Machine, MachineCfg, TapeCfg, Direction(..), TransTable)
-import RunTuring exposing (run, transFunc)                                      
+import TuringTypes exposing ( Machine, MachineCfg, TapeCfg, Direction(..), 
+                              TransTable )
+import RunTuring exposing (runMachine, transFunc)                                      
 import InitUpdate exposing (initMachineCfg)  
 
                                                                                 
@@ -27,7 +28,6 @@ testMachine =
   , rejectState = Black                                                         
   }                                                                             
                                                                                 
-                                                                                
 transTable : TransTable BallOfWool Kitten                                       
 transTable =                                                                    
   [ { key = (LightGrey, Just Red), 
@@ -44,10 +44,12 @@ transTable =
     }             
   ]                                                                             
                                                                                 
-                                                                                
 input : List (Maybe BallOfWool)                                                 
 input =                                                                         
   [Just Red, Nothing, Just Orange, Just Yellow, Just Green, Just Blue]
+
+initHeadPos : Int
+initHeadPos = 0
 
 ------------------------------------------------------------------------------  
 ------------------------------------------------------------------------------  
@@ -57,26 +59,30 @@ input =
                                                                                 
 -- Common run function for all tests                                            
                                                                                 
-runRes : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> List (MachineCfg BallOfWool Kitten)    
-runRes m inp =                                                                  
+runRes : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Int
+         -> List (MachineCfg BallOfWool Kitten)    
+runRes m inp hpos =                                                                  
   let                                                                           
-    init = (initMachineCfg m inp)                                               
+    init = (initMachineCfg m inp hpos)                                               
   in                                                                            
-    (run m init [init])                                                         
+    (runMachine m init [init])                                                         
                                                                                 
                                                                                 
 --HEAD------------------------------------------------------------------------    
                                                                                 
 -- Check the first MachineConfig in the list of configs                         
 
-headCfgForCheck : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Maybe (MachineCfg BallOfWool Kitten)
-headCfgForCheck m inp =                                                         
-  (head (runRes m inp))                                                    
+headCfgForCheck : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Int 
+                  -> Maybe (MachineCfg BallOfWool Kitten)
+headCfgForCheck m inp hpos =                                                         
+  (head (runRes m inp hpos))                                                    
                                                                                 
-headCfgCorrect : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Maybe (MachineCfg BallOfWool Kitten)
+headCfgCorrect : Machine BallOfWool Kitten -> List (Maybe BallOfWool) 
+                 -> Maybe (MachineCfg BallOfWool Kitten)
 headCfgCorrect m inp = Just (headMCfg m inp)                                    
                                                                                 
-headMCfg : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> MachineCfg BallOfWool Kitten
+headMCfg : Machine BallOfWool Kitten -> List (Maybe BallOfWool) 
+           -> MachineCfg BallOfWool Kitten
 headMCfg m inp =                                                                
   { currState = m.startState                                                    
   , tapeCfg = (headTCfg inp)                                                    
@@ -105,14 +111,17 @@ headTCfg inp =
 -- Check if go to state Grey when read first Nothing                            
 -- (only one transition for middle check here)                                  
                                                                                 
-fstTransCfgForCheck : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Maybe (MachineCfg BallOfWool Kitten)
-fstTransCfgForCheck m inp =                                                     
-  (head (drop 2 (runRes m inp))) -- 3 config in list                                                
+fstTransCfgForCheck : Machine BallOfWool Kitten -> List (Maybe BallOfWool) 
+                      -> Int -> Maybe (MachineCfg BallOfWool Kitten)
+fstTransCfgForCheck m inp hpos =                                                     
+  (head (drop 2 (runRes m inp hpos))) -- 3 config in list                                                
                                                                                 
-fstTransCfgCorrect : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Maybe (MachineCfg BallOfWool Kitten)
+fstTransCfgCorrect : Machine BallOfWool Kitten -> List (Maybe BallOfWool) 
+                     -> Maybe (MachineCfg BallOfWool Kitten)
 fstTransCfgCorrect m inp = Just (fstTransMCfg m inp)                            
                                                                                 
-fstTransMCfg : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> MachineCfg BallOfWool Kitten
+fstTransMCfg : Machine BallOfWool Kitten -> List (Maybe BallOfWool) 
+               -> MachineCfg BallOfWool Kitten
 fstTransMCfg m inp =                                                            
   { currState = Grey                                                            
   , tapeCfg = (fstTransTCfg inp)                                                
@@ -136,14 +145,17 @@ fstTransTCfg inp =
                                                                                 
 -- Check the last MachineConfig in the list of configs               
 
-lastCfgForCheck : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Maybe (MachineCfg BallOfWool Kitten)
-lastCfgForCheck m inp =                                                         
-  (head (reverse (runRes m inp)))                                     
+lastCfgForCheck : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Int 
+                  -> Maybe (MachineCfg BallOfWool Kitten)
+lastCfgForCheck m inp hpos =                                                         
+  (head (reverse (runRes m inp hpos)))                                     
                                                                                 
-lastCfgCorrect : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> Maybe (MachineCfg BallOfWool Kitten)
+lastCfgCorrect : Machine BallOfWool Kitten -> List (Maybe BallOfWool) 
+                 -> Maybe (MachineCfg BallOfWool Kitten)
 lastCfgCorrect m inp = Just (lastMCfg m inp)                                    
                                                                                 
-lastMCfg : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> MachineCfg BallOfWool Kitten
+lastMCfg : Machine BallOfWool Kitten -> List (Maybe BallOfWool) 
+           -> MachineCfg BallOfWool Kitten
 lastMCfg m inp =                                                                
   { currState = m.acceptState                                                   
   , tapeCfg = (lastTCfg inp)                                                    
@@ -166,16 +178,14 @@ tests : Test
 tests =                                                                         
   suite "A Test Suite"                                                        
   [ test "head"     
-    <| assertEqual ( headCfgForCheck testMachine input ) 
-                   ( headCfgCorrect testMachine input )
+    <| assertEqual (headCfgForCheck testMachine input initHeadPos) 
+                   (headCfgCorrect testMachine input)
   , test "first transition (see in the middle block)"                                                                 
-    <| assertEqual ( fstTransCfgForCheck testMachine input )                       
-                   ( fstTransCfgCorrect testMachine input )  
+    <| assertEqual (fstTransCfgForCheck testMachine input initHeadPos)                       
+                   (fstTransCfgCorrect testMachine input)  
   , test "last"                                                                    
-    <| assertEqual ( lastCfgForCheck testMachine input ) 
-                   ( lastCfgCorrect testMachine input )
+    <| assertEqual (lastCfgForCheck testMachine input initHeadPos) 
+                   (lastCfgCorrect testMachine input)
   , test "count"
-    <| assertEqual (length (runRes testMachine input)) 5
+    <| assertEqual (length (runRes testMachine input initHeadPos)) 5
   ] 
-
-

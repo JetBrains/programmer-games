@@ -6,8 +6,9 @@ import ElmTest exposing (..)
 import Array exposing (fromList, empty)
 import List exposing (head, tail, reverse, length)
 
-import TuringTypes exposing (Machine, MachineCfg, TapeCfg, Direction(..), TransTable)
-import RunTuring exposing (run, transFunc)
+import TuringTypes exposing ( Machine, MachineCfg, TapeCfg, Direction(..), 
+                              TransTable )
+import RunTuring exposing (runMachine, transFunc)
 import InitUpdate exposing (initMachineCfg)
 
 
@@ -36,6 +37,9 @@ input : List (Maybe Char)
 input =                                                                         
   [Nothing, Just '1', Just '2', Just '3', Nothing]                                
 
+initHeadPos : Int                                                               
+initHeadPos = 0    
+
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 
@@ -44,23 +48,26 @@ input =
                                                                                  
 -- Common run function for all tests  
 
-runRes : Machine Char Int -> List (Maybe Char) -> List (MachineCfg Char Int)    
-runRes m inp =                                                                  
+runRes : Machine Char Int -> List (Maybe Char) -> Int 
+         -> List (MachineCfg Char Int)    
+runRes m inp hpos =                                                                  
   let                                                                           
-    init = (initMachineCfg m inp)                                               
+    init = (initMachineCfg m inp hpos)                                               
   in                                                                            
-    (run m init [init])                                                         
+    (runMachine m init [init])                                                         
 
                                                                                  
 --HEAD----------------------------------------------------------------------   
 
 -- Check the first MachineConfig in the list of configs
 
-headCfgForCheck : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
-headCfgForCheck m inp =                                                         
-  (head (runRes m inp))                                                    
+headCfgForCheck : Machine Char Int -> List (Maybe Char) -> Int 
+                  -> Maybe (MachineCfg Char Int)
+headCfgForCheck m inp hpos =                                                         
+  (head (runRes m inp hpos))                                                    
 
-headCfgCorrect : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
+headCfgCorrect : Machine Char Int -> List (Maybe Char) 
+                 -> Maybe (MachineCfg Char Int)
 headCfgCorrect m inp = Just (headMCfg m inp)                                    
 
 headMCfg : Machine Char Int -> List (Maybe Char) -> MachineCfg Char Int         
@@ -90,11 +97,13 @@ headTCfg inp =
 
 -- Check the last MachineConfig in the list of configs 
 
-lastCfgForCheck : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
-lastCfgForCheck m inp =                                                         
-  (head (reverse (runRes m inp)))                                     
+lastCfgForCheck : Machine Char Int -> List (Maybe Char) -> Int 
+                  -> Maybe (MachineCfg Char Int)
+lastCfgForCheck m inp hpos =                                                         
+  (head (reverse (runRes m inp hpos)))                                     
   
-lastCfgCorrect : Machine Char Int -> List (Maybe Char) -> Maybe (MachineCfg Char Int)
+lastCfgCorrect : Machine Char Int -> List (Maybe Char) 
+                 -> Maybe (MachineCfg Char Int)
 lastCfgCorrect m inp = Just (lastMCfg m inp)                                    
 
 lastMCfg : Machine Char Int -> List (Maybe Char) -> MachineCfg Char Int         
@@ -117,11 +126,11 @@ tests : Test
 tests =                                                                         
   suite "A Test Suite"                                                        
   [ test "head"     
-    <| assertEqual ( headCfgForCheck testMachine input ) 
-                   ( headCfgCorrect testMachine input )
+    <| assertEqual (headCfgForCheck testMachine input initHeadPos) 
+                   (headCfgCorrect testMachine input)
   , test "last"                                                                    
-    <| assertEqual ( lastCfgForCheck testMachine input ) 
-                   ( lastCfgCorrect testMachine input )
+    <| assertEqual (lastCfgForCheck testMachine input initHeadPos) 
+                   (lastCfgCorrect testMachine input)
   , test "count"
-    <| assertEqual (length (runRes testMachine input)) 6
+    <| assertEqual (length (runRes testMachine input initHeadPos)) 6
   ] 
