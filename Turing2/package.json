@@ -1,0 +1,32 @@
+{
+  "name": "vasina",
+  "version": "1.0.0",
+  "description": "npm init .",
+  "main": "test.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JetBrains/programmer-games.git"
+  },
+  "keywords": [
+    "test",
+    "npm",
+    "init",
+    "."
+  ],
+  "author": "vasina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JetBrains/programmer-games/issues"
+  },
+  "homepage": "https://github.com/JetBrains/programmer-games#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-shell": "^0.5.2"
+  }
+}
