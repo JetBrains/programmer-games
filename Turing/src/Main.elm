@@ -171,7 +171,7 @@ newBasket ind =
     , y basketTopMarginS                                            
     , Svg.Attributes.width "100px"                                   
     , Svg.Attributes.height "100px"                                  
-    , xlinkHref ("../img/basket.png")                                
+    , xlinkHref ("../img/basket/basket.png")                                
     ]                                                                
     []    
 
@@ -206,11 +206,11 @@ tableCreate =
 mirrorCreate : List (Svg msg) 
 mirrorCreate =
   [ Svg.image                                                            
-      [ x "10"                                                         
-      , y "30"                                                         
-      , Svg.Attributes.width "360px"                                   
+      [ x "30"                                                         
+      , y "50"                                                         
+      , Svg.Attributes.width "335px"                                   
       , Svg.Attributes.height "270px"                                  
-      , xlinkHref ("../img/mirror/mirror2.png")                               
+      , xlinkHref ("../img/mirror/mirror2Empty.png")                               
       ]                                                                
       []                                                               
   ]  
@@ -330,14 +330,27 @@ emptyMCfg =
 transTableDraw : List (Svg msg)
 transTableDraw =
   [ Svg.image                                                                   
-        [ x "380px"                                             
+        [ x "410px"                                             
         , y "20px"                                                    
         , Svg.Attributes.width "460px"                                          
         , Svg.Attributes.height "250px"                                         
-        , xlinkHref ("../img/transTable.png")                        
+        , xlinkHref ("../img/transTable1.png")                        
         ]                                                                       
         []                                                                      
   ]  
+
+
+runButtonCreate : List (Svg msg)
+runButtonCreate =
+  [ Svg.image                                                                   
+        [ x "603px"                                                             
+        , y "285px"                                                              
+        , Svg.Attributes.width "70px"                                          
+        , Svg.Attributes.height "70px"                                         
+        , xlinkHref ("../img/elements/run2.png")                                  
+        ]                                                                       
+        []                                                                      
+  ]
 
 
 addMainPanel : Model -> Html Msg                                                
@@ -371,6 +384,8 @@ addMainPanel model =
           (catCreate hpos)
           ++
           (transTableDraw)
+          ++
+          (runButtonCreate)
         )    
 
 
