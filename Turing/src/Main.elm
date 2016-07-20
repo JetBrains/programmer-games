@@ -21,7 +21,7 @@ import Array exposing (empty)
 ------------------------------------------------------------------------------
 type BallOfWool = Red | Yellow | Green | Blue -- a
 --white is start, orange is natural, violet is reject
-type Kitten = White | Grey | DarkGrey | Orange | Violet -- b 
+type Kitten = White | LightGrey | Grey | Orange | Violet -- b 
 
 
 machine : Machine BallOfWool Kitten
@@ -120,26 +120,38 @@ mainRectH = 600
 -- VIEW                                                                         
 view : Model -> Html Msg                                                        
 view model =                                                                    
-  div                                                                           
-    [                                                                           
-      Html.Attributes.style                                                     
-            [ ( "position", "absolute" )                                        
-            , ( "top", (topMargin model) )                                      
-            , ( "left", (leftMargin model) )                                    
-            , ( "width", (toString mainRectW) )                                 
-            , ( "height", (toString mainRectH) )                                
-            , ( "border", "1px solid #000000" )                                 
-            , ( "background-color", "grey" )                                 
-            ]                                                                   
-    ]                                                                           
-    [ (addMainPanel model) ]  
+  div 
+    [
+      Html.Attributes.style
+          [ ( "width",  (toString model.windSize.width ++ "px") )                                 
+          , ( "height", (toString model.windSize.height ++ "px") )   
+          , ( "background-color", "#F4A460" )
+          --, ( "background-image", "../img/klubok.png" )
+          ]
+    ]
+    [
+      div                                                                           
+        [                                                                           
+          Html.Attributes.style                                                     
+              [ ( "position", "absolute" )                                        
+              , ( "top", (topMargin model) )                                      
+              , ( "left", (leftMargin model) )                                    
+              , ( "width", (toString mainRectW) )                                 
+              , ( "height", (toString mainRectH) )                                
+              , ( "border", "1px solid #000000" )                                 
+              , ( "background-color", "grey" )                                 
+              ]                                                                   
+        ]                                                                           
+        [ (addMainPanel model) ]
+    ]
 
 
 basketLeftMarginI : Int -> Int                                               
-basketLeftMarginI ind = ind * 100 + (ind+1)*13                                                                                                                  
+basketLeftMarginI ind = ind * 100 + (ind+1)*13
+
 
 basketTopMarginI : Int                                                       
-basketTopMarginI = 410 
+basketTopMarginI = 410
 
 
 basketLeftMarginS : Int -> String
@@ -195,10 +207,10 @@ mirrorCreate : List (Svg msg)
 mirrorCreate =
   [ Svg.image                                                            
       [ x "10"                                                         
-      , y "10"                                                         
-      , Svg.Attributes.width "260px"                                   
-      , Svg.Attributes.height "390px"                                  
-      , xlinkHref ("../img/mirror1.png")                               
+      , y "30"                                                         
+      , Svg.Attributes.width "360px"                                   
+      , Svg.Attributes.height "270px"                                  
+      , xlinkHref ("../img/mirror/mirror2.png")                               
       ]                                                                
       []                                                               
   ]  
@@ -234,7 +246,7 @@ newBall ind inpVal =
         , y (ballTopMarginS)                                                        
         , Svg.Attributes.width "50px"                                    
         , Svg.Attributes.height "50px"                                   
-        , xlinkHref ("../img/" ++ color ++ "Ball.png")                                
+        , xlinkHref ("../img/balls/" ++ color ++ "Ball.png")                                
         ]                                                                
         []
 
@@ -268,12 +280,12 @@ ballCreate n res tape hpos =
 
 catLeftMarginI : Int -> Int                                                    
 catLeftMarginI hpos =                                                           
-    (basketLeftMarginI hpos) - 80                                                  
+    (basketLeftMarginI hpos) - 55 
 
 
 catTopMarginI : Int                                                            
 catTopMarginI = 
-  basketTopMarginI + 10
+  basketTopMarginI + 35
 
 
 catLeftMarginS : Int -> String                                                 
@@ -291,10 +303,10 @@ catCreate hpos =
   [ Svg.image                                                             
         [ x (catLeftMarginS hpos)                                                         
         , y catTopMarginS                                                        
-        , Svg.Attributes.width "170px"                                   
-        , Svg.Attributes.height "170px"                                  
-        --, xlinkHref ("../img/SaimonGrey.png")
-        , xlinkHref ("../img/GreySaimonThink.png")
+        , Svg.Attributes.width "155px"                                   
+        , Svg.Attributes.height "155px"                                  
+        , xlinkHref ("../img/saimonPush/SaimonPushW.png")
+        --, xlinkHref ("../img/saimonThink/GreySaimonThink.png")
         ]                                                                
         []
   ]
@@ -313,6 +325,19 @@ emptyMCfg =
   { currState = White
   , tapeCfg = emptyTape                                                       
   } 
+
+
+transTableDraw : List (Svg msg)
+transTableDraw =
+  [ Svg.image                                                                   
+        [ x "380px"                                             
+        , y "20px"                                                    
+        , Svg.Attributes.width "460px"                                          
+        , Svg.Attributes.height "250px"                                         
+        , xlinkHref ("../img/transTable.png")                        
+        ]                                                                       
+        []                                                                      
+  ]  
 
 
 addMainPanel : Model -> Html Msg                                                
@@ -344,6 +369,8 @@ addMainPanel model =
           (ballCreate 7 [] tape hpos)
           ++
           (catCreate hpos)
+          ++
+          (transTableDraw)
         )    
 
 
