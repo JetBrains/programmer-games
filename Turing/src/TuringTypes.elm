@@ -9,7 +9,8 @@ type Direction = MoveLeft | MoveRight
                                                                                 
 type alias Machine a b =                                                        
   { transition  : (b, Maybe a) -> (b, Maybe a, Direction)                       
-  , initHeadPos : Int
+  , initHeadPosForDraw : Int
+  , initHeadPosForMach : Int
   , startState  : b                                                             
   , acceptState : b                                                             
   , rejectState : b                                                             

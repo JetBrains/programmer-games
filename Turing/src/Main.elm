@@ -4,7 +4,7 @@ import Html.App
 
 import TuringTypes exposing ( Direction(..), Machine, MachineCfg, TapeCfg, 
                               TransTable )
-import RunTuring exposing (debugRun, transFunc)                          
+import RunTuring exposing (runMachine, transFunc)                          
 import InitUpdate exposing (initMachineCfg)
 
 import Svg exposing (Svg)                                                       
@@ -14,8 +14,8 @@ import Window
 import Task                                                                     
 import Mouse  
 
-import List exposing (head, drop)
-import Array exposing (empty)
+import List exposing (head, drop, length, take)
+import Array exposing (empty, toList)
 
 
 ------------------------------------------------------------------------------
@@ -27,51 +27,39 @@ type Kitten = White | LightGrey | Grey | Orange | Violet -- b
 machine : Machine BallOfWool Kitten
 machine =
   { transition = (transFunc transTable (Violet, Nothing, MoveLeft))
-  , initHeadPos = 1   
+  , initHeadPosForDraw = 3
+  , initHeadPosForMach = 0
   , startState = White
   , acceptState = Orange 
   , rejectState = Violet
   }
 
 
-transTable : TransTable BallOfWool Kitten
-transTable = 
-  [ { key = (White, Just Red), 
-      value = (White, Just Red, MoveRight)}
-  , { key = (White, Just Yellow), 
-      value = (White, Just Yellow, MoveRight)}
-  , { key = (White, Just Green), 
-      value = (White, Just Green, MoveRight)}
-  , { key = (White, Just Blue), 
-      value = (White, Just Blue, MoveRight)}
-  , { key = (White, Nothing), 
-      value = (Grey, Just Red, MoveLeft)}
-  , { key = (Grey, Just Red), 
-      value = (Grey, Just Red, MoveLeft)}
-  , { key = (Grey, Just Yellow), 
-      value = (Grey, Just Yellow, MoveLeft)}
-  , { key = (Grey, Just Green), 
-      value = (Grey, Just Green, MoveLeft)}
-  , { key = (Grey, Just Blue), 
-      value = (Grey, Just Blue, MoveLeft)}
-  , { key = (Grey, Nothing), 
-      value = (Orange, Just Blue, MoveRight)}
-  ] 
+-- Change item (0 _ _ -> 1 _ _)
+transTable : TransTable BallOfWool Kitten                                       
+transTable =                                                                    
+  [ { key = (White, Just Yellow),                                               
+      value = (Orange, Just Red, MoveRight)
+    } 
+  ]  
 
 
 input : List (Maybe BallOfWool)
 input = 
-  [Just Red, Nothing, Just Yellow, Just Green, Just Blue]
+  [Just Yellow]
 
 ------------------------------------------------------------------------------
 
 -- MODEL                                                                        
 type alias Model =                                                              
   { windSize     : Window.Size                                                          
-  , clickPos     : Position
+  , inpWord      : List (Maybe BallOfWool) 
   , machine      : Machine BallOfWool Kitten
   , machineCfgs  : List (MachineCfg BallOfWool Kitten)
   , transTable   : TransTable BallOfWool Kitten
+  , catLeft      : Int
+  , catImg       : String
+  , helpImg      : String 
   }                                                                             
                                                                                 
                                                                                 
@@ -90,10 +78,13 @@ init : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten ->
 init machine table inp =                                                                          
   ( Model 
       (Window.Size 1855 980) 
-      (Position 0 0) 
+      inp
       machine
-      [(initMachineCfg machine inp machine.initHeadPos)]
+      [(initMachineCfg machine inp machine.initHeadPosForMach)]
       table
+      45
+      "../img/saimonThink/SaimonThinkW.png"
+      " "
   , Task.perform 
         (\_ -> Debug.crash "task") WindowSize Window.size              
   )                                                                             
@@ -147,7 +138,7 @@ view model =
 
 
 basketLeftMarginI : Int -> Int                                               
-basketLeftMarginI ind = ind * 100 + (ind+1)*13
+basketLeftMarginI ind = ind * 70 + (ind+1)*40
 
 
 basketTopMarginI : Int                                                       
@@ -164,8 +155,8 @@ basketTopMarginS =
   (toString basketTopMarginI) ++ "px"
 
 
-newBasket : Int -> Svg msg
-newBasket ind =
+getNewBasket : Int -> Svg msg
+getNewBasket ind =
   Svg.image                                                            
     [ x (basketLeftMarginS ind)                                                       
     , y basketTopMarginS                                            
@@ -176,9 +167,9 @@ newBasket ind =
     []    
 
 
-basketCreate : Int -> List (Svg msg) -> List (Svg msg)
-basketCreate n res =
-  if n > 0 then ( basketCreate (n-1) (res ++ [newBasket (n-1)]) )
+allBasketsDraw : Int -> List (Svg msg) -> List (Svg msg)
+allBasketsDraw n res =
+  if n > 0 then ( allBasketsDraw (n-1) (res ++ [getNewBasket (n-1)]) )
   else res
 
 
@@ -190,8 +181,8 @@ tableH : String
 tableH = (toString mainRectW) 
 
 
-tableCreate : List (Svg msg)
-tableCreate =
+tableDraw : List (Svg msg)
+tableDraw =
   [ Svg.image                                                            
       [ x "0"                                                          
       , y "0"                                                          
@@ -203,14 +194,14 @@ tableCreate =
   ]
 
 
-mirrorCreate : List (Svg msg) 
-mirrorCreate =
+mirrorDraw : List (Svg msg) 
+mirrorDraw =
   [ Svg.image                                                            
       [ x "30"                                                         
-      , y "50"                                                         
+      , y "55"                                                         
       , Svg.Attributes.width "335px"                                   
       , Svg.Attributes.height "270px"                                  
-      , xlinkHref ("../img/mirror/mirror2Empty.png")                               
+      , xlinkHref ("../img/mirror/mirrorForOneChange.png")                               
       ]                                                                
       []                                                               
   ]  
@@ -236,8 +227,18 @@ ballTopMarginS =
    (toString (ballTopMarginI) ++ "px")
 
 
-newBall : Int -> Maybe (Maybe BallOfWool) -> Svg msg
-newBall ind inpVal =
+getBallColor : Maybe (Maybe BallOfWool) -> String                               
+getBallColor inpVal =                                                           
+  case inpVal of                                                                
+    Just (Just Red) -> "Red"                                                    
+    Just (Just Yellow) -> "Yellow"                                              
+    Just (Just Green) -> "Green"                                                
+    Just (Just Blue) -> "Blue"                                                  
+    _ -> "Black"   
+
+
+getNewBall : Int -> Maybe (Maybe BallOfWool) -> Svg msg
+getNewBall ind inpVal =
   let 
     color = (getBallColor inpVal)
   in
@@ -251,36 +252,51 @@ newBall ind inpVal =
         []
 
 
-getBallColor : Maybe (Maybe BallOfWool) -> String
-getBallColor inpVal =
-  case inpVal of
-    Just (Just Red) -> "Red"
-    Just (Just Yellow) -> "Yellow"
-    Just (Just Green) -> "Green"
-    Just (Just Blue) -> "Blue"
-    _ -> "Black"
+getTapeFromCfg : Maybe (MachineCfg BallOfWool Kitten)                           
+                 -> List (Maybe BallOfWool)                                     
+getTapeFromCfg maybeCfg =                                                       
+  case maybeCfg of                                                              
+    Just cfg ->                                                                 
+      (                                                                         
+        (toList cfg.tapeCfg.leftSyms) ++                                        
+        [cfg.tapeCfg.currSym] ++                                                
+        (toList cfg.tapeCfg.rightSyms)                                          
+      )                                                                         
+    Nothing -> []  
 
 
-ballCreate : Int -> List (Svg msg) -> List (Maybe BallOfWool) -> Int 
-             -> List (Svg msg)                          
-ballCreate n res tape hpos =              
+ballsOfOneTapeDraw : Int -> List (Svg msg) -> List (Maybe BallOfWool) -> Int 
+                     -> List (Svg msg)                          
+ballsOfOneTapeDraw n res tape hpos =              
   let 
     inpVal = head (drop (n-1) tape)
   in
     if n > 0 
        then if inpVal == Just (Nothing) 
-               then (ballCreate (n-1) res tape hpos)
+               then (ballsOfOneTapeDraw (n-1) res tape hpos)
                else 
                  let
-                   updRes = (res ++ [newBall (n-1+hpos) inpVal]) 
+                   updRes = (res ++ [getNewBall (n-1+hpos) inpVal]) 
                  in 
-                   (ballCreate (n-1) updRes tape hpos)               
+                   (ballsOfOneTapeDraw (n-1) updRes tape hpos)               
     else res  
+                                                                                
+                                                                                
+ballsOfAllTapesDraw : Model -> Int -> List (Svg msg) -> List (Svg msg)          
+ballsOfAllTapesDraw model hpos res =                                            
+  let
+      curTape = (getTapeFromCfg (head model.machineCfgs))
+      updModel = {model | machineCfgs = (drop 1 model.machineCfgs)}
+      updRes = (res ++ (ballsOfOneTapeDraw 7 [] curTape hpos))
+  in
+    if (length model.machineCfgs) > 0 
+       then (ballsOfAllTapesDraw updModel hpos updRes)
+    else res                                                                      
 
 
-catLeftMarginI : Int -> Int                                                    
-catLeftMarginI hpos =                                                           
-    (basketLeftMarginI hpos) - 55 
+catLeftMarginI : Int -> Int -> Int                                                   
+catLeftMarginI hpos left =                                                           
+  (basketLeftMarginI hpos) - left
 
 
 catTopMarginI : Int                                                            
@@ -288,9 +304,9 @@ catTopMarginI =
   basketTopMarginI + 35
 
 
-catLeftMarginS : Int -> String                                                 
-catLeftMarginS ind =                                                           
-    (toString (catLeftMarginI ind) ++ "px")                                      
+catLeftMarginS : Int -> Int -> String                                                 
+catLeftMarginS ind left =                                                           
+    (toString (catLeftMarginI ind left) ++ "px")                                      
 
 
 catTopMarginS : String                                                         
@@ -298,71 +314,79 @@ catTopMarginS =
      (toString (catTopMarginI) ++ "px") 
 
 
-catCreate : Int -> List (Svg msg)
-catCreate hpos =
-  [ Svg.image                                                             
-        [ x (catLeftMarginS hpos)                                                         
-        , y catTopMarginS                                                        
-        , Svg.Attributes.width "155px"                                   
-        , Svg.Attributes.height "155px"                                  
-        , xlinkHref ("../img/saimonPush/SaimonPushW.png")
-        --, xlinkHref ("../img/saimonThink/GreySaimonThink.png")
-        ]                                                                
-        []
-  ]
-
-
-emptyTape : TapeCfg BallOfWool
-emptyTape =
-  { leftSyms = empty
-  , currSym = Nothing
-  , rightSyms = empty
-  }                                                                             
-                                                                                          
-                                                                                
-emptyMCfg : MachineCfg BallOfWool Kitten 
-emptyMCfg =                                                     
-  { currState = White
-  , tapeCfg = emptyTape                                                       
-  } 
+catDraw : Int -> Model -> List (Svg msg)
+catDraw hpos model =
+  let 
+    href = model.catImg 
+    left = model.catLeft
+  in
+    [ Svg.image                                                             
+          [ x (catLeftMarginS hpos left)                                                         
+          , y catTopMarginS                                                        
+          , Svg.Attributes.width "155px"                                   
+          , Svg.Attributes.height "155px"                                  
+          , xlinkHref (href)
+          ]                                                                
+          []
+    ]
 
 
 transTableDraw : List (Svg msg)
 transTableDraw =
   [ Svg.image                                                                   
-        [ x "410px"                                             
-        , y "20px"                                                    
+        [ x "380px"                                             
+        , y "30px"                                                    
         , Svg.Attributes.width "460px"                                          
         , Svg.Attributes.height "250px"                                         
-        , xlinkHref ("../img/transTable1.png")                        
+        , xlinkHref ("../img/transTableDemo.png")                        
         ]                                                                       
         []                                                                      
   ]  
 
 
-runButtonCreate : List (Svg msg)
-runButtonCreate =
+runButtonDraw : List (Svg msg)
+runButtonDraw =
   [ Svg.image                                                                   
-        [ x "603px"                                                             
+        [ x "523px"                                                             
         , y "285px"                                                              
         , Svg.Attributes.width "70px"                                          
         , Svg.Attributes.height "70px"                                         
-        , xlinkHref ("../img/elements/run2.png")                                  
+        , xlinkHref ("../img/elements/run.png")                                  
         ]                                                                       
         []                                                                      
   ]
 
 
+quesButtonDraw : List (Svg msg)                                                  
+quesButtonDraw =                                                                 
+  [ Svg.image                                                                   
+        [ x "624px"                                                             
+        , y "292px"                                                             
+        , Svg.Attributes.width "30px"                                           
+        , Svg.Attributes.height "55px"                                          
+        , xlinkHref ("../img/elements/ques.png")                                 
+        ]                                                                       
+        []                                                                      
+  ]
+
+
+helpMsgDraw : String -> List (Svg msg)
+helpMsgDraw hmsg =
+   [ Svg.image                                                                   
+        [ x "10px"                                                             
+        , y "10px"                                                             
+        , Svg.Attributes.width "537px"                                           
+        , Svg.Attributes.height "40px"                                          
+        , xlinkHref (hmsg)                                
+        ]                                                                       
+        []                                                                      
+  ]    
+
+
 addMainPanel : Model -> Html Msg                                                
 addMainPanel model =     
   let
-    {-
-    tape = case (head (model.machineCfgs)) of
-              Just ini -> ini
-              Nothing -> emptyMCfg 
-    -}
-    tape = [Just Red, Nothing, Just Yellow, Just Green, Just Blue]
-    hpos = model.machine.initHeadPos
+    hpos = model.machine.initHeadPosForDraw
   in
     Svg.svg                                                                       
         [ version "1.1"                                                           
@@ -373,25 +397,29 @@ addMainPanel model =
         , viewBox ("0 0 " ++ (toString mainRectW) ++ " " ++ (toString mainRectH)) 
         ]                                                                         
         (  
-          tableCreate
+          tableDraw
           ++
-          mirrorCreate
+          mirrorDraw
           ++
-          (basketCreate 7 [])
+          (allBasketsDraw 7 [])
           ++
-          (ballCreate 7 [] tape hpos)
+          (ballsOfAllTapesDraw model hpos []) 
           ++
-          (catCreate hpos)
+          (catDraw hpos model)
           ++
-          (transTableDraw)
+          transTableDraw
           ++
-          (runButtonCreate)
+          runButtonDraw
+          ++
+          quesButtonDraw
+          ++
+          (helpMsgDraw model.helpImg)
         )    
 
 
 -- UPDATE                                                                       
 update : Msg -> Model -> ( Model, Cmd Msg )                                     
-update msg model =                                                              
+update msg model =
   case msg of                                                                   
     Click pos ->  
       let 
@@ -400,9 +428,38 @@ update msg model =
               ( pos.y - ((model.windSize.height - mainRectH)//2) )                      
             )                                                                           
       in 
-        ( { model | clickPos = p }, Cmd.none)                                                
+        (clickMsgProccessing model p) 
     WindowSize { width, height } ->                                               
         ( { model | windSize = (Window.Size (width) (height)) }, Cmd.none )   
+
+
+-- process mouse message                                                        
+clickMsgProccessing : Model -> Position -> ( Model, Cmd Msg )                   
+clickMsgProccessing model pos =      
+  -- process Run button click
+  if pos.y >= 285 && pos.y <= 355 && pos.x >= 523 && pos.x <= 593      
+     then 
+         let                                                                           
+           m = model.machine                                                           
+           inp = model.inpWord                                                         
+           hpos = m.initHeadPosForMach
+           cfg = (initMachineCfg m inp hpos)
+         in   
+           ( { model 
+                 | machineCfgs = (runMachine m cfg []) 
+                 , catImg = "../img/saimonPush/SaimonPushW.png"
+                 , catLeft = 55
+             },
+             Cmd.none
+           )
+  else if pos.y >= 292 && pos.y <= 347 && pos.x >= 624 && pos.x <= 654
+          then 
+            if model.helpImg == " " 
+               then ({model | helpImg = "../img/help.png"}, Cmd.none)
+            else ({model | helpImg = " "}, Cmd.none)
+  else if pos.y < 0 || pos.y > mainRectH || pos.x < 0 || pos.x > mainRectW      
+          then (model, Cmd.none)
+  else (model, Cmd.none)   
 
 
 -- SUBSCRIPTIONS                                                                
