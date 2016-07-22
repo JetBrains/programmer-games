@@ -14,8 +14,10 @@ updateTapeCfg tcfg newSym dir =
       ( moveLeft tcfg.leftSyms (getNewRight tcfg.rightSyms newSym) )            
     MoveRight ->                                                                
       ( moveRight tcfg.rightSyms (getNewLeft tcfg.leftSyms newSym) )            
-                                                                                
-                                                                                
+    Stay -> 
+      tcfg
+
+
 -- | Execute one transition step for given machine and config.                  
 updateMachineCfg : Machine a b -> MachineCfg a b -> MachineCfg a b              
 updateMachineCfg m mcfg =                                                       
@@ -23,7 +25,7 @@ updateMachineCfg m mcfg =
     (newState, newSym, dir) = (doTrans m mcfg)                                  
   in                                                                            
     (updateTapeCfg mcfg.tapeCfg newSym dir)                                     
-    |> MachineCfg newState                                                      
+    |> MachineCfg newState (dir)                                                     
 
 
 getCurrSym : List (Maybe a) -> Int -> Maybe a
@@ -45,4 +47,4 @@ initTapeCfg w hpos =
                                                                                 
 -- | Initialise machine config with input word.    
 initMachineCfg : Machine a b -> List (Maybe a) -> Int -> MachineCfg a b                
-initMachineCfg m input hpos = MachineCfg (m.startState) (initTapeCfg input hpos)          
+initMachineCfg m input hpos = MachineCfg (m.startState) (Stay) (initTapeCfg input hpos)          

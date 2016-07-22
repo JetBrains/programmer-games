@@ -4,7 +4,7 @@ import Array exposing (Array)
 
 
 -- | Tape head movement direction.                                              
-type Direction = MoveLeft | MoveRight                                           
+type Direction = MoveLeft | MoveRight | Stay
                                                                                 
                                                                                 
 type alias Machine a b =                                                        
@@ -25,7 +25,8 @@ type alias TapeCfg a =
                                                                                 
                                                                                 
 type alias MachineCfg a b =                                                     
-  { currState : b         -- current state of machine                           
+  { currState : b         -- current state of machine     
+  , currDir   : Direction
   , tapeCfg   : TapeCfg a                                                       
   }                                                                             
                                                                                 

@@ -1,5 +1,5 @@
 import Html exposing (Html, div, text)
-import Html.Attributes exposing (..)                                            
+import Html.Attributes exposing (style)                    
 import Html.App  
 
 import TuringTypes exposing ( Direction(..), Machine, MachineCfg, TapeCfg, 
@@ -7,34 +7,36 @@ import TuringTypes exposing ( Direction(..), Machine, MachineCfg, TapeCfg,
 import RunTuring exposing (runMachine, transFunc)                          
 import InitUpdate exposing (initMachineCfg)
 
-import Svg exposing (Svg)                                                       
-import Svg.Attributes exposing (..)                                             
+import Svg exposing (Svg, text)                                                       
+import Svg.Attributes exposing ( fontSize, fontStyle, width, height, x, y, 
+                                 xlinkHref, version, viewBox)          
 
-import Window                                                                   
-import Task                                                                     
+import Window exposing (size)                                
+import Task exposing (perform)
 import Mouse  
 
 import List exposing (head, drop, length, take)
 import Array exposing (empty, toList)
 
+import Cmd.Extra exposing (message)
 
 ------------------------------------------------------------------------------
+--white is start, orange is natural, violet is reject       
 type BallOfWool = Red | Yellow | Green | Blue -- a
---white is start, orange is natural, violet is reject
 type Kitten = White | LightGrey | Grey | Orange | Violet -- b 
 
 
 machine : Machine BallOfWool Kitten
 machine =
   { transition = (transFunc transTable (Violet, Nothing, MoveLeft))
-  , initHeadPosForDraw = 3
+  , initHeadPosForDraw = 1
   , initHeadPosForMach = 0
   , startState = White
   , acceptState = Orange 
   , rejectState = Violet
   }
 
-
+{-
 -- Change item (0 _ _ -> 1 _ _)
 transTable : TransTable BallOfWool Kitten                                       
 transTable =                                                                    
@@ -47,19 +49,54 @@ transTable =
 input : List (Maybe BallOfWool)
 input = 
   [Just Yellow]
+-}
+
+transTable : TransTable BallOfWool Kitten                                       
+transTable =                                                                    
+  [ { key = (White, Just Red),                                              
+      value = (White, Just Red, MoveRight)}                                 
+  , { key = (White, Just Yellow),                                           
+      value = (White, Just Yellow, MoveRight)}                              
+  , { key = (White, Just Green),                                            
+      value = (White, Just Green, MoveRight)}                               
+  , { key = (White, Just Blue),                                             
+      value = (White, Just Blue, MoveRight)}                                
+  , { key = (White, Nothing),                                               
+      value = (LightGrey, Just Red, MoveLeft)}                                       
+  , { key = (LightGrey, Just Red),                                                   
+      value = (LightGrey, Just Red, MoveLeft)}                                       
+  , { key = (LightGrey, Just Yellow),                                                
+      value = (LightGrey, Just Yellow, MoveLeft)}                                    
+  , { key = (LightGrey, Just Green),                                                 
+      value = (LightGrey, Just Green, MoveLeft)}                                     
+  , { key = (LightGrey, Just Blue),                                                  
+      value = (LightGrey, Just Blue, MoveLeft)}                                      
+  , { key = (LightGrey, Nothing),                                                    
+      value = (Orange, Just Blue, MoveRight)}                                    
+  ]                                                                             
+                                                                                
+                                                                                
+input : List (Maybe BallOfWool)                                                 
+input =                                                                         
+  [Just Red, Just Yellow, Just Green, Just Blue]
 
 ------------------------------------------------------------------------------
 
 -- MODEL                                                                        
 type alias Model =                                                              
-  { windSize     : Window.Size                                                          
-  , inpWord      : List (Maybe BallOfWool) 
+  { windSize     : Window.Size -- for WindowsSize message                                                         
   , machine      : Machine BallOfWool Kitten
   , machineCfgs  : List (MachineCfg BallOfWool Kitten)
-  , transTable   : TransTable BallOfWool Kitten
-  , catLeft      : Int
-  , catImg       : String
-  , helpImg      : String 
+  , trTableInit  : TransTable BallOfWool Kitten
+  , trTableUser  : TransTable BallOfWool Kitten 
+  , catLeft      : Int    -- different for catImg
+  , catImg       : String -- catPush, catThink
+  , helpImg      : String -- help text
+  , currLevel    : Int
+  , currCfg      : Int
+  , catPos       : Int 
+  --, catsImg      : List String -- cats that used on current level
+  --, ballsImg     : List String -- balls that used on current level
   }                                                                             
                                                                                 
                                                                                 
@@ -72,21 +109,30 @@ type Msg
   = Click Position                     
   | WindowSize Window.Size                                                      
                                                                                 
-                                                                                
+     
+initModel : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten ->             
+         List (Maybe BallOfWool) -> Model
+initModel machine table inp=
+  ( Model                                                                       
+      (Window.Size 1855 980)
+      machine                                                                   
+      [(initMachineCfg machine inp machine.initHeadPosForMach)]                 
+      table                                                                     
+      table                                                                     
+      45                                                                        
+      "../img/saimonThink/SaimonThinkW.png"                                     
+      " "                                                                       
+      0
+      0
+      machine.initHeadPosForDraw 
+  )
+
+
 init : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten -> 
        List (Maybe BallOfWool) -> (Model, Cmd Msg)                                                         
 init machine table inp =                                                                          
-  ( Model 
-      (Window.Size 1855 980) 
-      inp
-      machine
-      [(initMachineCfg machine inp machine.initHeadPosForMach)]
-      table
-      45
-      "../img/saimonThink/SaimonThinkW.png"
-      " "
-  , Task.perform 
-        (\_ -> Debug.crash "task") WindowSize Window.size              
+  ( (initModel machine table inp)
+  , perform (\_ -> Debug.crash "task") WindowSize size              
   )                                                                             
                                                                                 
                                                                                 
@@ -201,7 +247,7 @@ mirrorDraw =
       , y "55"                                                         
       , Svg.Attributes.width "335px"                                   
       , Svg.Attributes.height "270px"                                  
-      , xlinkHref ("../img/mirror/mirrorForOneChange.png")                               
+      , xlinkHref ("../img/mirror/mirrorForBlueRedAtEnds2.png")                               
       ]                                                                
       []                                                               
   ]  
@@ -234,7 +280,7 @@ getBallColor inpVal =
     Just (Just Yellow) -> "Yellow"                                              
     Just (Just Green) -> "Green"                                                
     Just (Just Blue) -> "Blue"                                                  
-    _ -> "Black"   
+    _ -> "Transp"   
 
 
 getNewBall : Int -> Maybe (Maybe BallOfWool) -> Svg msg
@@ -265,23 +311,23 @@ getTapeFromCfg maybeCfg =
     Nothing -> []  
 
 
+getInpV : List (Maybe BallOfWool) -> Int -> Maybe (Maybe BallOfWool)
+getInpV tape n = 
+  head (drop (n-1) tape)
+
+
 ballsOfOneTapeDraw : Int -> List (Svg msg) -> List (Maybe BallOfWool) -> Int 
                      -> List (Svg msg)                          
 ballsOfOneTapeDraw n res tape hpos =              
-  let 
-    inpVal = head (drop (n-1) tape)
-  in
-    if n > 0 
-       then if inpVal == Just (Nothing) 
-               then (ballsOfOneTapeDraw (n-1) res tape hpos)
-               else 
-                 let
-                   updRes = (res ++ [getNewBall (n-1+hpos) inpVal]) 
-                 in 
-                   (ballsOfOneTapeDraw (n-1) updRes tape hpos)               
+    if n > 0 then
+      let
+        updRes = (res ++ [getNewBall (n-1+hpos) (getInpV tape n)]) 
+      in 
+        (ballsOfOneTapeDraw (n-1) updRes tape hpos)               
     else res  
-                                                                                
-                                                                                
+  
+
+{-                                                                                
 ballsOfAllTapesDraw : Model -> Int -> List (Svg msg) -> List (Svg msg)          
 ballsOfAllTapesDraw model hpos res =                                            
   let
@@ -292,6 +338,7 @@ ballsOfAllTapesDraw model hpos res =
     if (length model.machineCfgs) > 0 
        then (ballsOfAllTapesDraw updModel hpos updRes)
     else res                                                                      
+-}
 
 
 catLeftMarginI : Int -> Int -> Int                                                   
@@ -314,11 +361,12 @@ catTopMarginS =
      (toString (catTopMarginI) ++ "px") 
 
 
-catDraw : Int -> Model -> List (Svg msg)
-catDraw hpos model =
+catDraw : Model -> List (Svg msg)
+catDraw model =
   let 
     href = model.catImg 
     left = model.catLeft
+    hpos = model.catPos
   in
     [ Svg.image                                                             
           [ x (catLeftMarginS hpos left)                                                         
@@ -338,7 +386,7 @@ transTableDraw =
         , y "30px"                                                    
         , Svg.Attributes.width "460px"                                          
         , Svg.Attributes.height "250px"                                         
-        , xlinkHref ("../img/transTableDemo.png")                        
+        , xlinkHref ("../img/transTable1.png")                        
         ]                                                                       
         []                                                                      
   ]  
@@ -383,10 +431,31 @@ helpMsgDraw hmsg =
   ]    
 
 
+levelDraw : Int -> List (Svg msg)
+levelDraw level =
+  [ Svg.text'                                                                     
+        [ x "695px"
+        , y "330px"
+        , fontStyle "italic"
+        , fontSize "30px"
+        ]  
+        [ Svg.text ((toString level) ++ "/2") ]
+  ]
+
+
+getCurPosForCat : MachineCfg BallOfWool Kitten -> Int
+getCurPosForCat cfg =
+  case cfg.currDir of
+    MoveRight -> 1
+    MoveLeft -> -1
+    Stay -> 0
+
+
 addMainPanel : Model -> Html Msg                                                
 addMainPanel model =     
   let
-    hpos = model.machine.initHeadPosForDraw
+    hpos = model.machine.initHeadPosForDraw 
+    curTape = (getTapeFromCfg (head model.machineCfgs))
   in
     Svg.svg                                                                       
         [ version "1.1"                                                           
@@ -403,9 +472,9 @@ addMainPanel model =
           ++
           (allBasketsDraw 7 [])
           ++
-          (ballsOfAllTapesDraw model hpos []) 
+          (ballsOfOneTapeDraw 7 [] curTape hpos) 
           ++
-          (catDraw hpos model)
+          (catDraw model)
           ++
           transTableDraw
           ++
@@ -414,7 +483,16 @@ addMainPanel model =
           quesButtonDraw
           ++
           (helpMsgDraw model.helpImg)
+          ++
+          (levelDraw model.currLevel)
         )    
+
+
+getPosition : Model -> Position -> Position
+getPosition model pos =
+  { x = pos.x - ( (model.windSize.width - mainRectW) // 2)
+  , y = pos.y - ( (model.windSize.height - mainRectH) // 2)             
+  }
 
 
 -- UPDATE                                                                       
@@ -422,44 +500,94 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of                                                                   
     Click pos ->  
-      let 
-        p = ( Position                                                                  
-              ( pos.x - ((model.windSize.width - mainRectW)//2) )                       
-              ( pos.y - ((model.windSize.height - mainRectH)//2) )                      
-            )                                                                           
-      in 
-        (clickMsgProccessing model p) 
+      (getPosition model pos)
+      |> clickMsgProccessing model
     WindowSize { width, height } ->                                               
-        ( { model | windSize = (Window.Size (width) (height)) }, Cmd.none )   
+      ( { model | windSize = (Window.Size (width) (height)) }, Cmd.none )   
+
+
+emptyTape : TapeCfg BallOfWool
+emptyTape =
+  { leftSyms = empty
+  , currSym = Nothing 
+  , rightSyms = empty 
+  }                                                                             
+                                                                                
+                                                                                
+emptyMCfg : MachineCfg BallOfWool Kitten
+emptyMCfg =   
+  { currState = White         
+  , currDir = Stay
+  , tapeCfg  = emptyTape
+  }  
 
 
 -- process mouse message                                                        
-clickMsgProccessing : Model -> Position -> ( Model, Cmd Msg )                   
-clickMsgProccessing model pos =      
-  -- process Run button click
-  if pos.y >= 285 && pos.y <= 355 && pos.x >= 523 && pos.x <= 593      
-     then 
-         let                                                                           
-           m = model.machine                                                           
-           inp = model.inpWord                                                         
-           hpos = m.initHeadPosForMach
-           cfg = (initMachineCfg m inp hpos)
-         in   
-           ( { model 
-                 | machineCfgs = (runMachine m cfg []) 
-                 , catImg = "../img/saimonPush/SaimonPushW.png"
-                 , catLeft = 55
-             },
-             Cmd.none
-           )
+clickMsgProccessing : Model -> Position -> ( Model, Cmd Msg )
+clickMsgProccessing model pos =
+  if pos.y >= 285 && pos.y <= 355 && pos.x >= 523 && pos.x <= 593
+     then (clickRunProccess model pos)
   else if pos.y >= 292 && pos.y <= 347 && pos.x >= 624 && pos.x <= 654
-          then 
-            if model.helpImg == " " 
-               then ({model | helpImg = "../img/help.png"}, Cmd.none)
-            else ({model | helpImg = " "}, Cmd.none)
+          then (clickHelpProccess model pos)
   else if pos.y < 0 || pos.y > mainRectH || pos.x < 0 || pos.x > mainRectW      
           then (model, Cmd.none)
   else (model, Cmd.none)   
+
+
+-- make function getHeadMCfg !!!
+
+getCatColour : Kitten -> String
+getCatColour state =
+  case state of
+    White -> "W"
+    LightGrey -> "LG"
+    Grey -> "G"
+    Orange -> "O"
+    Violet -> "V"
+
+
+clickRunProccess : Model -> Position -> ( Model, Cmd Msg )
+clickRunProccess model pos =
+  let                                                                    
+    m = model.machine           
+    cfgs = model.machineCfgs
+    cfg =                                                                
+      case (head (model.machineCfgs)) of                                 
+        Just c -> c                                                       
+        Nothing -> emptyMCfg                                              
+  in                                                                     
+    if (length cfgs) > 0 && model.currCfg == 0 
+      then
+        (
+          { model                                                                       
+              | machineCfgs = (runMachine m cfg [])                                             
+              , catImg = "../img/saimonPush/SaimonPush" ++ 
+                          (getCatColour cfg.currState) ++ ".png"                            
+              , catLeft = 55                                                            
+              , currCfg = model.currCfg + 1 
+          }                                                                             
+          , message (Click pos) 
+        ) 
+    else if (length cfgs) > 0 && model.currCfg > 0 
+            then 
+              (
+                { model                                                               
+                    | machineCfgs = (drop 1 cfgs)
+                    , catPos = model.catPos + (getCurPosForCat cfg)
+                    , catImg = "../img/saimonPush/SaimonPush" ++ 
+                                (getCatColour cfg.currState) ++ ".png"  
+                }  
+                , message (Click pos)                                                   
+              )  
+    else 
+      ( model, Cmd.none ) 
+
+
+clickHelpProccess : Model -> Position -> ( Model, Cmd Msg )
+clickHelpProccess model pos = 
+  if model.helpImg == " "                                             
+    then ({model | helpImg = "../img/help.png"}, Cmd.none)           
+  else ({model | helpImg = " "}, Cmd.none)     
 
 
 -- SUBSCRIPTIONS                                                                
