@@ -81,6 +81,10 @@ input : List (Maybe BallOfWool)
 input =                                                                         
   [Just Red, Just Yellow, Just Green, Just Blue]
 
+expectedResult : List (Maybe BallOfWool)
+expectedResult =
+  [Just Blue, Just Red, Just Yellow, Just Green, Just Blue, Just Red]
+
 ------------------------------------------------------------------------------
 
 -- MODEL                                                                        
@@ -94,9 +98,12 @@ type alias Model =
   , catImg       : String -- catPush, catThink
   , helpImg      : String -- help text
   , currLevel    : Int
-  , currCfg      : Int
+  , maxLevel     : Int
   , catPos       : Int 
   , ifPushRun    : Bool
+  , expRes       : List (Maybe BallOfWool)
+  , finalImg     : String 
+  , ifEnd        : Bool
   --, catsImg      : List String -- cats that used on current level
   --, ballsImg     : List String -- balls that used on current level
   }                                                                             
@@ -113,9 +120,9 @@ type Msg
   | Tick Time
                                                                                 
      
-initModel : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten ->             
-         List (Maybe BallOfWool) -> Model
-initModel machine table inp=
+initModel : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten ->
+            List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Model
+initModel machine table inp expRes =
   ( Model                                                                       
       (Window.Size 1855 980)
       machine                                                                   
@@ -125,17 +132,20 @@ initModel machine table inp=
       45                                                                        
       "../img/saimonThink/SaimonThinkW.png"                                     
       " "                                                                       
-      0
-      0
+      1
+      10
       machine.initHeadPosForDraw 
+      False
+      expRes
+      " "
       False
   )
 
 
 init : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten -> 
-       List (Maybe BallOfWool) -> (Model, Cmd Msg)                                                         
-init machine table inp =                                                                          
-  ( (initModel machine table inp)
+       List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> (Model, Cmd Msg) 
+init machine table inp expRes =                                                                          
+  ( (initModel machine table inp expRes )
   , perform (\_ -> Debug.crash "task") WindowSize size              
   )                                                                             
                                                                                 
@@ -158,6 +168,63 @@ mainRectH : Int
 mainRectH = 600   
 
 
+gameDiv : Model -> List (Html Msg)
+gameDiv model =
+  [                                                                           
+    div                                                                       
+      [                                                                       
+        Html.Attributes.style                                                 
+          [ ( "position", "absolute" )                                      
+          , ( "top", (topMargin model) )                                    
+          , ( "left", (leftMargin model) )                                  
+          , ( "width", (toString mainRectW) )                               
+          , ( "height", (toString mainRectH) )                              
+          , ( "border", "1px solid #000000" )                               
+          , ( "background-color", "grey" )                                  
+          ]                                                                 
+      ]                                                                       
+      [ (addMainPanel model) ]                                                
+  ] 
+
+
+finalDiv : Model -> List (Html Msg)
+finalDiv model =
+  [                                                                           
+    div                                                                       
+      [                                                                       
+        Html.Attributes.style                                                 
+          [ ( "position", "absolute" )                                      
+          , ( "top", (topMargin model) )                                    
+          , ( "left", (leftMargin model) )                                  
+          , ( "width", (toString mainRectW) )                               
+          , ( "height", (toString mainRectH) )                              
+          , ( "border", "1px solid #000000" )                               
+          , ( "background-color", "#ff1f15" )                                  
+          ]                                                                 
+      ]                                                                       
+      [
+        Svg.svg 
+          [ version "1.1" 
+          , Svg.Attributes.width  (toString mainRectW)  
+          , Svg.Attributes.height (toString mainRectH)
+          , x "0" 
+          , y "0"
+          , viewBox ("0 0 " ++ (toString mainRectW) ++ " " ++ (toString mainRectH))
+          ]
+          [ 
+            Svg.image                                                                     
+              [ x "0px"                                           
+              , y "0px"                                                        
+              , Svg.Attributes.width "800px"                                              
+              , Svg.Attributes.height "600px"                                             
+              , xlinkHref model.finalImg
+              ]                                                                           
+              [] 
+          ]
+      ]
+  ] 
+
+
 -- VIEW                                                                         
 view : Model -> Html Msg                                                        
 view model =                                                                    
@@ -170,22 +237,11 @@ view model =
           --, ( "background-image", "../img/klubok.png" )
           ]
     ]
-    [
-      div                                                                           
-        [                                                                           
-          Html.Attributes.style                                                     
-              [ ( "position", "absolute" )                                        
-              , ( "top", (topMargin model) )                                      
-              , ( "left", (leftMargin model) )                                    
-              , ( "width", (toString mainRectW) )                                 
-              , ( "height", (toString mainRectH) )                                
-              , ( "border", "1px solid #000000" )                                 
-              , ( "background-color", "grey" )                                 
-              ]                                                                   
-        ]                                                                           
-        [ (addMainPanel model) ]
-    ]
-
+    (
+      if model.ifEnd == False 
+         then (gameDiv model)
+      else (finalDiv model)
+    )
 
 basketLeftMarginI : Int -> Int                                               
 basketLeftMarginI ind = ind * 70 + (ind+1)*40
@@ -435,15 +491,15 @@ helpMsgDraw hmsg =
   ]    
 
 
-levelDraw : Int -> List (Svg msg)
-levelDraw level =
+levelDraw : Int -> Int -> List (Svg msg)
+levelDraw level max =
   [ Svg.text'                                                                     
         [ x "695px"
         , y "330px"
         , fontStyle "italic"
         , fontSize "30px"
         ]  
-        [ Svg.text ((toString level) ++ "/2") ]
+        [ Svg.text ((toString level) ++ "/" ++ (toString max)) ]
   ]
 
 
@@ -488,7 +544,7 @@ addMainPanel model =
           ++
           (helpMsgDraw model.helpImg)
           ++
-          (levelDraw model.currLevel)
+          (levelDraw model.currLevel model.maxLevel)
         )    
 
 
@@ -535,26 +591,75 @@ clickRunProccessing : Model -> ( Model, Cmd Msg )
 clickRunProccessing model =                                                        
   ( (getAllCfgs model)                                                          
     |> setPushFlag                                                              
-    |> updCatParam                                                              
+    |> updCatParam  
   , Cmd.none                                                                    
   )                                                                             
                                                                                 
                                                                                 
 tickMsgProccessing : Model -> ( Model, Cmd Msg )                                 
 tickMsgProccessing model =                                                       
-  if model.ifPushRun == True then                                               
-    if (length model.machineCfgs) > 0 then                                      
-      (
-        (getNextCfg model)                                                        
-        |> updCatParam
-      , Cmd.none
-      )
+  if model.ifPushRun == True then
+    if (length model.machineCfgs) == 1 then 
+       (checkResult model) 
+    else if (length model.machineCfgs) > 0 then  
+            (
+              (getNextCfg model)
+              |> updCatParam
+            , Cmd.none
+            )
     else                                                                        
       ( {model | ifPushRun = False}, Cmd.none )                                 
   else                                                                          
     (model, Cmd.none)  
 
 -------------------------------------------------------------------------------
+
+getResTape : Model -> List (Maybe BallOfWool)   
+getResTape model =
+  (head model.machineCfgs)
+  |> getTapeFromCfg
+
+
+{-
+getResState : Model -> Kitten
+getResState m =
+  let
+    {currState, currDir, tapeCfg} = (getHeadCfg m.machineCfgs)
+  in
+    currState
+-}
+
+
+ifCorrect : Model -> Bool
+ifCorrect m =
+  if (getResTape m) == m.expRes --&& (getResState m) == m.machine.acceptState
+     then True
+  else False
+
+
+checkResult : Model -> ( Model, Cmd Msg )  
+checkResult m =
+  if (ifCorrect m) && (m.currLevel == m.maxLevel) 
+     then ( { m
+                | finalImg = "../img/finalImg/final.png"
+                , ifEnd = True
+            }
+          , Cmd.none
+          )
+  else if (ifCorrect m) 
+     then ( { m                                                                 
+                | finalImg = "../img/finalImg/pos.jpg"                          
+                , ifEnd = True                                                  
+            }                                                                   
+          , Cmd.none                                                            
+          ) 
+  else ( { m 
+             | finalImg = "../img/finalImg/neg.png"
+             , ifEnd = True 
+         }
+       , Cmd.none
+       )  
+
 
 getCatColour : Kitten -> String
 getCatColour state =
@@ -613,7 +718,6 @@ updCatParam model =
                    (getCatColour cfg.currState) ++ ".png"
         , catLeft = 55
         , catPos = model.catPos + (getCurPosForCat cfg)
-        , currCfg = model.currCfg + 1
     }
 
 
@@ -637,7 +741,7 @@ subscriptions model =
 main : Program Never
 main =                                                                          
   Html.App.program                                                              
-    { init = (init machine transTable input) 
+    { init = (init machine transTable input expectedResult) 
     , view = view                                                               
     , update = update                                                           
     , subscriptions = subscriptions                                             
