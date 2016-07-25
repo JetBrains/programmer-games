@@ -4,6 +4,21 @@ import Array exposing (Array, append, repeat, push, get, length, slice, empty)
 import TuringTypes exposing (Direction(..), Machine, TapeCfg, MachineCfg)
 
 
+{-
+( ) [ Just Red ] ( Just Yellow Just Green Just Blue ) <White> 
+( Just Red ) [ Just Yellow ] ( Just Green Just Blue ) <White> 
+( Just Red Just Yellow ) [ Just Green ] ( Just Blue ) <White> 
+( Just Red Just Yellow Just Green ) [ Just Blue ] ( ) <White> 
+( Just Red Just Yellow Just Green Just Blue ) [ Nothing ] ( ) <White> 
+( Just Red Just Yellow Just Green ) [ Just Blue ] ( Just Red ) <LightGrey> 
+( Just Red Just Yellow ) [ Just Green ] ( Just Blue Just Red ) <LightGrey> 
+( Just Red ) [ Just Yellow ] ( Just Green Just Blue Just Red ) <LightGrey> 
+( ) [ Just Red ] ( Just Yellow Just Green Just Blue Just Red ) <LightGrey> 
+( ) [ Nothing ] ( Just Red Just Yellow Just Green Just Blue Just Red ) <LightGrey> 
+( Just Blue ) [ Just Red ] ( Just Yellow Just Green Just Blue Just Red ) <Orange>
+-}
+
+
 getNewRight : Array (Maybe a) -> Maybe a -> Array (Maybe a)
 getNewRight right sym =
   (append (repeat 1 sym) right)
@@ -23,7 +38,7 @@ getLast leftS =
 
 withoutLast : Array (Maybe a) -> Array (Maybe a)
 withoutLast leftS = 
-  (slice 0 -1 leftS)
+  (slice 0 ((length leftS)-1) leftS)
 
 
 moveLeft : Array (Maybe a) -> Array (Maybe a) -> TapeCfg a 

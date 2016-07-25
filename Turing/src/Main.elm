@@ -17,6 +17,7 @@ import Mouse
 
 import List exposing (head, drop, length, take)
 import Array exposing (empty, toList)
+import Time exposing (every, second, Time)
 
 import Cmd.Extra exposing (message)
 
@@ -95,6 +96,7 @@ type alias Model =
   , currLevel    : Int
   , currCfg      : Int
   , catPos       : Int 
+  , ifPushRun    : Bool
   --, catsImg      : List String -- cats that used on current level
   --, ballsImg     : List String -- balls that used on current level
   }                                                                             
@@ -105,9 +107,10 @@ type alias Position =
                                                                                 
                                                                                 
 -- MESSAGES                                                                     
-type Msg                                                                        
-  = Click Position                     
-  | WindowSize Window.Size                                                      
+type Msg
+  = Click Position
+  | WindowSize Window.Size
+  | Tick Time
                                                                                 
      
 initModel : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten ->             
@@ -125,6 +128,7 @@ initModel machine table inp=
       0
       0
       machine.initHeadPosForDraw 
+      False
   )
 
 
@@ -327,7 +331,7 @@ ballsOfOneTapeDraw n res tape hpos =
     else res  
   
 
-{-                                                                                
+{-
 ballsOfAllTapesDraw : Model -> Int -> List (Svg msg) -> List (Svg msg)          
 ballsOfAllTapesDraw model hpos res =                                            
   let
@@ -364,7 +368,7 @@ catTopMarginS =
 catDraw : Model -> List (Svg msg)
 catDraw model =
   let 
-    href = model.catImg 
+    href = model.catImg
     left = model.catLeft
     hpos = model.catPos
   in
@@ -504,37 +508,53 @@ update msg model =
       |> clickMsgProccessing model
     WindowSize { width, height } ->                                               
       ( { model | windSize = (Window.Size (width) (height)) }, Cmd.none )   
-
-
-emptyTape : TapeCfg BallOfWool
-emptyTape =
-  { leftSyms = empty
-  , currSym = Nothing 
-  , rightSyms = empty 
-  }                                                                             
-                                                                                
-                                                                                
-emptyMCfg : MachineCfg BallOfWool Kitten
-emptyMCfg =   
-  { currState = White         
-  , currDir = Stay
-  , tapeCfg  = emptyTape
-  }  
+    Tick time ->
+      tickMsgProccessing model
 
 
 -- process mouse message                                                        
 clickMsgProccessing : Model -> Position -> ( Model, Cmd Msg )
 clickMsgProccessing model pos =
   if pos.y >= 285 && pos.y <= 355 && pos.x >= 523 && pos.x <= 593
-     then (clickRunProccess model pos)
+     then (clickRunProccessing model)
   else if pos.y >= 292 && pos.y <= 347 && pos.x >= 624 && pos.x <= 654
-          then (clickHelpProccess model pos)
+          then (clickHelpProccessing model)
   else if pos.y < 0 || pos.y > mainRectH || pos.x < 0 || pos.x > mainRectW      
           then (model, Cmd.none)
   else (model, Cmd.none)   
 
 
--- make function getHeadMCfg !!!
+clickHelpProccessing : Model -> ( Model, Cmd Msg )                                 
+clickHelpProccessing model =                                                       
+  if model.helpImg == " "                                                       
+    then ({model | helpImg = "../img/help.png"}, Cmd.none)                      
+  else ({model | helpImg = " "}, Cmd.none) 
+
+
+clickRunProccessing : Model -> ( Model, Cmd Msg )                                                    
+clickRunProccessing model =                                                        
+  ( (getAllCfgs model)                                                          
+    |> setPushFlag                                                              
+    |> updCatParam                                                              
+  , Cmd.none                                                                    
+  )                                                                             
+                                                                                
+                                                                                
+tickMsgProccessing : Model -> ( Model, Cmd Msg )                                 
+tickMsgProccessing model =                                                       
+  if model.ifPushRun == True then                                               
+    if (length model.machineCfgs) > 0 then                                      
+      (
+        (getNextCfg model)                                                        
+        |> updCatParam
+      , Cmd.none
+      )
+    else                                                                        
+      ( {model | ifPushRun = False}, Cmd.none )                                 
+  else                                                                          
+    (model, Cmd.none)  
+
+-------------------------------------------------------------------------------
 
 getCatColour : Kitten -> String
 getCatColour state =
@@ -546,56 +566,70 @@ getCatColour state =
     Violet -> "V"
 
 
-clickRunProccess : Model -> Position -> ( Model, Cmd Msg )
-clickRunProccess model pos =
-  let                                                                    
-    m = model.machine           
-    cfgs = model.machineCfgs
-    cfg =                                                                
-      case (head (model.machineCfgs)) of                                 
-        Just c -> c                                                       
-        Nothing -> emptyMCfg                                              
-  in                                                                     
-    if (length cfgs) > 0 && model.currCfg == 0 
-      then
-        (
-          { model                                                                       
-              | machineCfgs = (runMachine m cfg [])                                             
-              , catImg = "../img/saimonPush/SaimonPush" ++ 
-                          (getCatColour cfg.currState) ++ ".png"                            
-              , catLeft = 55                                                            
-              , currCfg = model.currCfg + 1 
-          }                                                                             
-          , message (Click pos) 
-        ) 
-    else if (length cfgs) > 0 && model.currCfg > 0 
-            then 
-              (
-                { model                                                               
-                    | machineCfgs = (drop 1 cfgs)
-                    , catPos = model.catPos + (getCurPosForCat cfg)
-                    , catImg = "../img/saimonPush/SaimonPush" ++ 
-                                (getCatColour cfg.currState) ++ ".png"  
-                }  
-                , message (Click pos)                                                   
-              )  
-    else 
-      ( model, Cmd.none ) 
+emptyTape : TapeCfg BallOfWool                                                  
+emptyTape =                                                                     
+  { leftSyms = empty                                                            
+  , currSym = Nothing                                                           
+  , rightSyms = empty                                                           
+  }                                                                             
+                                                                                
+                                                                                
+emptyMCfg : MachineCfg BallOfWool Kitten                                        
+emptyMCfg =                                                                     
+  { currState = White                                                           
+  , currDir = Stay                                                              
+  , tapeCfg  = emptyTape                                                        
+  }                                                                             
+                                                                                
+                                                                                
+getHeadCfg : Model -> MachineCfg BallOfWool Kitten                              
+getHeadCfg model =                                                              
+    case (head (model.machineCfgs)) of                                          
+      Just c -> c                                                               
+      Nothing -> emptyMCfg   
 
 
-clickHelpProccess : Model -> Position -> ( Model, Cmd Msg )
-clickHelpProccess model pos = 
-  if model.helpImg == " "                                             
-    then ({model | helpImg = "../img/help.png"}, Cmd.none)           
-  else ({model | helpImg = " "}, Cmd.none)     
+getAllCfgs : Model -> Model
+getAllCfgs model =
+  let
+  initCfg = (getHeadCfg model)
+  in
+    { model | machineCfgs = (runMachine model.machine initCfg [initCfg]) 
+    }
 
 
+getNextCfg : Model -> Model                                        
+getNextCfg model =                                                              
+  { model | machineCfgs = (drop 1 model.machineCfgs) }
+
+
+updCatParam : Model -> Model 
+updCatParam model =
+  let
+    cfg = (getHeadCfg model)
+  in
+    { model 
+        | catImg = "../img/saimonPush/SaimonPush" ++
+                   (getCatColour cfg.currState) ++ ".png"
+        , catLeft = 55
+        , catPos = model.catPos + (getCurPosForCat cfg)
+        , currCfg = model.currCfg + 1
+    }
+
+
+setPushFlag : Model -> Model
+setPushFlag model = 
+  { model | ifPushRun = True }                                                  
+
+-------------------------------------------------------------------------------
+                                                                                
 -- SUBSCRIPTIONS                                                                
 subscriptions : Model -> Sub Msg                                                
 subscriptions model =                                                           
   Sub.batch                                                                     
     [ Mouse.clicks Click                                                        
     , Window.resizes WindowSize                                                 
+    , every second Tick
     ] 
 
 
