@@ -13,11 +13,11 @@ import Svg.Attributes exposing ( fontSize, fontStyle, width, height, x, y,
 
 import Window exposing (size)                                
 import Task exposing (perform)
-import Mouse  
+import Mouse exposing (clicks, moves) 
 
 import List exposing (head, drop, length, take)
 import Array exposing (empty, toList)
-import Time exposing (every, second, Time)
+import Time exposing (every, second, millisecond, Time)
 
 import Cmd.Extra exposing (message)
 
@@ -89,21 +89,35 @@ expectedResult =
 
 -- MODEL                                                                        
 type alias Model =                                                              
-  { windSize     : Window.Size -- for WindowsSize message                                                         
+  { windSize     : Window.Size -- for WindowsSize message        
+  -- machine
   , machine      : Machine BallOfWool Kitten
   , machineCfgs  : List (MachineCfg BallOfWool Kitten)
+  --tables
   , trTableInit  : TransTable BallOfWool Kitten
-  , trTableUser  : TransTable BallOfWool Kitten 
+  , trTableUser  : TransTable BallOfWool Kitten
+  --pictures
   , catLeft      : Int    -- different for catImg
+  , menuCatTop  : Int
+  , catPos       : Int
   , catImg       : String -- catPush, catThink
   , helpImg      : String -- help text
+  , finalImg     : String     
+  --levels and result
   , currLevel    : Int
   , maxLevel     : Int
-  , catPos       : Int 
-  , ifPushRun    : Bool
+  -- expected results
+  , expPos       : Int 
   , expRes       : List (Maybe BallOfWool)
-  , finalImg     : String 
+  -- flags
+  , ifPushRun    : Bool                                                     
+  , ifStart      : Bool                                                       
+  , ifPlay       : Bool                                                      
+  , ifRules      : Bool                                                      
+  , ifAuthors    : Bool
   , ifEnd        : Bool
+  -- options
+  , timeUnit     : Time 
   --, catsImg      : List String -- cats that used on current level
   --, ballsImg     : List String -- balls that used on current level
   }                                                                             
@@ -116,6 +130,7 @@ type alias Position =
 -- MESSAGES                                                                     
 type Msg
   = Click Position
+  | Move Position
   | WindowSize Window.Size
   | Tick Time
                                                                                 
@@ -123,23 +138,29 @@ type Msg
 initModel : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten ->
             List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Model
 initModel machine table inp expRes =
-  ( Model                                                                       
-      (Window.Size 1855 980)
-      machine                                                                   
-      [(initMachineCfg machine inp machine.initHeadPosForMach)]                 
-      table                                                                     
-      table                                                                     
-      45                                                                        
-      "../img/saimonThink/SaimonThinkW.png"                                     
-      " "                                                                       
-      1
-      10
-      machine.initHeadPosForDraw 
-      False
-      expRes
-      " "
-      False
-  )
+  { windSize = (Window.Size 1855 980)
+    , machine = machine                                                                   
+    , machineCfgs = [(initMachineCfg machine inp machine.initHeadPosForMach)]                 
+    , trTableInit = table                                                                     
+    , trTableUser = table                                                                     
+    , catLeft = 45      
+    , menuCatTop = 180
+    , catPos = machine.initHeadPosForDraw
+    , catImg = "../img/saimonThink/SaimonThinkW.png"                                     
+    , helpImg = " "                       
+    , finalImg = " "
+    , currLevel = 1
+    , maxLevel = 2
+    , expPos = 1
+    , expRes = expRes
+    , ifPushRun = False
+    , ifStart = True
+    , ifPlay = False
+    , ifRules = False
+    , ifAuthors = False
+    , ifEnd = False
+    , timeUnit = second
+  }
 
 
 init : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten -> 
@@ -168,59 +189,107 @@ mainRectH : Int
 mainRectH = 600   
 
 
+divStyle : Model -> String -> Html.Attribute Msg
+divStyle model color =
+  Html.Attributes.style                                                   
+    [ ( "position", "absolute" )                                          
+    , ( "top", (topMargin model) )                                        
+    , ( "left", (leftMargin model) )                                      
+    , ( "width", (toString mainRectW) )                                   
+    , ( "height", (toString mainRectH) )                                  
+    , ( "border", "1px solid #000000" )                                   
+    , ( "background-color", color )                                      
+    ]  
+
+
+svgStyle : Model -> List (Svg.Attribute msg)                                    
+svgStyle model =                                                                
+  [ version "1.1"                                                               
+  , Svg.Attributes.width  (toString mainRectW)                                  
+  , Svg.Attributes.height (toString mainRectH)                                  
+  , x "0"                                                                       
+  , y "0"                                                                       
+  , viewBox ("0 0 " ++ (toString mainRectW) ++ " " ++ (toString mainRectH))     
+  ]                                                                             
+
+
+fullScreenImg : String -> List (Svg msg)
+fullScreenImg href =
+  [ Svg.image                                                           
+      [ x "0px"                                                         
+      , y "0px"                                                         
+      , Svg.Attributes.width  "800px"
+      , Svg.Attributes.height "800px"
+      , xlinkHref href                                  
+      ]                                                                 
+      []                                                                
+  ] 
+
+
+menuCatImg : Model -> List (Svg msg)
+menuCatImg m =
+  [ Svg.image                                                                   
+      [ x "60px"                                                                 
+      , y (toString m.menuCatTop ++ "px")                                                               
+      , Svg.Attributes.width  "300px"                                           
+      , Svg.Attributes.height "250px"                                           
+      , xlinkHref "../img/menuCat.png"                                                          
+      ]                                                                         
+      []                                                                        
+  ] 
+
+
+menuDiv : Model -> List (Html Msg)
+menuDiv model =
+  [ div
+      [ (divStyle model "#ff1f15") ]
+      [ Svg.svg                                                                 
+          (svgStyle model)                                                      
+          ( (fullScreenImg "../img/windows/menu2.jpg") 
+            ++
+            (menuCatImg model)
+          )
+      ] 
+  ]
+
+
 gameDiv : Model -> List (Html Msg)
 gameDiv model =
-  [                                                                           
-    div                                                                       
-      [                                                                       
-        Html.Attributes.style                                                 
-          [ ( "position", "absolute" )                                      
-          , ( "top", (topMargin model) )                                    
-          , ( "left", (leftMargin model) )                                  
-          , ( "width", (toString mainRectW) )                               
-          , ( "height", (toString mainRectH) )                              
-          , ( "border", "1px solid #000000" )                               
-          , ( "background-color", "grey" )                                  
-          ]                                                                 
-      ]                                                                       
+  [ div                                                                       
+      [ (divStyle model "grey") ]                                                                       
       [ (addMainPanel model) ]                                                
+  ] 
+
+
+rulesDiv : Model -> List (Html Msg)                                             
+rulesDiv model =                                                                
+  [ div                                                                         
+      [ (divStyle model "#ff1f15") ]                                            
+      [ Svg.svg                                                                 
+          (svgStyle model)                                                      
+          (fullScreenImg "../img/windows/rules.jpg")                                     
+      ]                                                                         
+  ] 
+
+
+authorsDiv : Model -> List (Html Msg)
+authorsDiv model =
+  [ div                                                                         
+      [ (divStyle model "#ff1f15") ]                                            
+      [ Svg.svg                                                                 
+          (svgStyle model)                                                      
+          (fullScreenImg "../img/windows/authors.jpg")                                     
+      ]                                                                         
   ] 
 
 
 finalDiv : Model -> List (Html Msg)
 finalDiv model =
-  [                                                                           
-    div                                                                       
-      [                                                                       
-        Html.Attributes.style                                                 
-          [ ( "position", "absolute" )                                      
-          , ( "top", (topMargin model) )                                    
-          , ( "left", (leftMargin model) )                                  
-          , ( "width", (toString mainRectW) )                               
-          , ( "height", (toString mainRectH) )                              
-          , ( "border", "1px solid #000000" )                               
-          , ( "background-color", "#ff1f15" )                                  
-          ]                                                                 
-      ]                                                                       
-      [
-        Svg.svg 
-          [ version "1.1" 
-          , Svg.Attributes.width  (toString mainRectW)  
-          , Svg.Attributes.height (toString mainRectH)
-          , x "0" 
-          , y "0"
-          , viewBox ("0 0 " ++ (toString mainRectW) ++ " " ++ (toString mainRectH))
-          ]
-          [ 
-            Svg.image                                                                     
-              [ x "0px"                                           
-              , y "0px"                                                        
-              , Svg.Attributes.width "800px"                                              
-              , Svg.Attributes.height "600px"                                             
-              , xlinkHref model.finalImg
-              ]                                                                           
-              [] 
-          ]
+  [ div                                                                       
+      [ (divStyle model "#ff1f15") ]                                                                       
+      [ Svg.svg 
+          (svgStyle model)
+          (fullScreenImg model.finalImg)
       ]
   ] 
 
@@ -238,9 +307,15 @@ view model =
           ]
     ]
     (
-      if model.ifEnd == False 
-         then (gameDiv model)
-      else (finalDiv model)
+      if model.ifStart == True
+              then (menuDiv model)
+      else if model.ifRules == True
+              then (rulesDiv model)
+      else if model.ifAuthors == True
+              then (authorsDiv model)
+      else if model.ifEnd == True
+              then (finalDiv model)
+      else (gameDiv model) 
     )
 
 basketLeftMarginI : Int -> Int                                               
@@ -279,25 +354,9 @@ allBasketsDraw n res =
   else res
 
 
-tableW : String                                                                 
-tableW = (toString mainRectW)                                                   
-
-
-tableH : String                                                                 
-tableH = (toString mainRectW) 
-
-
 tableDraw : List (Svg msg)
 tableDraw =
-  [ Svg.image                                                            
-      [ x "0"                                                          
-      , y "0"                                                          
-      , Svg.Attributes.width tableW                                    
-      , Svg.Attributes.height tableH                                   
-      , xlinkHref ("../img/table.jpg")                                 
-      ]                                                                
-      [] 
-  ]
+  (fullScreenImg "../img/table.jpg")
 
 
 mirrorDraw : List (Svg msg) 
@@ -446,7 +505,7 @@ transTableDraw =
         , y "30px"                                                    
         , Svg.Attributes.width "460px"                                          
         , Svg.Attributes.height "250px"                                         
-        , xlinkHref ("../img/transTable1.png")                        
+        , xlinkHref ("../img/transTables/transTable1.png")                        
         ]                                                                       
         []                                                                      
   ]  
@@ -463,6 +522,19 @@ runButtonDraw =
         ]                                                                       
         []                                                                      
   ]
+
+
+runFastDraw : List (Svg msg)                                                  
+runFastDraw =                                                                 
+  [ Svg.image                                                                   
+        [ x "449px"                                                             
+        , y "285px"                                                             
+        , Svg.Attributes.width "70px"                                           
+        , Svg.Attributes.height "70px"                                          
+        , xlinkHref ("../img/elements/runFast.png")                                 
+        ]                                                                       
+        []                                                                      
+  ]  
 
 
 quesButtonDraw : List (Svg msg)                                                  
@@ -518,13 +590,7 @@ addMainPanel model =
     curTape = (getTapeFromCfg (head model.machineCfgs))
   in
     Svg.svg                                                                       
-        [ version "1.1"                                                           
-        , Svg.Attributes.width  (toString mainRectW)                              
-        , Svg.Attributes.height (toString mainRectH)                              
-        , x "0"                                                                   
-        , y "0"                                                                   
-        , viewBox ("0 0 " ++ (toString mainRectW) ++ " " ++ (toString mainRectH)) 
-        ]                                                                         
+        (svgStyle model)                                                                          
         (  
           tableDraw
           ++
@@ -537,6 +603,8 @@ addMainPanel model =
           (catDraw model)
           ++
           transTableDraw
+          ++
+          runFastDraw
           ++
           runButtonDraw
           ++
@@ -562,6 +630,9 @@ update msg model =
     Click pos ->  
       (getPosition model pos)
       |> clickMsgProccessing model
+    Move pos ->
+      (getPosition model pos)                                                   
+      |> moveMsgProccessing model   
     WindowSize { width, height } ->                                               
       ( { model | windSize = (Window.Size (width) (height)) }, Cmd.none )   
     Tick time ->
@@ -570,14 +641,64 @@ update msg model =
 
 -- process mouse message                                                        
 clickMsgProccessing : Model -> Position -> ( Model, Cmd Msg )
-clickMsgProccessing model pos =
-  if pos.y >= 285 && pos.y <= 355 && pos.x >= 523 && pos.x <= 593
-     then (clickRunProccessing model)
-  else if pos.y >= 292 && pos.y <= 347 && pos.x >= 624 && pos.x <= 654
-          then (clickHelpProccessing model)
-  else if pos.y < 0 || pos.y > mainRectH || pos.x < 0 || pos.x > mainRectW      
-          then (model, Cmd.none)
-  else (model, Cmd.none)   
+clickMsgProccessing m pos =
+  if m.ifStart == True 
+     then if pos.y >= 190 && pos.y <= 217 && pos.x >= 360 && pos.x <= 447
+                  then ( { m 
+                            | ifStart = False
+                            , ifPlay = True
+                          }
+                       , Cmd.none
+                       ) 
+          else if pos.y >= 247 && pos.y <= 274 && pos.x >= 360 && pos.x <= 465
+                  then ( { m                                                
+                            | ifStart = False
+                            , ifRules = True
+                          }                                                     
+                       , Cmd.none                                               
+                       )   
+          else if pos.y >= 300 && pos.y <= 327 && pos.x >= 360 && pos.x <= 713
+                  then ( { m    
+                            | ifStart = False                                      
+                            , ifAuthors = True 
+                          }                                                     
+                       , Cmd.none                                               
+                       ) 
+          else (m, Cmd.none)
+  else if m.ifPlay == True 
+     then if pos.y >= 285 && pos.y <= 355 && pos.x >= 523 && pos.x <= 593
+                  then (clickRunProccessing m second)
+          else if pos.y >= 285 && pos.y <= 355 && pos.x >= 449 && pos.x <= 519
+                  then (clickRunProccessing m millisecond)
+          else if pos.y >= 292 && pos.y <= 347 && pos.x >= 624 && pos.x <= 654
+                  then (clickHelpProccessing m)
+          else (m, Cmd.none)
+  else (m, Cmd.none)   
+
+
+moveMsgProccessing : Model -> Position -> ( Model, Cmd Msg ) 
+moveMsgProccessing m pos =
+  if m.ifStart == True                                                             
+     then if pos.y >= 190 && pos.y <= 217 && pos.x >= 360 && pos.x <= 447           
+                  then ( { m                        
+                            | menuCatTop = 180
+                          }                                                        
+                       , Cmd.none                                                  
+                       )         
+          else if pos.y >= 247 && pos.y <= 274 && pos.x >= 360 && pos.x <= 465
+                  then ( { m          
+                            | menuCatTop = 240 
+                          }                                                        
+                       , Cmd.none       
+                       )                
+          else if pos.y >= 300 && pos.y <= 327 && pos.x >= 360 && pos.x <= 713
+                  then ( { m                                                    
+                            | menuCatTop = 300                                  
+                          }                                                     
+                       , Cmd.none                                               
+                       ) 
+          else (m, Cmd.none) 
+  else (m, Cmd.none)
 
 
 clickHelpProccessing : Model -> ( Model, Cmd Msg )                                 
@@ -587,28 +708,25 @@ clickHelpProccessing model =
   else ({model | helpImg = " "}, Cmd.none) 
 
 
-clickRunProccessing : Model -> ( Model, Cmd Msg )                                                    
-clickRunProccessing model =                                                        
+clickRunProccessing : Model -> Time -> ( Model, Cmd Msg )                                                    
+clickRunProccessing model time =                                                        
   ( (getAllCfgs model)                                                          
     |> setPushFlag                                                              
     |> updCatParam  
+    |> setTime time
   , Cmd.none                                                                    
   )                                                                             
                                                                                 
                                                                                 
 tickMsgProccessing : Model -> ( Model, Cmd Msg )                                 
 tickMsgProccessing model =                                                       
-  if model.ifPushRun == True then
-    if (length model.machineCfgs) == 1 then 
-       (checkResult model) 
-    else if (length model.machineCfgs) > 0 then  
-            (
-              (getNextCfg model)
-              |> updCatParam
-            , Cmd.none
-            )
-    else                                                                        
-      ( {model | ifPushRun = False}, Cmd.none )                                 
+  if model.ifPushRun == True 
+     then if (length model.machineCfgs) > 1 
+             then ( (getNextCfg model)
+                    |> updCatParam
+                  , Cmd.none
+                  )
+          else (checkResult model)   
   else                                                                          
     (model, Cmd.none)  
 
@@ -620,45 +738,46 @@ getResTape model =
   |> getTapeFromCfg
 
 
-{-
 getResState : Model -> Kitten
 getResState m =
   let
-    {currState, currDir, tapeCfg} = (getHeadCfg m.machineCfgs)
+    {currState, currDir, tapeCfg} = (getHeadCfg m)
   in
     currState
--}
 
 
 ifCorrect : Model -> Bool
 ifCorrect m =
-  if (getResTape m) == m.expRes --&& (getResState m) == m.machine.acceptState
+  if (getResTape m) == m.expRes && 
+     (getResState m) == m.machine.acceptState &&
+     m.catPos == m.expPos
      then True
   else False
 
 
-checkResult : Model -> ( Model, Cmd Msg )  
+resultModel : Model -> String -> Int -> (Model, Cmd Msg)
+resultModel model href level =
+  ( { model     
+        | finalImg = href
+        , currLevel = level
+        , ifEnd = True
+        , ifPlay = False
+        , ifPushRun = False
+    }  
+  , Cmd.none
+  )
+
+
+checkResult : Model -> (Model, Cmd Msg)  
 checkResult m =
-  if (ifCorrect m) && (m.currLevel == m.maxLevel) 
-     then ( { m
-                | finalImg = "../img/finalImg/final.png"
-                , ifEnd = True
-            }
-          , Cmd.none
-          )
-  else if (ifCorrect m) 
-     then ( { m                                                                 
-                | finalImg = "../img/finalImg/pos.jpg"                          
-                , ifEnd = True                                                  
-            }                                                                   
-          , Cmd.none                                                            
-          ) 
-  else ( { m 
-             | finalImg = "../img/finalImg/neg.png"
-             , ifEnd = True 
-         }
-       , Cmd.none
-       )  
+  let 
+    newLev = m.currLevel + 1
+  in
+    if (ifCorrect m) && newLev == m.maxLevel 
+       then (resultModel m "../img/finalImg/final.png" newLev)
+    else if (ifCorrect m) && newLev < m.maxLevel 
+       then (resultModel m "../img/finalImg/pos.jpg" newLev)                                               
+    else (resultModel m "../img/finalImg/neg.png" m.currLevel)
 
 
 getCatColour : Kitten -> String
@@ -725,15 +844,23 @@ setPushFlag : Model -> Model
 setPushFlag model = 
   { model | ifPushRun = True }                                                  
 
+
+setTime : Time -> Model -> Model
+setTime time model =
+  { model
+      | timeUnit = time
+  }
+
 -------------------------------------------------------------------------------
                                                                                 
 -- SUBSCRIPTIONS                                                                
 subscriptions : Model -> Sub Msg                                                
 subscriptions model =                                                           
   Sub.batch                                                                     
-    [ Mouse.clicks Click                                                        
+    [ Mouse.clicks Click  
+    , Mouse.moves Move
     , Window.resizes WindowSize                                                 
-    , every second Tick
+    , every model.timeUnit Tick
     ] 
 
 
@@ -744,5 +871,5 @@ main =
     { init = (init machine transTable input expectedResult) 
     , view = view                                                               
     , update = update                                                           
-    , subscriptions = subscriptions                                             
+    , subscriptions = subscriptions                      
     }  
