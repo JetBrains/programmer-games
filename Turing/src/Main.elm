@@ -665,6 +665,26 @@ clickMsgProccessing m pos =
                        , Cmd.none                                               
                        ) 
           else (m, Cmd.none)
+  else if m.ifAuthors == True || m.ifRules == True
+     then if pos.y >= 520 && pos.y <= 570 && pos.x >= 515 && pos.x <= 765 
+                  then ( { m                                                    
+                            | ifStart = True
+                            , ifAuthors = False
+                            , ifRules = False                                    
+                          }                                                     
+                       , Cmd.none                                               
+                       )   
+          else (m, Cmd.none)
+  else if m.ifEnd == True && m.currLevel == m.maxLevel
+     then if pos.y >= 350 && pos.y <= 380 && pos.x >= 155 && pos.x <= 680
+                  then ( { m                                                    
+                            | ifStart = True                                    
+                            , ifEnd = False
+                            , ifPlay = False
+                          }                                                     
+                       , Cmd.none                                               
+                       )                                                        
+          else (m, Cmd.none)  
   else if m.ifPlay == True 
      then if pos.y >= 285 && pos.y <= 355 && pos.x >= 523 && pos.x <= 593
                   then (clickRunProccessing m second)
