@@ -137,8 +137,8 @@ type Msg
                                                                                 
      
 initModel : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten -> 
-            List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Model
-initModel machine table inp expRes =
+            List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Int -> Model
+initModel machine table inp expRes level =
   { windSize = (Window.Size 1855 980)
     , input = inp
     , machine = machine                                                                   
@@ -151,9 +151,9 @@ initModel machine table inp expRes =
     , catImg = "../img/saimonThink/SaimonThinkW.png"                                     
     , helpImg = " "                       
     , finalImg = " "
-    , currLevel = 1
-    , maxLevel = 2
-    , expPos = 1
+    , currLevel = level
+    , maxLevel = 5
+    , expPos = 1 -- we can get it as parameter
     , expRes = expRes
     , ifPushRun = False
     , ifStart = True
@@ -166,9 +166,10 @@ initModel machine table inp expRes =
 
 
 init : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten -> 
-       List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> (Model, Cmd Msg) 
-init machine table inp expRes =                                                                          
-  ( (initModel machine table inp expRes )
+       List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Int -> 
+       (Model, Cmd Msg) 
+init machine table inp expRes level =                                                                          
+  ( (initModel machine table inp expRes level)
   , perform (\_ -> Debug.crash "task") WindowSize size              
   )                                                                             
                                                                                 
@@ -679,10 +680,17 @@ clickMsgProccessing m pos =
           else (m, Cmd.none)
   else if m.ifEnd == True && m.currLevel == m.maxLevel
      then if pos.y >= 350 && pos.y <= 380 && pos.x >= 155 && pos.x <= 680
-                  then ( (initModel m.machine m.trTableInit m.input m.expRes)
+                  then ( (initModel m.machine m.trTableInit m.input m.expRes 1)
                        , Cmd.none                                               
                        )                                                        
           else (m, Cmd.none)  
+  else if m.ifEnd == True && m.currLevel < m.maxLevel                          
+     then if pos.y >= 170 && pos.y <= 200 && pos.x >= 190 && pos.x <= 670       
+                  then ( (initModel m.machine m.trTableInit m.input m.expRes m.currLevel)   
+                         |> nextLevelModel 
+                       , Cmd.none                                               
+                       )                                                        
+          else (m, Cmd.none)   
   else if m.ifPlay == True 
      then if pos.y >= 285 && pos.y <= 355 && pos.x >= 523 && pos.x <= 593
                   then (clickRunProccessing m second)
@@ -692,6 +700,15 @@ clickMsgProccessing m pos =
                   then (clickHelpProccessing m)
           else (m, Cmd.none)
   else (m, Cmd.none)   
+
+
+nextLevelModel : Model -> Model
+nextLevelModel model =
+  { model
+      | ifStart = False
+      , ifPlay = True
+      , ifEnd = False
+  }
 
 
 moveMsgProccessing : Model -> Position -> ( Model, Cmd Msg ) 
@@ -886,7 +903,7 @@ subscriptions model =
 main : Program Never
 main =                                                                          
   Html.App.program                                                              
-    { init = (init machine transTable input expectedResult) 
+    { init = (init machine transTable input expectedResult 1) 
     , view = view                                                               
     , update = update                                                           
     , subscriptions = subscriptions                      
