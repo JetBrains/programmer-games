@@ -91,6 +91,7 @@ expectedResult =
 type alias Model =                                                              
   { windSize     : Window.Size -- for WindowsSize message        
   -- machine
+  , input        : List (Maybe BallOfWool) 
   , machine      : Machine BallOfWool Kitten
   , machineCfgs  : List (MachineCfg BallOfWool Kitten)
   --tables
@@ -135,10 +136,11 @@ type Msg
   | Tick Time
                                                                                 
      
-initModel : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten ->
+initModel : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten -> 
             List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Model
 initModel machine table inp expRes =
   { windSize = (Window.Size 1855 980)
+    , input = inp
     , machine = machine                                                                   
     , machineCfgs = [(initMachineCfg machine inp machine.initHeadPosForMach)]                 
     , trTableInit = table                                                                     
@@ -677,11 +679,7 @@ clickMsgProccessing m pos =
           else (m, Cmd.none)
   else if m.ifEnd == True && m.currLevel == m.maxLevel
      then if pos.y >= 350 && pos.y <= 380 && pos.x >= 155 && pos.x <= 680
-                  then ( { m                                                    
-                            | ifStart = True                                    
-                            , ifEnd = False
-                            , ifPlay = False
-                          }                                                     
+                  then ( (initModel m.machine m.trTableInit m.input m.expRes)
                        , Cmd.none                                               
                        )                                                        
           else (m, Cmd.none)  
