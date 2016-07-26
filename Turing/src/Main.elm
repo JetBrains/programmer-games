@@ -684,13 +684,20 @@ clickMsgProccessing m pos =
                        , Cmd.none                                               
                        )                                                        
           else (m, Cmd.none)  
-  else if m.ifEnd == True && m.currLevel < m.maxLevel                          
+  else if m.ifEnd == True && m.finalImg == "../img/finalImg/pos.jpg"
      then if pos.y >= 170 && pos.y <= 200 && pos.x >= 190 && pos.x <= 670       
                   then ( (initModel m.machine m.trTableInit m.input m.expRes m.currLevel)   
-                         |> nextLevelModel 
+                         |> contPlayModel 
                        , Cmd.none                                               
                        )                                                        
           else (m, Cmd.none)   
+  else if m.ifEnd == True && m.finalImg == "../img/finalImg/neg.png"
+     then if pos.y >= 520 && pos.y <= 560 && pos.x >= 315 && pos.x <= 668
+                  then ( (initModel m.machine m.trTableInit m.input m.expRes m.currLevel)
+                         |> contPlayModel                                      
+                       , Cmd.none                                               
+                       )                                                        
+          else (m, Cmd.none) 
   else if m.ifPlay == True 
      then if pos.y >= 285 && pos.y <= 355 && pos.x >= 523 && pos.x <= 593
                   then (clickRunProccessing m second)
@@ -702,8 +709,8 @@ clickMsgProccessing m pos =
   else (m, Cmd.none)   
 
 
-nextLevelModel : Model -> Model
-nextLevelModel model =
+contPlayModel : Model -> Model
+contPlayModel model =
   { model
       | ifStart = False
       , ifPlay = True
