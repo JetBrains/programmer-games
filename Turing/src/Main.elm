@@ -16,18 +16,19 @@ import Task exposing (perform)
 import Mouse exposing (clicks, moves) 
 
 import List exposing (head, drop, length, take)
-import Array exposing (empty, toList)
+import Array exposing (empty, toList, fromList)
 import Time exposing (every, second, millisecond, Time, now, inSeconds)
 
 import Cmd.Extra exposing (message)
 
 ------------------------------------------------------------------------------
+
 --white is start, orange is natural, violet is reject       
 type BallOfWool = Red | Yellow | Green | Blue -- a
 type Kitten = White | LightGrey | Grey | Orange | Violet -- b 
 
-
 ------------------------------------------------------------------------------
+
 machine1 : Machine BallOfWool Kitten
 machine1 =
   { transition = (transFunc transTable1 (Violet, Nothing, MoveLeft))
@@ -38,13 +39,13 @@ machine1 =
   , rejectState = Violet
   }
 
--- Change item (0 _ _ -> 1 _ _)
 transTable1 : TransTable BallOfWool Kitten                                       
-transTable1 =                                                                    
-  [ { key = (White, Just Yellow),                                               
-      value = (Orange, Just Red, MoveRight)
-    } 
-  ]  
+transTable1 = 
+  fromList
+    [ { key = (White, Just Yellow),                                               
+        value = (Orange, Just Red, MoveRight)
+      } 
+    ]  
 
 input1 : List (Maybe BallOfWool)
 input1 = 
@@ -53,6 +54,9 @@ input1 =
 expectedResult1 : List (Maybe BallOfWool)                                       
 expectedResult1 =                                                               
   [Just Red, Nothing] 
+
+expectedPos1 : Int
+expectedPos1 = 2
 
 ------------------------------------------------------------------------------
 
@@ -67,28 +71,29 @@ machine2 =
   }  
 
 transTable2 : TransTable BallOfWool Kitten                                       
-transTable2 =                                                                    
-  [ { key = (White, Just Red),                                              
-      value = (White, Just Red, MoveRight)}                                 
-  , { key = (White, Just Yellow),                                           
-      value = (White, Just Yellow, MoveRight)}                              
-  , { key = (White, Just Green),                                            
-      value = (White, Just Green, MoveRight)}                               
-  , { key = (White, Just Blue),                                             
-      value = (White, Just Blue, MoveRight)}                                
-  , { key = (White, Nothing),                                               
-      value = (LightGrey, Just Red, MoveLeft)}                                       
-  , { key = (LightGrey, Just Red),                                                   
-      value = (LightGrey, Just Red, MoveLeft)}                                       
-  , { key = (LightGrey, Just Yellow),                                                
-      value = (LightGrey, Just Yellow, MoveLeft)}                                    
-  , { key = (LightGrey, Just Green),                                                 
-      value = (LightGrey, Just Green, MoveLeft)}                                     
-  , { key = (LightGrey, Just Blue),                                                  
-      value = (LightGrey, Just Blue, MoveLeft)}                                      
-  , { key = (LightGrey, Nothing),                                                    
-      value = (Orange, Just Blue, MoveRight)}                                    
-  ]                                                                             
+transTable2 =     
+  fromList
+    [ { key = (White, Just Red),                                              
+        value = (White, Just Red, MoveRight)}                                 
+    , { key = (White, Just Yellow),                                           
+        value = (White, Just Yellow, MoveRight)}                              
+    , { key = (White, Just Green),                                            
+       value = (White, Just Green, MoveRight)}                               
+    , { key = (White, Just Blue),                                             
+        value = (White, Just Blue, MoveRight)}                                
+    , { key = (White, Nothing),                                               
+        value = (LightGrey, Just Red, MoveLeft)}                                       
+    , { key = (LightGrey, Just Red),                                                   
+        value = (LightGrey, Just Red, MoveLeft)}                                       
+    , { key = (LightGrey, Just Yellow),                                                
+        value = (LightGrey, Just Yellow, MoveLeft)}                                    
+    , { key = (LightGrey, Just Green),                                                 
+        value = (LightGrey, Just Green, MoveLeft)}                                     
+    , { key = (LightGrey, Just Blue),                                                  
+        value = (LightGrey, Just Blue, MoveLeft)}                                      
+    , { key = (LightGrey, Nothing),                                                    
+        value = (Orange, Just Blue, MoveRight)}                                    
+    ]                                                                             
                                                                                 
 input2 : List (Maybe BallOfWool)                                                 
 input2 =                                                                         
@@ -97,6 +102,9 @@ input2 =
 expectedResult2 : List (Maybe BallOfWool)
 expectedResult2 =
   [Just Blue, Just Red, Just Yellow, Just Green, Just Blue, Just Red]
+
+expectedPos2 : Int                                                              
+expectedPos2 = 1
 
 ------------------------------------------------------------------------------
 
@@ -606,6 +614,19 @@ catLooksDraw m =
     ]  
   else []
 
+{-
+drawQuestions : Model -> List (Svg msg)
+drawQuestions =
+    [ Svg.image                                                                 
+        [ x "0px"                                                               
+        , y "200px"                                                             
+        , Svg.Attributes.width "400px"                                          
+        , Svg.Attributes.height "397px"                                         
+        , xlinkHref "../img/catLooks.png"                                       
+        ]                                                                       
+        []                                                                      
+    ]  
+-}
 
 addMainPanel : Model -> Html Msg                                                
 addMainPanel model =     
@@ -639,6 +660,8 @@ addMainPanel model =
           (levelDraw model.currLevel model.maxLevel)
           ++
           (catLooksDraw model)
+          --++
+          --(drawQuestions model)
         )    
 
 
@@ -748,12 +771,11 @@ clickMsgProccessing m pos =
   else (m, Cmd.none)   
 
 
--- Can I get the value of variable without get it as parameter??
 getInitByLevel : Int -> Model
 getInitByLevel level =
   case level of
-    1 -> (initModel machine1 transTable1 input1 expectedResult1 1 1) 
-    _ -> (initModel machine2 transTable2 input2 expectedResult2 2 1) 
+    1 -> (initModel machine1 transTable1 input1 expectedResult1 1 expectedPos1) 
+    _ -> (initModel machine2 transTable2 input2 expectedResult2 2 expectedPos2) 
 
 
 contPlayModel : Model -> Model
@@ -819,7 +841,7 @@ tickMsgProccessing m time =
   else if m.whenGameStarts > 0 && m.ifPlay == True && 
           m.ifPushRun == False
           then if ((inSeconds m.currTime) - (inSeconds m.whenGameStarts)) > 20
-                  then ({m | ifCatLooks = True}, Cmd.none)
+                  then ({m | ifCatLooks = True, currTime = time}, Cmd.none)
                else ({m | currTime = time}, Cmd.none)
   else if m.ifPlay == True && m.ifPushRun == True 
      then if (length m.machineCfgs) > 1 
@@ -827,7 +849,7 @@ tickMsgProccessing m time =
                     |> updCatParam time
                   , Cmd.none
                   )
-          else (checkResult m)   
+          else (checkResult m time)   
   else                                                                          
     ({m | currTime = time}, Cmd.none)  
 
@@ -856,29 +878,30 @@ ifCorrect m =
   else False
 
 
-resultModel : Model -> String -> Int -> (Model, Cmd Msg)
-resultModel model href level =
+resultModel : Model -> String -> Int -> Time -> (Model, Cmd Msg)
+resultModel model href level time =
   ( { model     
         | finalImg = href
         , currLevel = level
         , ifEnd = True
         , ifPlay = False
         , ifPushRun = False
+        , currTime = time
     }  
   , Cmd.none
   )
 
 
-checkResult : Model -> (Model, Cmd Msg)  
-checkResult m =
+checkResult : Model -> Time -> (Model, Cmd Msg)  
+checkResult m time =
   let 
     newLev = m.currLevel + 1
   in
     if (ifCorrect m) && newLev > m.maxLevel 
-       then (resultModel m "../img/finalImg/final.png" newLev)
+       then (resultModel m "../img/finalImg/final.png" newLev time)
     else if (ifCorrect m) && (newLev < m.maxLevel || newLev == m.maxLevel)
-       then (resultModel m "../img/finalImg/pos.jpg" newLev)                                               
-    else (resultModel m "../img/finalImg/neg.png" m.currLevel)
+       then (resultModel m "../img/finalImg/pos.jpg" newLev time)                                               
+    else (resultModel m "../img/finalImg/neg.png" m.currLevel time)
 
 
 getCatColour : Kitten -> String
@@ -970,7 +993,7 @@ subscriptions model =
 main : Program Never
 main =                                                                          
   Html.App.program                                                              
-    { init = (init machine1 transTable1 input1 expectedResult1 1 2) 
+    { init = (init machine1 transTable1 input1 expectedResult1 1 expectedPos1) 
     , view = view                                                               
     , update = update                                                           
     , subscriptions = subscriptions                      

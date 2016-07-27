@@ -1,22 +1,8 @@
-module UpdHelpers exposing (moveLeft, moveRight, getNewLeft, getNewRight, doTrans)
+module UpdHelpers exposing ( moveLeft, moveRight, getNewLeft, getNewRight, 
+                             doTrans )
 
 import Array exposing (Array, append, repeat, push, get, length, slice, empty)
 import TuringTypes exposing (Direction(..), Machine, TapeCfg, MachineCfg)
-
-
-{-
-( ) [ Just Red ] ( Just Yellow Just Green Just Blue ) <White> 
-( Just Red ) [ Just Yellow ] ( Just Green Just Blue ) <White> 
-( Just Red Just Yellow ) [ Just Green ] ( Just Blue ) <White> 
-( Just Red Just Yellow Just Green ) [ Just Blue ] ( ) <White> 
-( Just Red Just Yellow Just Green Just Blue ) [ Nothing ] ( ) <White> 
-( Just Red Just Yellow Just Green ) [ Just Blue ] ( Just Red ) <LightGrey> 
-( Just Red Just Yellow ) [ Just Green ] ( Just Blue Just Red ) <LightGrey> 
-( Just Red ) [ Just Yellow ] ( Just Green Just Blue Just Red ) <LightGrey> 
-( ) [ Just Red ] ( Just Yellow Just Green Just Blue Just Red ) <LightGrey> 
-( ) [ Nothing ] ( Just Red Just Yellow Just Green Just Blue Just Red ) <LightGrey> 
-( Just Blue ) [ Just Red ] ( Just Yellow Just Green Just Blue Just Red ) <Orange>
--}
 
 
 getNewRight : Array (Maybe a) -> Maybe a -> Array (Maybe a)

@@ -3,7 +3,8 @@ module InitUpdate exposing (initMachineCfg, updateMachineCfg)
 import Array exposing (empty, fromList)
 import List exposing (take, drop, head)
 import TuringTypes exposing (Direction(..), Machine, TapeCfg, MachineCfg)
-import UpdHelpers exposing (moveLeft, moveRight, getNewLeft, getNewRight, doTrans)       
+import UpdHelpers exposing ( moveLeft, moveRight, getNewLeft, getNewRight
+                           , doTrans)       
 
 
 -- | Replace symbol under tape head with new symbol, then move tape head.       
@@ -42,9 +43,13 @@ initTapeCfg w hpos =
       TapeCfg empty Nothing empty                                   
     (x::xs) -> 
       if hpos == 0 then TapeCfg empty x (fromList xs)  
-      else TapeCfg (fromList (take hpos w)) (getCurrSym w hpos) (fromList (drop (hpos+1) w)) 
+      else TapeCfg (fromList (take hpos w)) 
+                   (getCurrSym w hpos) 
+                   (fromList (drop (hpos+1) w)) 
                                                                                 
                                                                                 
 -- | Initialise machine config with input word.    
 initMachineCfg : Machine a b -> List (Maybe a) -> Int -> MachineCfg a b                
-initMachineCfg m input hpos = MachineCfg (m.startState) (Stay) (initTapeCfg input hpos)          
+initMachineCfg m input hpos = MachineCfg (m.startState) 
+                                         (Stay) 
+                                         (initTapeCfg input hpos)          

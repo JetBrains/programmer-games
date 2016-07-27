@@ -38,4 +38,4 @@ type alias KeyValue a b =
                                                                                 
                                                                                 
 type alias TransTable a b =                                                     
-  List (KeyValue a b)                                                           
+  Array (KeyValue a b)                                                           

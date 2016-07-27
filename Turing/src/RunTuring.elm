@@ -1,6 +1,7 @@
 module RunTuring exposing (debugRun, runMachine, transFunc)
                                
-import List exposing (map, head, tail) 
+import List exposing (map) 
+import Array exposing (get, slice, length)
 import String exposing (join)
 import TuringTypes exposing (Direction(..), Machine, MachineCfg, TransTable)
 import PrintTuring exposing (printMachineCfg) 
@@ -14,7 +15,8 @@ machineCfgFinal m mcfg =
                                                                                 
                                                                                 
 -- run machine while not in final state.                                        
-runMachine : Machine a b -> MachineCfg a b -> List (MachineCfg a b) -> List (MachineCfg a b)
+runMachine : Machine a b -> MachineCfg a b -> List (MachineCfg a b) 
+             -> List (MachineCfg a b)
 runMachine m mcfg res =                                                                
   let                                                                           
       upd = (updateMachineCfg m mcfg)                                           
@@ -24,15 +26,14 @@ runMachine m mcfg res =
                                                                                 
                                                                                 
 -- | A transition function                                                      
-transFunc : TransTable a b -> (b, Maybe a, Direction) -> (b, Maybe a) -> (b, Maybe a, Direction)
+transFunc : TransTable a b -> (b, Maybe a, Direction) -> (b, Maybe a) 
+            -> (b, Maybe a, Direction)
 transFunc tt def key =                                                          
-  case (head tt) of                                                             
+  case (get 0 tt) of                                                             
     Just h -> if h.key == key                                                   
                  then h.value                                                   
               else                                                              
-                case (tail tt) of                                               
-                  Just t -> (transFunc t def key)                               
-                  Nothing -> def                                                
+                 (transFunc (slice 1 (length tt) tt) def key)
     Nothing -> def                                                              
                                                                                 
                                                                                 
