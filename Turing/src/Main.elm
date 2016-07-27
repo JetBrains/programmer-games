@@ -17,7 +17,7 @@ import Mouse exposing (clicks, moves)
 
 import List exposing (head, drop, length, take)
 import Array exposing (empty, toList)
-import Time exposing (every, second, millisecond, Time)
+import Time exposing (every, second, millisecond, Time, now, inSeconds)
 
 import Cmd.Extra exposing (message)
 
@@ -89,7 +89,11 @@ expectedResult =
 
 -- MODEL                                                                        
 type alias Model =                                                              
-  { windSize     : Window.Size -- for WindowsSize message        
+  { -- options
+    windSize       : Window.Size -- for WindowsSize message        
+  , timeUnit       : Time                                                         
+  , whenGameStarts : Time
+  , currTime       : Time
   -- machine
   , input        : List (Maybe BallOfWool) 
   , machine      : Machine BallOfWool Kitten
@@ -99,7 +103,7 @@ type alias Model =
   , trTableUser  : TransTable BallOfWool Kitten
   --pictures
   , catLeft      : Int    -- different for catImg
-  , menuCatTop  : Int
+  , menuCatTop   : Int
   , catPos       : Int
   , catImg       : String -- catPush, catThink
   , helpImg      : String -- help text
@@ -117,8 +121,7 @@ type alias Model =
   , ifRules      : Bool                                                      
   , ifAuthors    : Bool
   , ifEnd        : Bool
-  -- options
-  , timeUnit     : Time 
+  , ifCatLooks   : Bool 
   --, catsImg      : List String -- cats that used on current level
   --, ballsImg     : List String -- balls that used on current level
   }                                                                             
@@ -140,28 +143,31 @@ initModel : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten ->
             List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Int -> Model
 initModel machine table inp expRes level =
   { windSize = (Window.Size 1855 980)
-    , input = inp
-    , machine = machine                                                                   
-    , machineCfgs = [(initMachineCfg machine inp machine.initHeadPosForMach)]                 
-    , trTableInit = table                                                                     
-    , trTableUser = table                                                                     
-    , catLeft = 45      
-    , menuCatTop = 180
-    , catPos = machine.initHeadPosForDraw
-    , catImg = "../img/saimonThink/SaimonThinkW.png"                                     
-    , helpImg = " "                       
-    , finalImg = " "
-    , currLevel = level
-    , maxLevel = 5
-    , expPos = 1 -- we can get it as parameter
-    , expRes = expRes
-    , ifPushRun = False
-    , ifStart = True
-    , ifPlay = False
-    , ifRules = False
-    , ifAuthors = False
-    , ifEnd = False
-    , timeUnit = second
+  , timeUnit = second
+  , whenGameStarts = 0
+  , currTime = 0
+  , input = inp
+  , machine = machine                                                                   
+  , machineCfgs = [(initMachineCfg machine inp machine.initHeadPosForMach)]                 
+  , trTableInit = table                                                                     
+  , trTableUser = table                                                                     
+  , catLeft = 45      
+  , menuCatTop = 180
+  , catPos = machine.initHeadPosForDraw
+  , catImg = "../img/saimonThink/SaimonThinkW.png"                                     
+  , helpImg = " "                       
+  , finalImg = " "
+  , currLevel = level
+  , maxLevel = 5
+  , expPos = 1 -- we can get it as parameter
+  , expRes = expRes
+  , ifPushRun = False
+  , ifStart = True
+  , ifPlay = False
+  , ifRules = False
+  , ifAuthors = False
+  , ifEnd = False
+  , ifCatLooks = False
   }
 
 
@@ -359,7 +365,7 @@ allBasketsDraw n res =
 
 tableDraw : List (Svg msg)
 tableDraw =
-  (fullScreenImg "../img/table.jpg")
+  (fullScreenImg "../img/table2.jpg")
 
 
 mirrorDraw : List (Svg msg) 
@@ -505,7 +511,7 @@ transTableDraw : List (Svg msg)
 transTableDraw =
   [ Svg.image                                                                   
         [ x "380px"                                             
-        , y "30px"                                                    
+        , y "60px"                                                    
         , Svg.Attributes.width "460px"                                          
         , Svg.Attributes.height "250px"                                         
         , xlinkHref ("../img/transTables/transTable1.png")                        
@@ -518,7 +524,7 @@ runButtonDraw : List (Svg msg)
 runButtonDraw =
   [ Svg.image                                                                   
         [ x "523px"                                                             
-        , y "285px"                                                              
+        , y "315px"                                                              
         , Svg.Attributes.width "70px"                                          
         , Svg.Attributes.height "70px"                                         
         , xlinkHref ("../img/elements/run.png")                                  
@@ -531,7 +537,7 @@ runFastDraw : List (Svg msg)
 runFastDraw =                                                                 
   [ Svg.image                                                                   
         [ x "449px"                                                             
-        , y "285px"                                                             
+        , y "315px"                                                             
         , Svg.Attributes.width "70px"                                           
         , Svg.Attributes.height "70px"                                          
         , xlinkHref ("../img/elements/runFast.png")                                 
@@ -544,7 +550,7 @@ quesButtonDraw : List (Svg msg)
 quesButtonDraw =                                                                 
   [ Svg.image                                                                   
         [ x "624px"                                                             
-        , y "292px"                                                             
+        , y "322px"                                                             
         , Svg.Attributes.width "30px"                                           
         , Svg.Attributes.height "55px"                                          
         , xlinkHref ("../img/elements/ques.png")                                 
@@ -570,7 +576,7 @@ levelDraw : Int -> Int -> List (Svg msg)
 levelDraw level max =
   [ Svg.text'                                                                     
         [ x "695px"
-        , y "330px"
+        , y "360px"
         , fontStyle "italic"
         , fontSize "30px"
         ]  
@@ -584,6 +590,21 @@ getCurPosForCat cfg =
     MoveRight -> 1
     MoveLeft -> -1
     Stay -> 0
+
+
+catLooksDraw : Model -> List (Svg msg)
+catLooksDraw m =
+  if m.ifCatLooks == True then 
+    [ Svg.image                                                                  
+        [ x "0px"                                                              
+        , y "200px"                                                              
+        , Svg.Attributes.width "400px"                                          
+        , Svg.Attributes.height "397px"                                          
+        , xlinkHref "../img/catLooks.png"
+        ]                                                                       
+        []                                                                      
+    ]  
+  else []
 
 
 addMainPanel : Model -> Html Msg                                                
@@ -616,6 +637,8 @@ addMainPanel model =
           (helpMsgDraw model.helpImg)
           ++
           (levelDraw model.currLevel model.maxLevel)
+          ++
+          (catLooksDraw model)
         )    
 
 
@@ -639,7 +662,7 @@ update msg model =
     WindowSize { width, height } ->                                               
       ( { model | windSize = (Window.Size (width) (height)) }, Cmd.none )   
     Tick time ->
-      tickMsgProccessing model
+      tickMsgProccessing model time
 
 
 -- process mouse message                                                        
@@ -651,7 +674,7 @@ clickMsgProccessing m pos =
                             | ifStart = False
                             , ifPlay = True
                           }
-                       , Cmd.none
+                       , perform (\_ -> Debug.crash "time") Tick now
                        ) 
           else if pos.y >= 247 && pos.y <= 274 && pos.x >= 360 && pos.x <= 465
                   then ( { m                                                
@@ -699,11 +722,23 @@ clickMsgProccessing m pos =
                        )                                                        
           else (m, Cmd.none) 
   else if m.ifPlay == True 
-     then if pos.y >= 285 && pos.y <= 355 && pos.x >= 523 && pos.x <= 593
+     then if m.ifCatLooks == True && 
+             pos.y >= 0 && pos.y <= 600 && pos.x >= 0 && pos.x <= 800
+                  then ( {m 
+                            | ifCatLooks = False
+                            , whenGameStarts = m.currTime
+                         }
+                       , Cmd.none
+                       )
+          else if pos.y >= 20 && pos.y <= 35 && pos.x >= 540 && pos.x <= 740
+                  then ( (initModel m.machine m.trTableInit m.input m.expRes 1) 
+                       , Cmd.none                                               
+                       )  
+          else if pos.y >= 325 && pos.y <= 380 && pos.x >= 535 && pos.x <= 580
                   then (clickRunProccessing m second)
-          else if pos.y >= 285 && pos.y <= 355 && pos.x >= 449 && pos.x <= 519
+          else if pos.y >= 335 && pos.y <= 375 && pos.x >= 465 && pos.x <= 505
                   then (clickRunProccessing m millisecond)
-          else if pos.y >= 292 && pos.y <= 347 && pos.x >= 624 && pos.x <= 654
+          else if pos.y >= 322 && pos.y <= 377 && pos.x >= 624 && pos.x <= 654
                   then (clickHelpProccessing m)
           else (m, Cmd.none)
   else (m, Cmd.none)   
@@ -754,23 +789,35 @@ clickRunProccessing : Model -> Time -> ( Model, Cmd Msg )
 clickRunProccessing model time =                                                        
   ( (getAllCfgs model)                                                          
     |> setPushFlag                                                              
-    |> updCatParam  
+    |> updCatParam time
     |> setTime time
   , Cmd.none                                                                    
   )                                                                             
                                                                                 
                                                                                 
-tickMsgProccessing : Model -> ( Model, Cmd Msg )                                 
-tickMsgProccessing model =                                                       
-  if model.ifPushRun == True 
-     then if (length model.machineCfgs) > 1 
-             then ( (getNextCfg model)
-                    |> updCatParam
+tickMsgProccessing : Model -> Time -> ( Model, Cmd Msg )                                 
+tickMsgProccessing m time =      
+  if m.whenGameStarts == 0 && m.ifPlay == True
+     then ( { m
+                | whenGameStarts = time
+                , currTime = time
+            }
+          , Cmd.none
+          )
+  else if m.whenGameStarts > 0 && m.ifPlay == True && 
+          m.ifPushRun == False
+          then if ((inSeconds m.currTime) - (inSeconds m.whenGameStarts)) > 20
+                  then ({m | ifCatLooks = True}, Cmd.none)
+               else ({m | currTime = time}, Cmd.none)
+  else if m.ifPlay == True && m.ifPushRun == True 
+     then if (length m.machineCfgs) > 1 
+             then ( (getNextCfg m)
+                    |> updCatParam time
                   , Cmd.none
                   )
-          else (checkResult model)   
+          else (checkResult m)   
   else                                                                          
-    (model, Cmd.none)  
+    ({m | currTime = time}, Cmd.none)  
 
 -------------------------------------------------------------------------------
 
@@ -869,8 +916,8 @@ getNextCfg model =
   { model | machineCfgs = (drop 1 model.machineCfgs) }
 
 
-updCatParam : Model -> Model 
-updCatParam model =
+updCatParam : Time -> Model -> Model 
+updCatParam time model =
   let
     cfg = (getHeadCfg model)
   in
@@ -879,6 +926,7 @@ updCatParam model =
                    (getCatColour cfg.currState) ++ ".png"
         , catLeft = 55
         , catPos = model.catPos + (getCurPosForCat cfg)
+        , currTime = time
     }
 
 
