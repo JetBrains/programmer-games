@@ -27,9 +27,10 @@ type BallOfWool = Red | Yellow | Green | Blue -- a
 type Kitten = White | LightGrey | Grey | Orange | Violet -- b 
 
 
-machine : Machine BallOfWool Kitten
-machine =
-  { transition = (transFunc transTable (Violet, Nothing, MoveLeft))
+------------------------------------------------------------------------------
+machine1 : Machine BallOfWool Kitten
+machine1 =
+  { transition = (transFunc transTable1 (Violet, Nothing, MoveLeft))
   , initHeadPosForDraw = 1
   , initHeadPosForMach = 0
   , startState = White
@@ -37,23 +38,36 @@ machine =
   , rejectState = Violet
   }
 
-{-
 -- Change item (0 _ _ -> 1 _ _)
-transTable : TransTable BallOfWool Kitten                                       
-transTable =                                                                    
+transTable1 : TransTable BallOfWool Kitten                                       
+transTable1 =                                                                    
   [ { key = (White, Just Yellow),                                               
       value = (Orange, Just Red, MoveRight)
     } 
   ]  
 
-
-input : List (Maybe BallOfWool)
-input = 
+input1 : List (Maybe BallOfWool)
+input1 = 
   [Just Yellow]
--}
 
-transTable : TransTable BallOfWool Kitten                                       
-transTable =                                                                    
+expectedResult1 : List (Maybe BallOfWool)                                       
+expectedResult1 =                                                               
+  [Just Red, Nothing] 
+
+------------------------------------------------------------------------------
+
+machine2 : Machine BallOfWool Kitten                                            
+machine2 =                                                                      
+  { transition = (transFunc transTable2 (Violet, Nothing, MoveLeft))             
+  , initHeadPosForDraw = 1                                                      
+  , initHeadPosForMach = 0                                                      
+  , startState = White                                                          
+  , acceptState = Orange                                                        
+  , rejectState = Violet                                                        
+  }  
+
+transTable2 : TransTable BallOfWool Kitten                                       
+transTable2 =                                                                    
   [ { key = (White, Just Red),                                              
       value = (White, Just Red, MoveRight)}                                 
   , { key = (White, Just Yellow),                                           
@@ -76,13 +90,12 @@ transTable =
       value = (Orange, Just Blue, MoveRight)}                                    
   ]                                                                             
                                                                                 
-                                                                                
-input : List (Maybe BallOfWool)                                                 
-input =                                                                         
+input2 : List (Maybe BallOfWool)                                                 
+input2 =                                                                         
   [Just Red, Just Yellow, Just Green, Just Blue]
 
-expectedResult : List (Maybe BallOfWool)
-expectedResult =
+expectedResult2 : List (Maybe BallOfWool)
+expectedResult2 =
   [Just Blue, Just Red, Just Yellow, Just Green, Just Blue, Just Red]
 
 ------------------------------------------------------------------------------
@@ -140,8 +153,9 @@ type Msg
                                                                                 
      
 initModel : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten -> 
-            List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Int -> Model
-initModel machine table inp expRes level =
+            List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Int -> 
+            Int -> Model
+initModel machine table inp expRes level expPos =
   { windSize = (Window.Size 1855 980)
   , timeUnit = second
   , whenGameStarts = 0
@@ -158,8 +172,8 @@ initModel machine table inp expRes level =
   , helpImg = " "                       
   , finalImg = " "
   , currLevel = level
-  , maxLevel = 5
-  , expPos = 1 -- we can get it as parameter
+  , maxLevel = 2
+  , expPos = expPos
   , expRes = expRes
   , ifPushRun = False
   , ifStart = True
@@ -173,9 +187,9 @@ initModel machine table inp expRes level =
 
 init : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten -> 
        List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Int -> 
-       (Model, Cmd Msg) 
-init machine table inp expRes level =                                                                          
-  ( (initModel machine table inp expRes level)
+       Int -> (Model, Cmd Msg) 
+init machine table inp expRes level expPos = 
+  ( (initModel machine table inp expRes level expPos)
   , perform (\_ -> Debug.crash "task") WindowSize size              
   )                                                                             
                                                                                 
@@ -254,7 +268,7 @@ menuDiv model =
       [ (divStyle model "#ff1f15") ]
       [ Svg.svg                                                                 
           (svgStyle model)                                                      
-          ( (fullScreenImg "../img/windows/menu2.jpg") 
+          ( (fullScreenImg "../img/windows/menu.jpg") 
             ++
             (menuCatImg model)
           )
@@ -365,17 +379,17 @@ allBasketsDraw n res =
 
 tableDraw : List (Svg msg)
 tableDraw =
-  (fullScreenImg "../img/table2.jpg")
+  (fullScreenImg "../img/table.jpg")
 
 
-mirrorDraw : List (Svg msg) 
-mirrorDraw =
+mirrorDraw : Int -> List (Svg msg) 
+mirrorDraw level =
   [ Svg.image                                                            
       [ x "30"                                                         
       , y "55"                                                         
       , Svg.Attributes.width "335px"                                   
       , Svg.Attributes.height "270px"                                  
-      , xlinkHref ("../img/mirror/mirrorForBlueRedAtEnds2.png")                               
+      , xlinkHref ("../img/mirror/mirrorLevel" ++ (toString level) ++ ".png")                               
       ]                                                                
       []                                                               
   ]  
@@ -453,20 +467,6 @@ ballsOfOneTapeDraw n res tape hpos =
       in 
         (ballsOfOneTapeDraw (n-1) updRes tape hpos)               
     else res  
-  
-
-{-
-ballsOfAllTapesDraw : Model -> Int -> List (Svg msg) -> List (Svg msg)          
-ballsOfAllTapesDraw model hpos res =                                            
-  let
-      curTape = (getTapeFromCfg (head model.machineCfgs))
-      updModel = {model | machineCfgs = (drop 1 model.machineCfgs)}
-      updRes = (res ++ (ballsOfOneTapeDraw 7 [] curTape hpos))
-  in
-    if (length model.machineCfgs) > 0 
-       then (ballsOfAllTapesDraw updModel hpos updRes)
-    else res                                                                      
--}
 
 
 catLeftMarginI : Int -> Int -> Int                                                   
@@ -507,14 +507,14 @@ catDraw model =
     ]
 
 
-transTableDraw : List (Svg msg)
-transTableDraw =
+transTableDraw : Int -> List (Svg msg)
+transTableDraw level =
   [ Svg.image                                                                   
         [ x "380px"                                             
         , y "60px"                                                    
         , Svg.Attributes.width "460px"                                          
         , Svg.Attributes.height "250px"                                         
-        , xlinkHref ("../img/transTables/transTable1.png")                        
+        , xlinkHref ("../img/level" ++ (toString level) ++ "/transTable.png")                        
         ]                                                                       
         []                                                                      
   ]  
@@ -618,7 +618,7 @@ addMainPanel model =
         (  
           tableDraw
           ++
-          mirrorDraw
+          (mirrorDraw model.currLevel)
           ++
           (allBasketsDraw 7 [])
           ++
@@ -626,7 +626,7 @@ addMainPanel model =
           ++
           (catDraw model)
           ++
-          transTableDraw
+          (transTableDraw model.currLevel)
           ++
           runFastDraw
           ++
@@ -701,22 +701,25 @@ clickMsgProccessing m pos =
                        , Cmd.none                                               
                        )   
           else (m, Cmd.none)
-  else if m.ifEnd == True && m.currLevel == m.maxLevel
+  -- if win all levels
+  else if m.ifEnd == True && m.finalImg == "../img/finalImg/final.png"
      then if pos.y >= 350 && pos.y <= 380 && pos.x >= 155 && pos.x <= 680
-                  then ( (initModel m.machine m.trTableInit m.input m.expRes 1)
+                  then ( (getInitByLevel 1)
                        , Cmd.none                                               
                        )                                                        
           else (m, Cmd.none)  
+  -- if go to the next level
   else if m.ifEnd == True && m.finalImg == "../img/finalImg/pos.jpg"
      then if pos.y >= 170 && pos.y <= 200 && pos.x >= 190 && pos.x <= 670       
-                  then ( (initModel m.machine m.trTableInit m.input m.expRes m.currLevel)   
+                  then ( (getInitByLevel m.currLevel) 
                          |> contPlayModel 
                        , Cmd.none                                               
                        )                                                        
           else (m, Cmd.none)   
+  -- if go to the current level again
   else if m.ifEnd == True && m.finalImg == "../img/finalImg/neg.png"
      then if pos.y >= 520 && pos.y <= 560 && pos.x >= 315 && pos.x <= 668
-                  then ( (initModel m.machine m.trTableInit m.input m.expRes m.currLevel)
+                  then ( (getInitByLevel m.currLevel)
                          |> contPlayModel                                      
                        , Cmd.none                                               
                        )                                                        
@@ -730,8 +733,9 @@ clickMsgProccessing m pos =
                          }
                        , Cmd.none
                        )
+          -- if return from gameWindow to main menu             
           else if pos.y >= 20 && pos.y <= 35 && pos.x >= 540 && pos.x <= 740
-                  then ( (initModel m.machine m.trTableInit m.input m.expRes 1) 
+                  then ( (getInitByLevel 1) 
                        , Cmd.none                                               
                        )  
           else if pos.y >= 325 && pos.y <= 380 && pos.x >= 535 && pos.x <= 580
@@ -742,6 +746,14 @@ clickMsgProccessing m pos =
                   then (clickHelpProccessing m)
           else (m, Cmd.none)
   else (m, Cmd.none)   
+
+
+-- Can I get the value of variable without get it as parameter??
+getInitByLevel : Int -> Model
+getInitByLevel level =
+  case level of
+    1 -> (initModel machine1 transTable1 input1 expectedResult1 1 1) 
+    _ -> (initModel machine2 transTable2 input2 expectedResult2 2 1) 
 
 
 contPlayModel : Model -> Model
@@ -862,9 +874,9 @@ checkResult m =
   let 
     newLev = m.currLevel + 1
   in
-    if (ifCorrect m) && newLev == m.maxLevel 
+    if (ifCorrect m) && newLev > m.maxLevel 
        then (resultModel m "../img/finalImg/final.png" newLev)
-    else if (ifCorrect m) && newLev < m.maxLevel 
+    else if (ifCorrect m) && (newLev < m.maxLevel || newLev == m.maxLevel)
        then (resultModel m "../img/finalImg/pos.jpg" newLev)                                               
     else (resultModel m "../img/finalImg/neg.png" m.currLevel)
 
@@ -958,7 +970,7 @@ subscriptions model =
 main : Program Never
 main =                                                                          
   Html.App.program                                                              
-    { init = (init machine transTable input expectedResult 1) 
+    { init = (init machine1 transTable1 input1 expectedResult1 1 2) 
     , view = view                                                               
     , update = update                                                           
     , subscriptions = subscriptions                      
