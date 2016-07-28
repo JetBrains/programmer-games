@@ -1,10 +1,12 @@
-module InitUpdate exposing (initMachineCfg, updateMachineCfg)
+module TuringMachine.InitUpdate exposing (initMachineCfg, updateMachineCfg)
 
 import Array exposing (empty, fromList)
 import List exposing (take, drop, head)
-import TuringTypes exposing (Direction(..), Machine, TapeCfg, MachineCfg)
-import UpdHelpers exposing ( moveLeft, moveRight, getNewLeft, getNewRight
-                           , doTrans)       
+
+import TuringMachine.TuringTypes exposing (Direction(..), Machine, TapeCfg, 
+                                           MachineCfg)
+import TuringMachine.UpdHelpers exposing (moveLeft, moveRight, getNewLeft, 
+                                          getNewRight, doTrans)       
 
 
 -- | Replace symbol under tape head with new symbol, then move tape head.       

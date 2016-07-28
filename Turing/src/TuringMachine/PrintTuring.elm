@@ -1,8 +1,9 @@
-module PrintTuring exposing (printMachineCfg)                   
+module TuringMachine.PrintTuring exposing (printMachineCfg)                   
                                                                                 
 import Array exposing (map, toList)
 import String exposing (concat, join)
-import TuringTypes exposing (TapeCfg, MachineCfg)
+
+import TuringMachine.TuringTypes exposing (TapeCfg, MachineCfg)
 
 
 -- print tape --> return tape as a list of strings                              

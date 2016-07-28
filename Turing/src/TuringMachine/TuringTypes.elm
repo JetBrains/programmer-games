@@ -1,4 +1,5 @@
-module TuringTypes exposing (Direction(..), Machine, TapeCfg, MachineCfg, TransTable)
+module TuringMachine.TuringTypes exposing (Direction(..), Machine, TapeCfg, 
+                                           MachineCfg, TransTable)
 
 import Array exposing (Array)
 
@@ -30,7 +31,8 @@ type alias MachineCfg a b =
   , tapeCfg   : TapeCfg a                                                       
   }                                                                             
                                                                                 
-                                                                                
+
+---------------------------------------------------------------
 type alias KeyValue a b =                                                       
   { key : (b, Maybe a)                                                          
   , value : (b, Maybe a, Direction)                                             
@@ -38,4 +40,18 @@ type alias KeyValue a b =
                                                                                 
                                                                                 
 type alias TransTable a b =                                                     
-  Array (KeyValue a b)                                                           
+  Array (KeyValue a b)
+---------------------------------------------------------------
+
+---------------------------------------------------------------
+--EmptyCell = ?, UserCell = user input, StableCell 
+type Cell c = EmptyCell c | UserCell c | StableCell c
+
+type alias UserKeyValue a b =
+  { key : (b, Maybe a)  
+  , value : (Cell (b), Cell (Maybe a), Cell (Direction))
+  }
+
+type alias UserTransTable a b = 
+  Array (UserKeyValue a b)
+---------------------------------------------------------------

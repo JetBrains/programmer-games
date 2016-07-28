@@ -1,11 +1,12 @@
-module RunTuring exposing (debugRun, runMachine, transFunc)
+module TuringMachine.RunTuring exposing (debugRun, runMachine, transFunc)
                                
 import List exposing (map) 
 import Array exposing (get, slice, length)
 import String exposing (join)
-import TuringTypes exposing (Direction(..), Machine, MachineCfg, TransTable)
-import PrintTuring exposing (printMachineCfg) 
-import InitUpdate exposing (initMachineCfg, updateMachineCfg)                   
+
+import TuringMachine.TuringTypes exposing (Direction(..), Machine, MachineCfg, TransTable)
+import TuringMachine.PrintTuring exposing (printMachineCfg) 
+import TuringMachine.InitUpdate exposing (initMachineCfg, updateMachineCfg)                   
 
 
 -- | Return true if the machine is in a final state.                            

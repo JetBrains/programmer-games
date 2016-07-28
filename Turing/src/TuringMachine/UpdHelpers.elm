@@ -1,8 +1,10 @@
-module UpdHelpers exposing ( moveLeft, moveRight, getNewLeft, getNewRight, 
-                             doTrans )
+module TuringMachine.UpdHelpers exposing (moveLeft, moveRight, getNewLeft, 
+                                          getNewRight, doTrans)
 
 import Array exposing (Array, append, repeat, push, get, length, slice, empty)
-import TuringTypes exposing (Direction(..), Machine, TapeCfg, MachineCfg)
+
+import TuringMachine.TuringTypes exposing (Direction(..), Machine, TapeCfg, 
+                                           MachineCfg) 
 
 
 getNewRight : Array (Maybe a) -> Maybe a -> Array (Maybe a)
