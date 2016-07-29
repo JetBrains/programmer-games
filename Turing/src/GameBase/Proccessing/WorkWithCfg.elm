@@ -50,9 +50,12 @@ getAllCfgs model =
   let                                                                           
     initCfg  = (getHeadCfg model)
     updModel = (getTrTFromUserTrT model)
-  in                                                                            
-    { model | machineCfgs = (runMachine updModel.machine initCfg [initCfg])        
-    }                                                                           
+  in     
+    if updModel.ifTableFull == False 
+       then updModel
+    else { updModel
+              | machineCfgs = (runMachine updModel.machine initCfg [initCfg])     
+         }                                                                           
                                                                                 
                                                                                 
 getNextCfg : Model -> Model                                                     

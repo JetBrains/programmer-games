@@ -49,7 +49,8 @@ type alias Model =
   , ifRules      : Bool                                                         
   , ifAuthors    : Bool                                                         
   , ifEnd        : Bool                                                         
-  , ifCatLooks   : Bool                                                         
+  , ifCatLooks   : Bool 
+  , ifTableFull  : Bool
   }  
 
 

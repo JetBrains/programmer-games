@@ -112,13 +112,14 @@ getTrTFromUserTrT m =
     transTable = (translateFullTable userTable empty)
   in
     if (checkIfTableFull userTable True) == True
-      then {m | machine = { transition = (transFunc transTable 
+      then { m | machine = { transition = (transFunc transTable 
                                                    (Violet, Nothing, MoveLeft)) 
-                          , initHeadPosForDraw = m.machine.initHeadPosForDraw
-                          , initHeadPosForMach = m.machine.initHeadPosForMach
-                          , startState = m.machine.startState
-                          , acceptState = m.machine.acceptState
-                          , rejectState = m.machine.rejectState
-                          }  
+                           , initHeadPosForDraw = m.machine.initHeadPosForDraw
+                           , initHeadPosForMach = m.machine.initHeadPosForMach
+                           , startState = m.machine.startState
+                           , acceptState = m.machine.acceptState
+                           , rejectState = m.machine.rejectState
+                           } 
+               , ifTableFull = True
            }
-    else m 
+    else { m | ifTableFull = False } -- userTable is not full 

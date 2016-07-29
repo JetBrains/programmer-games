@@ -49,4 +49,5 @@ initModel machine table inp expRes level expPos =
   , ifAuthors = False                                                           
   , ifEnd = False                                                               
   , ifCatLooks = False                                                          
+  , ifTableFull = True
   }  

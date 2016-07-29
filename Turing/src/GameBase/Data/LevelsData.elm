@@ -115,7 +115,7 @@ transTable2 =
                 }
       }                               
     , { key = (LightGrey, Nothing)                                            
-      , value = { state = StableCell (Orange)
+      , value = { state = EmptyCell
                 , symb  = StableCell (Just Yellow)
                 , dir   = StableCell (MoveRight)
                 }

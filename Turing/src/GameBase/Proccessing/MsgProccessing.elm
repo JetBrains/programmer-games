@@ -161,13 +161,18 @@ clickHelpProccessing model =
                                                                                 
                                                                                 
 clickRunProccessing : Model -> Time -> ( Model, Cmd Msg )                       
-clickRunProccessing model time =                                                
-  ( (getAllCfgs model)                                                          
-    |> setPushFlag                                                              
-    |> updCatParam time                                                         
-    |> setTime time                                                             
-  , Cmd.none                                                                    
-  )                                                                             
+clickRunProccessing model time =         
+  let
+    updModel = (getAllCfgs model)  
+  in
+    if updModel.ifTableFull == False 
+       then (updModel, Cmd.none)
+    else
+      ( setPushFlag updModel
+        |> updCatParam time 
+        |> setTime time 
+      , Cmd.none
+      )                                                                             
                                                                                 
                                                                                 
 tickMsgProccessing : Model -> Time -> ( Model, Cmd Msg )                        

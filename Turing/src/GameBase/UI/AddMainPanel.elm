@@ -11,8 +11,9 @@ import GameBase.Data.GameTypes exposing (Model)
 import GameBase.Proccessing.WorkWithCfg exposing (getTapeFromCfg)               
 
 import Html exposing (Html)
-import Svg exposing (Svg, svg, image)  
-import Svg.Attributes exposing (width, height, x, y, xlinkHref)   
+import Svg exposing (Svg, svg, image, text, text')  
+import Svg.Attributes exposing (width, height, x, y, xlinkHref, 
+                                fontStyle, fontSize)   
 import List exposing (head)
 
 
@@ -44,7 +45,34 @@ transTableDraw level =
         , xlinkHref ("../img/level" ++ (toString level) ++ "/transTable.png")   
         ]                                                                       
         []                                                                      
-  ] 
+  ]
+
+
+levelDraw : Int -> Int -> List (Svg msg)                                        
+levelDraw level max =                                                           
+  [ text'                                                                       
+      [ x "695px"                                                               
+      , y "360px"                                                               
+      , fontStyle "italic"                                                      
+      , fontSize "30px"                                                         
+      ]                                                                         
+      [ text ((toString level) ++ "/" ++ (toString max)) ]                      
+  ]
+
+
+tableNotFullDraw : Model -> List (Svg msg)                                      
+tableNotFullDraw m =   
+  if m.ifTableFull == False
+     then [ text'                                                                       
+              [ x "20px"                                                               
+              , y "370px"                                                               
+              , fontStyle "italic"                                                      
+              , fontSize "15px"                                                         
+              ]                                                                         
+              [ text "Table is not full, fill the gaps to run the machine!" ]                      
+          ]
+  else []   
+
 ------------------------------------------------------------
                                                                                 
 addMainPanel : Model -> Html msg                                                
@@ -76,7 +104,9 @@ addMainPanel model =
         ++                                                                    
         (helpMsgDraw model.helpImg)                                           
         ++                                                                    
-        (levelDraw model.currLevel model.maxLevel)                            
+        (levelDraw model.currLevel model.maxLevel)
         ++                                                                    
-        (catLooksDraw model)                                                  
+        (catLooksDraw model)  
+        ++
+        (tableNotFullDraw model)
       )  
