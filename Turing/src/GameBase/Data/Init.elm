@@ -5,12 +5,12 @@ import Task exposing (perform)
 import Window exposing (Size, size)
 
 import TuringMachine.InitUpdate exposing (initMachineCfg) 
-import TuringMachine.TuringTypes exposing (Machine, TransTable)
+import TuringMachine.TuringTypes exposing (Machine, UserTransTable)
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..), 
                                          Model, Msg(..)) 
 
 
-init : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten ->             
+init : Machine BallOfWool Kitten -> UserTransTable BallOfWool Kitten ->             
        List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Int ->             
        Int -> (Model, Cmd Msg)                                                  
 init machine table inp expRes level expPos =                                    
@@ -19,7 +19,7 @@ init machine table inp expRes level expPos =
   )
 
 
-initModel : Machine BallOfWool Kitten -> TransTable BallOfWool Kitten ->        
+initModel : Machine BallOfWool Kitten -> UserTransTable BallOfWool Kitten ->        
             List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Int ->        
             Int -> Model                                                        
 initModel machine table inp expRes level expPos =                               

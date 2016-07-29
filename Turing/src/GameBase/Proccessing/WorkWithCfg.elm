@@ -8,7 +8,7 @@ import Array exposing (toList, empty)
 import TuringMachine.RunTuring exposing (runMachine)
 import TuringMachine.TuringTypes exposing (MachineCfg, TapeCfg, Direction(..))
 import GameBase.Data.GameTypes exposing (BallOfWool, Kitten(..), Model)
-
+import GameBase.Proccessing.TranslateTables exposing (getTrTFromUserTrT)
 
 emptyTape : TapeCfg BallOfWool                                                  
 emptyTape =                                                                     
@@ -48,9 +48,10 @@ getHeadCfg model =
 getAllCfgs : Model -> Model                                                     
 getAllCfgs model =                                                              
   let                                                                           
-  initCfg = (getHeadCfg model)                                                  
+    initCfg  = (getHeadCfg model)
+    updModel = (getTrTFromUserTrT model)
   in                                                                            
-    { model | machineCfgs = (runMachine model.machine initCfg [initCfg])        
+    { model | machineCfgs = (runMachine updModel.machine initCfg [initCfg])        
     }                                                                           
                                                                                 
                                                                                 

@@ -3,7 +3,7 @@ module GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..), Position, M
 import Time exposing (Time)
 import Window exposing (Size)
 
-import TuringMachine.TuringTypes exposing (Machine, TransTable, MachineCfg)
+import TuringMachine.TuringTypes exposing (Machine, UserTransTable, MachineCfg)
 
 
 --white is start, orange is natural, violet is reject                           
@@ -27,8 +27,8 @@ type alias Model =
   , machine      : Machine BallOfWool Kitten                                    
   , machineCfgs  : List (MachineCfg BallOfWool Kitten)                          
   --tables                                                                      
-  , trTableInit  : TransTable BallOfWool Kitten                                 
-  , trTableUser  : TransTable BallOfWool Kitten                                 
+  , trTableInit  : UserTransTable BallOfWool Kitten                                 
+  , trTableUser  : UserTransTable BallOfWool Kitten                                 
   --pictures                                                                    
   , catLeft      : Int    -- different for catImg                               
   , menuCatTop   : Int                                                          

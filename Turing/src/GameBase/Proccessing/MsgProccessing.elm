@@ -15,6 +15,7 @@ import GameBase.Data.GameTypes exposing (Msg(..), Model, Position)
 import List exposing (length)
 import Task exposing (perform) 
 import Time exposing (Time, inSeconds, now, second, millisecond)
+import Window exposing (size)
 
 
 getInitByLevel : Int -> Model                                                   
@@ -84,7 +85,7 @@ clickMsgProccessing m pos =
   else if m.ifEnd == True && m.finalImg == "../img/finalImg/final.png"          
      then if pos.y >= 350 && pos.y <= 380 && pos.x >= 155 && pos.x <= 680       
                   then ( (getInitByLevel 1)                                     
-                       , Cmd.none                                               
+                       , perform (\_ -> Debug.crash "task") WindowSize size
                        )                                                        
           else (m, Cmd.none)                                                    
   -- if go to the next level                                                    
@@ -92,7 +93,7 @@ clickMsgProccessing m pos =
      then if pos.y >= 170 && pos.y <= 200 && pos.x >= 190 && pos.x <= 670       
                   then ( (getInitByLevel m.currLevel)                           
                          |> contPlayModel                                       
-                       , Cmd.none                                               
+                       , perform (\_ -> Debug.crash "task") WindowSize size 
                        )                                                        
           else (m, Cmd.none)     
   -- if go to the current level again                                           
@@ -100,7 +101,7 @@ clickMsgProccessing m pos =
      then if pos.y >= 520 && pos.y <= 560 && pos.x >= 315 && pos.x <= 668       
                   then ( (getInitByLevel m.currLevel)                           
                          |> contPlayModel                                       
-                       , Cmd.none                                               
+                       , perform (\_ -> Debug.crash "task") WindowSize size 
                        )                                                        
           else (m, Cmd.none)                                                    
   else if m.ifPlay == True                                                      
@@ -115,7 +116,7 @@ clickMsgProccessing m pos =
   -- if return from gameWindow to main menu                             
   else if pos.y >= 20 && pos.y <= 35 && pos.x >= 540 && pos.x <= 740    
                   then ( (getInitByLevel 1)                                     
-                       , Cmd.none                                               
+                       , perform (\_ -> Debug.crash "task") WindowSize size                                               
                        )                                                        
           else if pos.y >= 325 && pos.y <= 380 && pos.x >= 535 && pos.x <= 580  
                   then (clickRunProccessing m second)                           
