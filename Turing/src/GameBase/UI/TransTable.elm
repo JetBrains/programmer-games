@@ -11,214 +11,44 @@ import Svg.Attributes exposing (width,height,x,y,xlinkHref,fontStyle,fontSize)
 import Array exposing (length, isEmpty, slice, get)
 import List exposing (drop, head, isEmpty)
 
------------------------------------------------------------------------------
---PARAMETERS-----------------------------------------------------------------
 
 trTableLeftMargin : Int 
 trTableLeftMargin = 380 
-                                                                                
+
 trTableTopMargin : Int 
 trTableTopMargin = 60 
-                                                                                
+
 trTableWidth : Int 
 trTableWidth = 460
-                                                                                
+
 trTableHeight : Int
 trTableHeight = 250
 
-quesWidth : Int 
-quesWidth = 12
-                                                                                
-quesHeight : Int 
-quesHeight = 26
+cellWidth : Int
+cellWidth = 20
 
------------------------------------------------------------------------------
---COMMON FUNC FOR EMPTY, STABLE AND USER CELLS PROCCESS----------------------
-
--- check if symbol is not empty
-ifSymbEmpty : Cell (Maybe BallOfWool) -> Bool  
-ifSymbEmpty symb =                                                           
-  case symb of                                                                  
-    EmptyCell -> True                                                          
-    _ -> False                                                                   
-                                                                                
-
--- check if state is not empty
-ifStateEmpty : Cell Kitten -> Bool                                           
-ifStateEmpty state =                                                         
-  case state of                                                                 
-    EmptyCell -> True                                                         
-    _ -> False                                                                
-                                                                                
-
--- check if dir is not empty
-ifDirEmpty : Cell Direction -> Bool                                          
-ifDirEmpty dir =                                                             
-  case dir of                                                                   
-    EmptyCell -> True                                                          
-    _ -> False                                                           
+cellHeight : Int
+cellHeight = 20
 
 
--- elem [0..2], column [0..2]                                                   
--- symb is 0 elem, dir is 1 elem, state is 2 elem                               
+-- elem [0..2], column [0..2]
+-- symb is 0 elem, dir is 1 elem, state is 2 elem 
 fromParamToLeftMargin : Int -> Int -> Int                                       
 fromParamToLeftMargin elem column =                                             
   trTableLeftMargin + 155 + column*80 + elem*20
                                                                                 
                                                                                 
--- ifDir is 0 or 1 (bool), row [0..4]                                           
--- "dir" is 1, _ is 0                                                           
+-- ifDir is 0 or 1 (bool), row [0..4] 
+-- "dir" is 1, _ is 0
 fromParamToTopMargin : Int -> Int -> Int                                        
 fromParamToTopMargin ifDir row =                                                
   trTableTopMargin + 40 + ifDir*20 + row*40                                     
-                                                                                
-----------------------------------------------------------------------------  
--- FUNC FOR EMPTY CELLS PROCCESS-------------------------------------------- 
-
--- get left margin from key parameters for question image                       
-emptyCellLeftMargin : ( (Kitten, Maybe BallOfWool)
-                      , String) -> Int                    
-emptyCellLeftMargin key =                                                            
-  case key of                                                                   
-    ((White, sym), "symb") -> (fromParamToLeftMargin 0 0)
-    ((White, sym), "state") -> (fromParamToLeftMargin 2 0)                      
-    ((White, sym),  _) -> (fromParamToLeftMargin 1 0)                            
-    ((LightGrey, sym), "symb") -> (fromParamToLeftMargin 0 1)                   
-    ((LightGrey, sym), "state") -> (fromParamToLeftMargin 2 1)                  
-    ((LightGrey, sym),  _) -> (fromParamToLeftMargin 1 1)                        
-    ((Grey, sym), "symb") -> (fromParamToLeftMargin 0 2)                        
-    ((Grey, sym), "state") -> (fromParamToLeftMargin 2 2)                       
-    ((Grey, sym),  _) -> (fromParamToLeftMargin 1 2)                             
-    ((st, sym),  _) -> (fromParamToLeftMargin 0 3)                               
-                                                                                
-                                                                                
--- get top margin from key parameters for question image                        
-emptyCellTopMargin : ( (Kitten, Maybe BallOfWool)
-                     , String) -> Int                     
-emptyCellTopMargin key =                                                             
-  case key of                                                                   
-    ((st, Just Red), "dir") -> (fromParamToTopMargin 1 0)                       
-    ((st, Just Red), s) -> (fromParamToTopMargin 0 0)                           
-    ((st, Just Yellow), "dir") -> (fromParamToTopMargin 1 1)                    
-    ((st, Just Yellow), s) -> (fromParamToTopMargin 0 1)                        
-    ((st, Just Green), "dir") -> (fromParamToTopMargin 1 2)                     
-    ((st, Just Green), s) -> (fromParamToTopMargin 0 2)                         
-    ((st, Just Blue), "dir") -> (fromParamToTopMargin 1 3)                      
-    ((st, Just Blue), s) -> (fromParamToTopMargin 0 3)                          
-    ((st, Nothing), "dir") -> (fromParamToTopMargin 1 4)                        
-    ((st, Nothing), s) -> (fromParamToTopMargin 0 4) 
 
 
--- check for whole value and update result if find empty value                  
-ifValueHasEmpty : Maybe (UserKeyValue BallOfWool Kitten) ->                     
-                  List ((Kitten, Maybe BallOfWool), String) ->                  
-                  List ((Kitten, Maybe BallOfWool), String)                     
-ifValueHasEmpty maybeUserKV res =                                               
-  case maybeUserKV of                                                           
-    Just userKV ->                                                              
-      if (ifSymbEmpty userKV.value.symb) == True &&                             
-         (ifStateEmpty userKV.value.state) == False &&                          
-         (ifDirEmpty userKV.value.dir) == False                                 
-              then (res ++ [(userKV.key, "symb")])                              
-      else if (ifStateEmpty userKV.value.state) == True &&                      
-              (ifSymbEmpty userKV.value.symb) == False &&                       
-              (ifDirEmpty userKV.value.dir) == False                            
-              then (res ++ [(userKV.key, "state")])                             
-      else if (ifDirEmpty userKV.value.dir) == True &&                          
-              (ifSymbEmpty userKV.value.symb) == False &&                       
-              (ifStateEmpty userKV.value.state) == False                        
-              then (res ++ [(userKV.key, "dir")])                               
-      else if (ifSymbEmpty userKV.value.symb) == True &&                        
-              (ifStateEmpty userKV.value.state) == True &&                      
-              (ifDirEmpty userKV.value.dir) == False                            
-              then (res ++ [(userKV.key, "symb"), (userKV.key, "state")])       
-      else if (ifSymbEmpty userKV.value.symb) == True &&                        
-              (ifDirEmpty userKV.value.dir) == True &&                          
-              (ifStateEmpty userKV.value.state) == False                        
-              then (res ++ [(userKV.key, "symb"), (userKV.key, "dir")])         
-      else if (ifStateEmpty userKV.value.state) == True &&                      
-              (ifDirEmpty userKV.value.dir) == True &&                          
-              (ifSymbEmpty userKV.value.symb) == False                          
-              then (res ++ [(userKV.key, "state"), (userKV.key, "dir")])        
-      else if (ifSymbEmpty userKV.value.symb) == True &&                        
-              (ifStateEmpty userKV.value.state) == True &&                      
-              (ifDirEmpty userKV.value.dir) == True                             
-              then (res ++ [(userKV.key, "symb"), (userKV.key, "state"),        
-                            (userKV.key, "dir")])                               
-      else res                                                                  
-    Nothing -> res 
-
--- get key and element name (string) for empty cells
-getEmptyCellsKeys : UserTransTable BallOfWool Kitten -> 
-                     List ((Kitten, Maybe BallOfWool), String) ->
-                     List ((Kitten, Maybe BallOfWool), String)
-getEmptyCellsKeys initTable res =  
-  let         
-    updRes = (ifValueHasEmpty (get 0 initTable) res)
-    len = (length initTable)                                                    
-  in                                                                            
-    if (Array.isEmpty initTable) == False 
-      then (getEmptyCellsKeys (slice 1 len initTable) updRes)                    
-    else res
-
-
--- svg msg for one (head) question
-oneEmptyCellDraw : Maybe ((Kitten, Maybe BallOfWool), String) -> List (Svg msg) 
-oneEmptyCellDraw maybeKey =
-  case maybeKey of 
-    Just k ->
-      [ image                                                                     
-          [ x (toString (emptyCellLeftMargin k) ++ "px")
-          , y (toString (emptyCellTopMargin k) ++ "px")
-          , width ((toString quesWidth) ++ "px")  
-          , height ((toString quesHeight) ++ "px")
-          , xlinkHref ("../img/elements/quesSmall.png")
-          ]
-          []
-      ]
-    Nothing ->
-      [ image                                                                   
-          [ x "5px"
-          , y "5px"
-          , width ((toString quesWidth) ++ "px")
-          , height ((toString quesHeight) ++ "px")
-          , xlinkHref ("../img/elements/quesSmall.png")
-          ]                                                                     
-          []                                                                    
-      ]   
-
-
--- get all questions` images (svg msg) 
--- from ques coordinates (key + elem_name_string)
-allEmptyCellsDraw : List ((Kitten, Maybe BallOfWool), String) -> 
-                    List (Svg msg) -> List (Svg msg)
-allEmptyCellsDraw keys res =
-  let 
-    headKey = (head keys)
-    updRes = res ++ (oneEmptyCellDraw headKey)
-    updKeyList = drop 1 keys
-  in
-    if (List.isEmpty keys) == False
-      then (allEmptyCellsDraw updKeyList updRes) 
-    else res
-
-
--- if table is not full - get list of ques coordinates (key + elem_name_string)
--- and then get svg msg for all questions
-emptyCellsProccess : UserTransTable BallOfWool Kitten -> List (Svg msg)
-emptyCellsProccess initTable =
-  if (checkIfTableFull initTable True) == False
-     then (allEmptyCellsDraw (getEmptyCellsKeys initTable []) [])
-  else []
-
------------------------------------------------------------------------------
--- FUNC FOR STABLE OR USER CELLS PROCCESS------------------------------------ 
-
--- get left margin from key parameters for question image                       
-stableUserCellLeftMargin : 
-                      ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten
-                      , String) -> Int                                               
-stableUserCellLeftMargin key =  
+-- get left margin from key parameters
+cellLeftMargin : ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten
+                 , String) -> Int                                               
+cellLeftMargin key =  
   case key of                                                                   
     ((White, sym), new, "symb") -> (fromParamToLeftMargin 0 0)                  
     ((White, sym), new, "state") -> (fromParamToLeftMargin 2 0)                     
@@ -232,13 +62,12 @@ stableUserCellLeftMargin key =
     ((st, sym), new, _) -> (fromParamToLeftMargin 0 3)                              
                                                                                 
                                                                                 
--- get top margin from key parameters for question image                        
-stableUserCellTopMargin : 
-                      ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten
-                      , String) -> Int                                                
-stableUserCellTopMargin key = 
+-- get top margin from key parameters
+cellTopMargin : ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten
+                , String) -> Int                                                
+cellTopMargin key = 
   case key of                                                                   
-    ((st, Just Red), new,  "dir") -> (fromParamToTopMargin 1 0)                     
+    ((st, Just Red), new, "dir") -> (fromParamToTopMargin 1 0)                     
     ((st, Just Red), new, s) -> (fromParamToTopMargin 0 0)                          
     ((st, Just Yellow), new, "dir") -> (fromParamToTopMargin 1 1)                   
     ((st, Just Yellow), new, s) -> (fromParamToTopMargin 0 1)                       
@@ -250,78 +79,42 @@ stableUserCellTopMargin key =
     ((st, Nothing), new, s) -> (fromParamToTopMargin 0 4)  
 
 
--- check for whole value and update result if find stable or user value 
-ifValueHasStableUser : Maybe (UserKeyValue BallOfWool Kitten) ->         
-                 List ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten
-                      , String) ->                  
-                 List ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten
-                      , String)                     
-ifValueHasStableUser maybeUserKV res = 
-  case maybeUserKV of                                                           
-    Just userKV ->                                                              
-      if (ifSymbEmpty userKV.value.symb) == False &&                         
-         (ifStateEmpty userKV.value.state) == True &&                        
-         (ifDirEmpty userKV.value.dir) == True                               
-              then (res ++ [(userKV.key, userKV.value, "symb")])
-      else if (ifStateEmpty userKV.value.state) == False &&                  
-              (ifSymbEmpty userKV.value.symb) == True &&                     
-              (ifDirEmpty userKV.value.dir) == True                          
-              then (res ++ [(userKV.key, userKV.value, "state")])
-      else if (ifDirEmpty userKV.value.dir) == False &&                      
-              (ifSymbEmpty userKV.value.symb) == True &&                     
-              (ifStateEmpty userKV.value.state) == True                      
-              then (res ++ [(userKV.key, userKV.value, "dir")]) 
-      else if (ifSymbEmpty userKV.value.symb) == False &&                    
-              (ifStateEmpty userKV.value.state) == False &&                  
-              (ifDirEmpty userKV.value.dir) == True                          
-              then (res ++ [ (userKV.key, userKV.value, "symb")
-                           , (userKV.key, userKV.value, "state")
-                           ])
-      else if (ifSymbEmpty userKV.value.symb) == False &&                    
-              (ifDirEmpty userKV.value.dir) == False &&                      
-              (ifStateEmpty userKV.value.state) == True                      
-              then (res ++ [ (userKV.key, userKV.value, "symb")
-                           , (userKV.key, userKV.value, "dir")
-                           ])         
-      else if (ifStateEmpty userKV.value.state) == False &&                  
-              (ifDirEmpty userKV.value.dir) == False &&                      
-              (ifSymbEmpty userKV.value.symb) == True                        
-              then (res ++ [ (userKV.key, userKV.value, "state")
-                           , (userKV.key, userKV.value, "dir")
-                           ])        
-      else if (ifSymbEmpty userKV.value.symb) == False &&                    
-              (ifStateEmpty userKV.value.state) == False &&                  
-              (ifDirEmpty userKV.value.dir) == False                         
-              then (res ++ [ (userKV.key, userKV.value, "symb")
-                           , (userKV.key, userKV.value, "state")
-                           , (userKV.key, userKV.value, "dir")
-                           ])                               
-      else res                                                                  
-    Nothing -> res                                                              
-                   
+getHeadKey : Maybe (UserKeyValue BallOfWool Kitten) ->
+             List ((Kitten, Maybe BallOfWool)
+                  , UserValue BallOfWool Kitten, String) ->
+             List ((Kitten, Maybe BallOfWool)
+                  , UserValue BallOfWool Kitten, String)
+getHeadKey maybeUserKV res = 
+  case maybeUserKV of
+    Just userKV ->
+      (res ++ [ (userKV.key, userKV.value, "symb")                                  
+              , (userKV.key, userKV.value, "state")                                         
+              , (userKV.key, userKV.value, "dir")                                           
+              ]
+      )   
+    Nothing -> res
 
--- get key and element name (string) for stable or user cells
-getStableUserCellsKeys : UserTransTable BallOfWool Kitten ->                         
-                 List ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten
-                      , String) ->                                        
-                 List ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten
-                      , String)   
-getStableUserCellsKeys initTable res =                                               
+
+-- get key, value and element name (string)
+getKeys : UserTransTable BallOfWool Kitten ->                         
+          List ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten
+               , String) ->                                        
+          List ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten
+               , String)   
+getKeys initTable res =                                               
   let                                                                           
-    updRes = (ifValueHasStableUser (get 0 initTable) res)                            
+    updRes = (getHeadKey (get 0 initTable) res)                            
     len = (length initTable)                                                    
   in                                                                            
     if (Array.isEmpty initTable) == False                                       
-      then (getStableUserCellsKeys (slice 1 len initTable) updRes)                  
+      then (getKeys (slice 1 len initTable) updRes)                  
     else res   
 
 
---30 30 20 15
--- svg msg for one (head) stable or user cell
-oneStableUserCellDraw : 
-                Maybe ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten
-                      , String) -> List (Svg msg) 
-oneStableUserCellDraw maybeKey =                                                     
+-- svg msg for one (head) cell
+oneCellDraw : Maybe ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten
+                    , String) -> List (Svg msg) 
+oneCellDraw maybeKey =                                                     
   case maybeKey of                                                              
     Just k ->
       let
@@ -393,10 +186,10 @@ oneStableUserCellDraw maybeKey =
                   "../img/elements/quesSmall.png"  
       in
         [ image                                                                   
-            [ x (toString (stableUserCellLeftMargin k) ++ "px")
-            , y (toString (stableUserCellTopMargin k) ++ "px")
-            , width ((toString 20) ++ "px")
-            , height ((toString 20) ++ "px")
+            [ x (toString (cellLeftMargin k) ++ "px")
+            , y (toString (cellTopMargin k) ++ "px")
+            , width ((toString cellWidth) ++ "px")
+            , height ((toString cellHeight) ++ "px")
             , xlinkHref href
             ]                                                                     
             []                                                                    
@@ -405,34 +198,31 @@ oneStableUserCellDraw maybeKey =
       [ image 
           [ x "5px" 
           , y "5px"
-          , width ((toString quesWidth) ++ "px")  
-          , height ((toString quesHeight) ++ "px") 
+          , width ((toString cellWidth) ++ "px")  
+          , height ((toString cellHeight) ++ "px") 
           , xlinkHref ("../img/elements/quesSmall.png")
           ] 
           [] 
       ]
 
 
--- get all kitten or ball_of_wool images (svg msg)
--- from coordinates (key + elem_name_string)
-allStableUserCellsDraw : 
-                 List ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten
-                      , String) -> List (Svg msg) -> List (Svg msg) 
-allStableUserCellsDraw keys res =                                                    
+-- svg msg for all cells
+allCellsDraw : List ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten
+                    , String) -> List (Svg msg) -> List (Svg msg) 
+allCellsDraw keys res =                                                    
   let                                                                           
     headKey = (head keys)                                                       
-    updRes = res ++ (oneStableUserCellDraw headKey)                                  
+    updRes = res ++ (oneCellDraw headKey)                                  
     updKeyList = drop 1 keys                                                    
   in                                                                            
     if (List.isEmpty keys) == False                                             
-      then (allStableUserCellsDraw updKeyList updRes)                                
+      then (allCellsDraw updKeyList updRes)                                
     else res 
 
 
--- get svg msg for all stable or user cells in table                                    
-stableUserCellsProccess : UserTransTable BallOfWool Kitten -> List (Svg msg)        
-stableUserCellsProccess initTable =                                                 
-  allStableUserCellsDraw (getStableUserCellsKeys initTable []) [] 
+cellsProccessing : UserTransTable BallOfWool Kitten -> List (Svg msg)        
+cellsProccessing initTable =                                                 
+  allCellsDraw (getKeys initTable []) [] 
 
 -----------------------------------------------------------------------------
 
@@ -450,9 +240,7 @@ transTableDraw m =
       []  
     ]
     ++
-    (stableUserCellsProccess m.trTableInit)
-    ++
-    (emptyCellsProccess m.trTableInit)
+    (cellsProccessing m.trTableInit)
   )
                                                                                 
 
