@@ -1,7 +1,8 @@
-module TuringMachine.TuringTypes exposing (Direction(..), Machine, TapeCfg, 
-                                           MachineCfg, TransTable, 
-                                           UserTransTable, UserKeyValue, 
-                                           KeyValue, Cell(..))
+module TuringMachine.TuringTypes exposing (Direction(..), Machine, 
+                                           TapeCfg, MachineCfg, 
+                                           TransTable, UserTransTable, 
+                                           UserKeyValue, KeyValue, 
+                                           UserValue, Cell(..))
 
 import Array exposing (Array)
 
