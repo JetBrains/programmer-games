@@ -6,14 +6,14 @@ import GameBase.UI.Cat exposing (gameCatDraw, catLooksDraw)
 import GameBase.UI.ControlElements exposing (runButtonDraw, runFastDraw,               
                                              quesButtonDraw, helpMsgDraw, 
                                              levelDraw)
+import GameBase.UI.TransTable exposing (transTableDraw, tableNotFullDraw) 
 import GameBase.UI.DivSvgStyles exposing (fullScreenImg, svgStyle) 
 import GameBase.Data.GameTypes exposing (Model)
-import GameBase.Proccessing.WorkWithCfg exposing (getTapeFromCfg)               
+import GameBase.Proccessing.WorkWithCfg exposing (getTapeFromCfg) 
 
 import Html exposing (Html)
-import Svg exposing (Svg, svg, image, text, text')  
-import Svg.Attributes exposing (width, height, x, y, xlinkHref, 
-                                fontStyle, fontSize)   
+import Svg exposing (Svg, svg, image)  
+import Svg.Attributes exposing (width, height, x, y, xlinkHref) 
 import List exposing (head)
 
 
@@ -35,46 +35,6 @@ mirrorDraw level =
   ] 
 
 
-transTableDraw : Int -> List (Svg msg)                                          
-transTableDraw level =                                                          
-  [ Svg.image                                                                   
-        [ x "380px"                                                             
-        , y "60px"                                                              
-        , Svg.Attributes.width "460px"                                          
-        , Svg.Attributes.height "250px"                                         
-        , xlinkHref ("../img/level" ++ (toString level) ++ "/transTable.png")   
-        ]                                                                       
-        []                                                                      
-  ]
-
-
-levelDraw : Int -> Int -> List (Svg msg)                                        
-levelDraw level max =                                                           
-  [ text'                                                                       
-      [ x "695px"                                                               
-      , y "360px"                                                               
-      , fontStyle "italic"                                                      
-      , fontSize "30px"                                                         
-      ]                                                                         
-      [ text ((toString level) ++ "/" ++ (toString max)) ]                      
-  ]
-
-
-tableNotFullDraw : Model -> List (Svg msg)                                      
-tableNotFullDraw m =   
-  if m.ifTableFull == False
-     then [ text'                                                                       
-              [ x "20px"                                                               
-              , y "370px"                                                               
-              , fontStyle "italic"                                                      
-              , fontSize "15px"                                                         
-              ]                                                                         
-              [ text "Table is not full, fill the gaps to run the machine!" ]                      
-          ]
-  else []   
-
-------------------------------------------------------------
-                                                                                
 addMainPanel : Model -> Html msg                                                
 addMainPanel model =                                                            
   let                                                                           
@@ -94,7 +54,7 @@ addMainPanel model =
         ++                                                                    
         (gameCatDraw model)                                                       
         ++                                                                    
-        (transTableDraw model.currLevel)                                      
+        (transTableDraw model)                                      
         ++                                                                    
         runFastDraw                                                           
         ++                                                                    

@@ -57,69 +57,99 @@ machine2 =
   , rejectState = Violet                                                        
   }                                                                             
                                                                                 
-transTable2 : UserTransTable BallOfWool Kitten                                      
+transTable2 : UserTransTable BallOfWool Kitten     
 transTable2 =                                                                   
   fromList                                                                      
     [ { key = (White, Just Red)                                                
-      , value = { state = StableCell (White)
-                , symb  = StableCell (Just Red)
-                , dir   = StableCell (MoveRight)
+      , value = { state = EmptyCell --StableCell (White)
+                , symb  = EmptyCell --StableCell (Just Red)
+                , dir   = EmptyCell --StableCell (MoveRight)
                 }
       }                         
     , { key = (White, Just Yellow)                                             
-      , value = { state = StableCell (White)
-                , symb  = StableCell (Just Yellow)
-                , dir   = StableCell (MoveRight)
+      , value = { state = EmptyCell --StableCell (White)
+                , symb  = EmptyCell --StableCell (Just Yellow)
+                , dir   = EmptyCell --StableCell (MoveRight)
                 }
       }                                
     , { key = (White, Just Green)
-      , value = { state = StableCell (White)
-                , symb  = StableCell (Just Green)
-                , dir   = StableCell (MoveRight)
+      , value = { state = EmptyCell --StableCell (White)
+                , symb  = EmptyCell --StableCell (Just Green)
+                , dir   = EmptyCell --StableCell (MoveRight)
                 }
       }                                  
     , { key = (White, Just Blue)                                               
-      , value = { state = StableCell (White)
-                , symb  = StableCell (Just Blue)
-                , dir   = StableCell (MoveRight)
+      , value = { state = EmptyCell --StableCell (White)
+                , symb  = EmptyCell --StableCell (Just Blue)
+                , dir   = EmptyCell --StableCell (MoveRight)
                 }
       }                                  
     , { key = (White, Nothing)                                                
-      , value = { state = StableCell (LightGrey) 
-                , symb  = StableCell (Just Red) 
-                , dir   = StableCell (MoveLeft)
+      , value = { state = EmptyCell   
+                , symb  = EmptyCell 
+                , dir   = EmptyCell --StableCell (MoveLeft)
                 }
       }                                
     , { key = (LightGrey, Just Red)                                            
-      , value = { state = StableCell (LightGrey)
-                , symb  = StableCell (Just Red) 
-                , dir   = StableCell (MoveLeft)
+      , value = { state = EmptyCell --StableCell (LightGrey)
+                , symb  = EmptyCell --StableCell (Just Red) 
+                , dir   = EmptyCell --StableCell (MoveLeft)
                 }
       }                                
     , { key = (LightGrey, Just Yellow)                                         
-      , value = { state = StableCell (LightGrey) 
-                , symb  = StableCell (Just Yellow)
-                , dir   = StableCell (MoveLeft)
+      , value = { state = EmptyCell --StableCell (LightGrey) 
+                , symb  = EmptyCell --StableCell (Just Yellow)
+                , dir   = EmptyCell 
                 }
       }                             
     , { key = (LightGrey, Just Green)                                          
-      , value = { state = StableCell (LightGrey) 
-                , symb  = StableCell (Just Green) 
-                , dir   = StableCell (MoveLeft)
+      , value = { state = EmptyCell --StableCell (LightGrey) 
+                , symb  = EmptyCell --StableCell (Just Green) 
+                , dir   = EmptyCell --StableCell (MoveLeft)
                 }
       }                              
     , { key = (LightGrey, Just Blue)                                           
-      , value = { state = StableCell (LightGrey) 
-                , symb  = StableCell (Just Blue) 
-                , dir   = StableCell (MoveLeft)
+      , value = { state = EmptyCell --StableCell (LightGrey) 
+                , symb  = EmptyCell --StableCell (Just Blue) 
+                , dir   = EmptyCell --StableCell (MoveLeft)
                 }
       }                               
     , { key = (LightGrey, Nothing)                                            
-      , value = { state = EmptyCell
-                , symb  = StableCell (Just Yellow)
-                , dir   = StableCell (MoveRight)
+      , value = { state = EmptyCell --StableCell (Orange) 
+                , symb  = EmptyCell --StableCell (Just Yellow)
+                , dir   = EmptyCell --StableCell (MoveRight)
                 }
-      }                               
+      }   
+    , { key = (Grey, Just Red)                                             
+      , value = { state = EmptyCell --StableCell (LightGrey)                    
+                , symb  = EmptyCell --StableCell (Just Red)                     
+                , dir   = EmptyCell --StableCell (MoveLeft)                     
+                }                                                               
+      }                                                                         
+    , { key = (Grey, Just Yellow)                                          
+      , value = { state = EmptyCell --StableCell (LightGrey)                    
+                , symb  = EmptyCell --StableCell (Just Yellow)                  
+                , dir   = EmptyCell                                             
+                }                                                               
+      }                                                                         
+    , { key = (Grey, Just Green)                                           
+      , value = { state = EmptyCell --StableCell (LightGrey)                    
+                , symb  = EmptyCell --StableCell (Just Green)                   
+                , dir   = EmptyCell --StableCell (MoveLeft)                     
+                }                                                               
+      }                                                                         
+    , { key = (Grey, Just Blue)                                            
+      , value = { state = EmptyCell --StableCell (LightGrey)                    
+                , symb  = EmptyCell --StableCell (Just Blue)                    
+                , dir   = EmptyCell --StableCell (MoveLeft)                     
+                }                                                               
+      }                                                                         
+    , { key = (Grey, Nothing)                                              
+      , value = { state = EmptyCell --StableCell (Orange)                       
+                , symb  = EmptyCell --StableCell (Just Yellow)                  
+                , dir   = EmptyCell --StableCell (MoveRight)                    
+                }                                                               
+      }   
     ]                                                                           
                                                                                 
 input2 : List (Maybe BallOfWool)                                                

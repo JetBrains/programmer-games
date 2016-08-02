@@ -1,4 +1,5 @@
-module GameBase.Proccessing.TranslateTables exposing (getTrTFromUserTrT)
+module GameBase.Proccessing.TranslateTables exposing (getTrTFromUserTrT, 
+                                                      checkIfTableFull)
 
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..), Model)
 import TuringMachine.TuringTypes exposing ( Direction(..), Machine, TransTable, 
@@ -67,7 +68,7 @@ fromCellToState cell =
   case cell of                                                                   
     StableCell st -> st                                                            
     UserCell st -> st
-    EmptyCell -> Violet --smth does wrong
+    EmptyCell -> Violet -- smth does wrong
 
 
 fromCellToDir : Cell Direction -> Direction
