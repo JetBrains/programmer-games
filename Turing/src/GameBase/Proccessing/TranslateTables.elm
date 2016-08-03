@@ -35,9 +35,9 @@ ifValueNotEmpty : Maybe (UserKeyValue BallOfWool Kitten) -> Bool
 ifValueNotEmpty maybeUserKV =
   case maybeUserKV of 
     Just userKV ->
-      if (ifSymbNotEmpty userKV.value.symb) && 
-         (ifStateNotEmpty userKV.value.state) && 
-         (ifDirNotEmpty userKV.value.dir)  
+      if (ifSymbNotEmpty userKV.value.symb) == True && 
+         (ifStateNotEmpty userKV.value.state) == True && 
+         (ifDirNotEmpty userKV.value.dir) == True 
          then True
       else False
     Nothing -> False

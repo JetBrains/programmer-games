@@ -2,9 +2,10 @@ module GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..), Position, M
 
 import Time exposing (Time)
 import Window exposing (Size)
+import Array exposing (Array)
 
-import TuringMachine.TuringTypes exposing (Machine, UserTransTable, MachineCfg)
-
+import TuringMachine.TuringTypes exposing (Machine, UserTransTable, MachineCfg, 
+                                           Cell(..), Direction(..))
 
 --white is start, orange is natural, violet is reject                           
 type BallOfWool = Red | Yellow | Green | Blue -- a  
@@ -17,12 +18,12 @@ type alias Position =
 
 -- MODEL                                                                        
 type alias Model =                                                              
-  { -- options                                                                  
+  { --options                                                                  
     windSize       : Size -- for WindowsSize message                            
   , timeUnit       : Time                                                       
   , whenGameStarts : Time                                                       
   , currTime       : Time                                                       
-  -- machine                                                                    
+  --machine                                                                    
   , input        : List (Maybe BallOfWool)                                      
   , machine      : Machine BallOfWool Kitten                                    
   , machineCfgs  : List (MachineCfg BallOfWool Kitten)                          
@@ -36,13 +37,13 @@ type alias Model =
   , catImg       : String -- catPush, catThink                                  
   , helpImg      : String -- help text                                          
   , finalImg     : String                                                       
-  --levels and result                                                           
+  --levels
   , currLevel    : Int                                                          
   , maxLevel     : Int                                                          
-  -- expected results                                                           
+  --expected results                                                           
   , expPos       : Int                                                          
   , expRes       : List (Maybe BallOfWool)                                      
-  -- flags                                                                      
+  --flags                                                                      
   , ifPushRun    : Bool                                                         
   , ifStart      : Bool                                                         
   , ifPlay       : Bool                                                         
@@ -51,6 +52,10 @@ type alias Model =
   , ifEnd        : Bool                                                         
   , ifCatLooks   : Bool 
   , ifTableFull  : Bool
+  --current used cats and balls
+  , usedCats  : Array (Cell Kitten)  
+  , usedBalls : Array (Cell (Maybe BallOfWool))
+  , usedDirs  : Array (Cell Direction)
   }  
 
 

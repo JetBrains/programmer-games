@@ -6,7 +6,7 @@ import GameBase.UI.Cat exposing (gameCatDraw, catLooksDraw)
 import GameBase.UI.ControlElements exposing (runButtonDraw, runFastDraw,               
                                              quesButtonDraw, helpMsgDraw, 
                                              levelDraw)
-import GameBase.UI.TransTable exposing (transTableDraw, tableNotFullDraw) 
+import GameBase.UI.TransTable.TransTableDraw exposing (transTableDraw, tableNotFullDraw) 
 import GameBase.UI.DivSvgStyles exposing (fullScreenImg, svgStyle) 
 import GameBase.Data.GameTypes exposing (Model)
 import GameBase.Proccessing.WorkWithCfg exposing (getTapeFromCfg) 

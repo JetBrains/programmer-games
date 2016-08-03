@@ -59,6 +59,7 @@ type alias UserValue a b =
 type alias UserKeyValue a b =
   { key : (b, Maybe a)  
   , value : UserValue a b
+  , clickNum : Int
   }
 
 type alias UserTransTable a b = 

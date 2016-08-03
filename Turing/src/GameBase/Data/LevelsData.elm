@@ -1,14 +1,16 @@
-module GameBase.Data.LevelsData exposing (machine1, transTable1, input1, 
-                                          expectedResult1, expectedPos1, 
-                                          machine2, transTable2, input2, 
-                                          expectedResult2, expectedPos2)
+module GameBase.Data.LevelsData exposing (machine1, transTable1, input1,        
+                                          expectedResult1, expectedPos1,        
+                                          usedCats1, usedBalls1,          
+                                          machine2, transTable2, input2,      
+                                          expectedResult2, expectedPos2,        
+                                          usedCats2, usedBalls2)  
 
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))
 import TuringMachine.TuringTypes exposing ( Direction(..), Machine, 
                                             UserTransTable, Cell(..))
 import TuringMachine.RunTuring exposing (transFunc)
 
-import Array exposing (fromList)
+import Array exposing (Array, fromList)
 
 ------------------------------------------------------------------------------  
 
@@ -21,7 +23,6 @@ machine1 =
   , acceptState = Orange                                                        
   , rejectState = Violet                                                        
   }                                                                             
-                           
 
 transTable1 : UserTransTable BallOfWool Kitten                                      
 transTable1 =                                                                   
@@ -31,6 +32,7 @@ transTable1 =
                 , symb  = StableCell (Just Red) 
                 , dir   = StableCell (MoveRight)
                 }
+      , clickNum = 0
       }                                                                         
     ]                                                                           
                                                                                 
@@ -44,7 +46,14 @@ expectedResult1 =
                                                                                 
 expectedPos1 : Int                                                              
 expectedPos1 = 2                                                                
-                                                                                
+
+usedCats1 : Array (Cell Kitten)
+usedCats1 = fromList [UserCell White]
+
+usedBalls1 : Array (Cell (Maybe BallOfWool))
+usedBalls1 = fromList [UserCell (Just Yellow), UserCell (Just Red), 
+                       UserCell Nothing]
+
 ------------------------------------------------------------------------------ 
 
 machine2 : Machine BallOfWool Kitten                                            
@@ -65,60 +74,70 @@ transTable2 =
                 , symb  = StableCell (Just Red)
                 , dir   = StableCell (MoveRight)
                 }
+      , clickNum = 0          
       }                         
     , { key = (White, Just Yellow)                                             
       , value = { state = StableCell (White)
                 , symb  = StableCell (Just Yellow)
                 , dir   = StableCell (MoveRight)
                 }
+      , clickNum = 0
       }                                
     , { key = (White, Just Green)
       , value = { state = StableCell (White)
                 , symb  = StableCell (Just Green)
                 , dir   = StableCell (MoveRight)
                 }
+      , clickNum = 0
       }                                  
     , { key = (White, Just Blue)                                               
       , value = { state = StableCell (White)
                 , symb  = StableCell (Just Blue)
                 , dir   = StableCell (MoveRight)
                 }
+      , clickNum = 0
       }                                  
     , { key = (White, Nothing)                                                
       , value = { state = EmptyCell   
                 , symb  = EmptyCell 
                 , dir   = StableCell (MoveLeft)
                 }
+      , clickNum = 0
       }                                
     , { key = (LightGrey, Just Red)                                            
       , value = { state = StableCell (LightGrey)
                 , symb  = StableCell (Just Red) 
                 , dir   = StableCell (MoveLeft)
                 }
+      , clickNum = 0
       }                                
     , { key = (LightGrey, Just Yellow)                                         
       , value = { state = StableCell (LightGrey) 
                 , symb  = StableCell (Just Yellow)
                 , dir   = EmptyCell 
                 }
+      , clickNum = 0
       }                             
     , { key = (LightGrey, Just Green)                                          
       , value = { state = StableCell (LightGrey) 
                 , symb  = StableCell (Just Green) 
                 , dir   = StableCell (MoveLeft)
                 }
+      , clickNum = 0
       }                              
     , { key = (LightGrey, Just Blue)                                           
       , value = { state = StableCell (LightGrey) 
                 , symb  = StableCell (Just Blue) 
                 , dir   = StableCell (MoveLeft)
                 }
+      , clickNum = 0
       }                               
     , { key = (LightGrey, Nothing)                                            
       , value = { state = StableCell (Orange) 
                 , symb  = EmptyCell
                 , dir   = StableCell (MoveRight)
                 }
+      , clickNum = 0
       }   
     ]                                                                           
                                                                                 
@@ -132,5 +151,13 @@ expectedResult2 =
                                                                                 
 expectedPos2 : Int                                                              
 expectedPos2 = 1                                                                
+
+usedCats2 : Array (Cell Kitten) 
+usedCats2 = fromList [UserCell White, UserCell LightGrey]                                                         
+                                                                                
+usedBalls2 : Array (Cell (Maybe BallOfWool))  
+usedBalls2 = fromList [UserCell (Just Red), UserCell (Just Yellow), 
+                       UserCell (Just Green), UserCell (Just Blue), 
+                       UserCell Nothing]  
                                                                                 
 ------------------------------------------------------------------------------  

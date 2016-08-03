@@ -3,32 +3,35 @@ module GameBase.Data.Init exposing (init, initModel)
 import Time exposing (second)
 import Task exposing (perform)
 import Window exposing (Size, size)
+import Array exposing (Array, fromList)
 
 import TuringMachine.InitUpdate exposing (initMachineCfg) 
-import TuringMachine.TuringTypes exposing (Machine, UserTransTable)
+import TuringMachine.TuringTypes exposing (Machine, UserTransTable, 
+                                           Direction(..), Cell(..))
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..), 
                                          Model, Msg(..)) 
 
 
 init : Machine BallOfWool Kitten -> UserTransTable BallOfWool Kitten ->             
        List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Int ->             
-       Int -> (Model, Cmd Msg)                                                  
-init machine table inp expRes level expPos =                                    
-  ( (initModel machine table inp expRes level expPos)                           
+       Int ->  Array (Cell Kitten) -> Array (Cell (Maybe BallOfWool)) -> 
+       (Model, Cmd Msg)                                                  
+init machine table inp expRes level expPos usedCats usedBalls =
+  ( (initModel machine table inp expRes level expPos usedCats usedBalls) 
   , perform (\_ -> Debug.crash "task") WindowSize size                          
   )
 
 
 initModel : Machine BallOfWool Kitten -> UserTransTable BallOfWool Kitten ->        
-            List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Int ->        
-            Int -> Model                                                        
-initModel machine table inp expRes level expPos =                               
+            List (Maybe BallOfWool) -> List (Maybe BallOfWool) -> Int -> Int -> 
+            Array (Cell Kitten) -> Array (Cell (Maybe BallOfWool)) -> Model                                                        
+initModel machine table inp expRes level expPos usedCats usedBalls =                               
   { windSize = (Size 1855 980)                                           
   , timeUnit = second                                                           
   , whenGameStarts = 0                                                          
   , currTime = 0                                                                
   , input = inp                                                                 
-  , machine = machine                                                           
+  , machine = machine
   , machineCfgs = [(initMachineCfg machine inp machine.initHeadPosForMach)]     
   , trTableInit = table                                                         
   , trTableUser = table                                                         
@@ -50,4 +53,7 @@ initModel machine table inp expRes level expPos =
   , ifEnd = False                                                               
   , ifCatLooks = False                                                          
   , ifTableFull = True
+  , usedCats  = usedCats
+  , usedBalls = usedBalls
+  , usedDirs = (fromList [UserCell MoveLeft, UserCell MoveRight])
   }  

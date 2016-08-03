@@ -48,8 +48,8 @@ getHeadCfg model =
 getAllCfgs : Model -> Model                                                     
 getAllCfgs model =                                                              
   let                                                                           
-    initCfg  = (getHeadCfg model)
     updModel = (getTrTFromUserTrT model)
+    initCfg  = (getHeadCfg updModel)
   in     
     if updModel.ifTableFull == False 
        then updModel

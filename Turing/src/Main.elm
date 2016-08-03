@@ -1,9 +1,9 @@
 import GameBase.Data.LevelsData exposing (machine1, transTable1, input1, 
-                                          expectedResult1, expectedPos1)
+                                          expectedResult1, expectedPos1,
+                                          usedCats1, usedBalls1)
 import GameBase.Data.GameTypes exposing (Msg(..), Model, Position)       
 import GameBase.Data.Init exposing (init)
-import GameBase.UI.Div exposing (menuDiv, gameDiv, rulesDiv, authorsDiv, 
-                                 finalDiv)
+import GameBase.UI.Div exposing (menuDiv,gameDiv,rulesDiv,authorsDiv,finalDiv)
 import GameBase.UI.DivSvgStyles exposing (mainRectW, mainRectH)
 import GameBase.Proccessing.MsgProccessing exposing (clickMsgProccessing, 
                                                      moveMsgProccessing, 
@@ -79,7 +79,8 @@ subscriptions model =
 main : Program Never
 main =                                                                          
   program                                                              
-    { init = (init machine1 transTable1 input1 expectedResult1 1 expectedPos1) 
+    { init = (init machine1 transTable1 input1 expectedResult1 1 expectedPos1 
+                   usedCats1 usedBalls1) 
     , view = view                                                               
     , update = update                                                           
     , subscriptions = subscriptions                      
