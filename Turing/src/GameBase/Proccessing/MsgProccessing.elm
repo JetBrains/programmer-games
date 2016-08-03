@@ -42,7 +42,7 @@ contPlayModel model =
   }  
 
 
-clickMsgProccessing : Model -> Position -> ( Model, Cmd msg )                   
+clickMsgProccessing : Model -> Position -> ( Model, Cmd Msg )                   
 clickMsgProccessing m pos =                                                     
   if m.ifStart == True                                                          
      then if pos.y >= 190 && pos.y <= 217 && pos.x >= 360 && pos.x <= 447       
@@ -130,7 +130,7 @@ clickMsgProccessing m pos =
 
 
 -- proccessing cat`s movements (cursor movements) in menu window
-moveMsgProccessing : Model -> Position -> ( Model, Cmd msg )                    
+moveMsgProccessing : Model -> Position -> ( Model, Cmd Msg )                    
 moveMsgProccessing m pos =                                                      
   if m.ifStart == True                                                          
      then if pos.y >= 190 && pos.y <= 217 && pos.x >= 360 && pos.x <= 447       
@@ -157,7 +157,7 @@ moveMsgProccessing m pos =
 
 -- proccessing time parameters for checking result, 
 -- getting next cfg for drawing, drawing CatLooks
-tickMsgProccessing : Model -> Time -> ( Model, Cmd msg )                        
+tickMsgProccessing : Model -> Time -> ( Model, Cmd Msg )                        
 tickMsgProccessing m time =                                                     
   if m.whenGameStarts == 0 && m.ifPlay == True                                  
      then ( { m                                                                 
