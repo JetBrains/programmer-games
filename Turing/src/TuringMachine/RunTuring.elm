@@ -1,6 +1,6 @@
 module TuringMachine.RunTuring exposing (debugRun, runMachine, transFunc)
                                
-import List exposing (map) 
+import List exposing (map, take) 
 import Array exposing (get, slice, length)
 import String exposing (join)
 
@@ -20,10 +20,14 @@ runMachine : Machine a b -> MachineCfg a b -> List (MachineCfg a b)
              -> List (MachineCfg a b)
 runMachine m mcfg res =                                                                
   let                                                                           
-      upd = (updateMachineCfg m mcfg)                                           
+    upd = (updateMachineCfg m mcfg)                                           
   in                                                                            
-     if (machineCfgFinal m mcfg) then res                                       
-     else ( runMachine m upd (res ++ [upd]) )                                          
+    if (machineCfgFinal m mcfg) 
+       then res
+    else 
+      if (List.length res) > 30
+         then (take 10 res) 
+      else (runMachine m upd (res ++ [upd]))                                          
                                                                                 
                                                                                 
 -- | A transition function                                                      

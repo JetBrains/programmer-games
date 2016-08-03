@@ -17,7 +17,7 @@ import Array exposing (Array, fromList)
 machine1 : Machine BallOfWool Kitten                                            
 machine1 =                                                                      
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))           
-  , initHeadPosForDraw = 1                                                      
+  , initHeadPosForDraw = 3
   , initHeadPosForMach = 0                                                      
   , startState = White                                                          
   , acceptState = Orange                                                        
@@ -45,7 +45,7 @@ expectedResult1 =
   [Just Red, Nothing]                                                           
                                                                                 
 expectedPos1 : Int                                                              
-expectedPos1 = 2                                                                
+expectedPos1 = 4
 
 usedCats1 : Array (Cell Kitten)
 usedCats1 = fromList [UserCell White]

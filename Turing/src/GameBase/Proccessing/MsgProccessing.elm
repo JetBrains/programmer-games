@@ -22,7 +22,7 @@ import GameBase.UI.TransTable.TransTableMargins exposing (trTableLeftMargin,
 import TuringMachine.TuringTypes exposing (Cell(..), Direction(..), 
                                            UserTransTable)
 
-import List exposing (head, drop)
+import List exposing (head, drop, take)
 import Array exposing (get, set)
 import Task exposing (perform) 
 import Time exposing (Time, inSeconds, now, second, millisecond)
@@ -278,7 +278,7 @@ clickRunProccessing model time =
   in                                                                            
     if updModel.ifTableFull == False                                            
        then (updModel, Cmd.none)
-    else
+    else 
       ( setPushFlag updModel
         |> updCatParam time
         |> setTime time
