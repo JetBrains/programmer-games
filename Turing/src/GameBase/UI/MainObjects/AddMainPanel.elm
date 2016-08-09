@@ -1,13 +1,13 @@
-module GameBase.UI.AddMainPanel exposing (addMainPanel)
+module GameBase.UI.MainObjects.AddMainPanel exposing (addMainPanel)
 
-import GameBase.UI.Ball exposing (ballsOfOneTapeDraw)
-import GameBase.UI.Basket exposing (allBasketsDraw) 
-import GameBase.UI.Cat exposing (gameCatDraw, catLooksDraw)
-import GameBase.UI.ControlElements exposing (runButtonDraw, runFastDraw,               
-                                             quesButtonDraw, helpMsgDraw, 
-                                             levelDraw)
-import GameBase.UI.TransTable.TransTableDraw exposing (transTableDraw, tableNotFullDraw) 
-import GameBase.UI.DivSvgStyles exposing (fullScreenImg, svgStyle) 
+import GameBase.UI.MainObjects.Ball exposing (ballsOfOneTapeDraw)
+import GameBase.UI.MainObjects.Basket exposing (allBasketsDraw) 
+import GameBase.UI.MainObjects.Cat exposing (gameCatDraw, lookingCatDraw)
+import GameBase.UI.ControlObjects.ControlElements exposing 
+    (runButtonDraw, runFastButtonDraw, quesButtonDraw, helpMsgDraw, levelDraw)
+import GameBase.UI.TransTable.TransTableDraw exposing 
+                                            (transTableDraw, tableNotFullDraw) 
+import GameBase.UI.MainObjects.DivSvgStyles exposing (fullScreenImg, svgStyle) 
 import GameBase.Data.GameTypes exposing (Model)
 import GameBase.Proccessing.WorkWithCfg exposing (getTapeFromCfg) 
 
@@ -17,56 +17,73 @@ import Svg.Attributes exposing (width, height, x, y, xlinkHref)
 import List exposing (head)
 
 
-tableDraw : List (Svg msg)                                                      
-tableDraw =                                                                     
-  (fullScreenImg "../img/table.jpg")                                            
-                                                                                
-                                                                                
+mirrorX : Int
+mirrorX = 30
+
+mirrorY : Int
+mirrorY = 55
+
+mirrorW : Int
+mirrorW = 335
+
+mirrorH : Int
+mirrorH = 270
+
+
 mirrorDraw : Int -> List (Svg msg)                                              
 mirrorDraw level =                                                              
-  [ Svg.image                                                                   
-      [ x "30"                                                                  
-      , y "55"                                                                  
-      , Svg.Attributes.width "335px"                                            
-      , Svg.Attributes.height "270px"                                           
+  [ image                                                                   
+      [ x ((toString mirrorX) ++ "px")                                                                  
+      , y ((toString mirrorY) ++ "px")                                                                  
+      , width  ((toString mirrorW) ++ "px")                                           
+      , height ((toString mirrorH) ++ "px")                      
       , xlinkHref ("../img/mirror/mirrorLevel" ++ (toString level) ++ ".png")   
       ]                                                                         
       []                                                                        
   ] 
 
 
+tableDraw : List (Svg msg)                                                      
+tableDraw =                                                                     
+  (fullScreenImg "../img/table.jpg")
+
+
+basketNumber : Int
+basketNumber = 7
+
+
 addMainPanel : Model -> Html msg                                                
 addMainPanel model =                                                            
   let                                                                           
-    hpos = model.machine.initHeadPosForDraw                                     
-    curTape = (getTapeFromCfg (head model.machineCfgs))                         
+    hpos = model.modelMachine.machine.initHeadPosForDraw                                     
+    curTape = (getTapeFromCfg (head model.modelMachine.machineCfgs))                         
   in                                                                            
     svg                                                                     
-      (svgStyle model)                                                        
+      svgStyle                                                        
       (                                                                       
         tableDraw                                                             
         ++                                                                    
-        (mirrorDraw model.currLevel)                                          
+        (mirrorDraw model.levels.currLevel)                                          
         ++                                                                    
-        (allBasketsDraw 7 [])                                                 
+        (allBasketsDraw basketNumber [])                                                 
         ++                                                                    
-        (ballsOfOneTapeDraw 7 [] curTape hpos)                                
+        (ballsOfOneTapeDraw basketNumber [] curTape hpos)                                
         ++                                                                    
         (gameCatDraw model)                                                       
         ++                                                                    
         (transTableDraw model)                                      
         ++                                                                    
-        runFastDraw                                                           
+        runFastButtonDraw                                                           
         ++                                                                    
         runButtonDraw                                                         
         ++                                                                    
         quesButtonDraw                                                        
         ++                                                                    
-        (helpMsgDraw model.helpImg)                                           
+        (helpMsgDraw model.imgParam.helpImg)                                           
         ++                                                                    
-        (levelDraw model.currLevel model.maxLevel)
+        (levelDraw model.levels.currLevel model.levels.maxLevel)
         ++                                                                    
-        (catLooksDraw model)  
+        (lookingCatDraw model)  
         ++
         (tableNotFullDraw model)
       )  

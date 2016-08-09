@@ -3,11 +3,11 @@ import GameBase.Data.LevelsData exposing (machine1, transTable1, input1,
                                           usedCats1, usedBalls1)
 import GameBase.Data.GameTypes exposing (Msg(..), Model, Position)       
 import GameBase.Data.Init exposing (init)
-import GameBase.UI.Div exposing (menuDiv,gameDiv,rulesDiv,authorsDiv,finalDiv)
-import GameBase.UI.DivSvgStyles exposing (mainRectW, mainRectH)
-import GameBase.Proccessing.MsgProccessing exposing (clickMsgProccessing, 
-                                                     moveMsgProccessing, 
-                                                     tickMsgProccessing)
+import GameBase.UI.MainObjects.Div exposing 
+                             (menuDiv,gameDiv,rulesDiv,authorsDiv,finalDiv)
+import GameBase.UI.MainObjects.DivSvgStyles exposing (mainRectW, mainRectH)
+import GameBase.Proccessing.MsgProccessing.MsgProccessing exposing 
+              (clickMsgProccessing, moveMsgProccessing, tickMsgProccessing)
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (style) 
@@ -21,21 +21,19 @@ import Time exposing (every)
 view : Model -> Html Msg                                                        
 view model =                                                                    
   div 
-    [
-      style
-        [ ( "width",  (toString model.windSize.width ++ "px") )                                 
-        , ( "height", (toString model.windSize.height ++ "px") )   
+    [ style
+        [ ( "width",  (toString model.options.winSize.width ++ "px") )                                 
+        , ( "height", (toString model.options.winSize.height ++ "px") )   
         , ( "background-color", "#F4A460" )
         ]
     ]
-    (
-      if model.ifStart == True
+    ( if model.flags.ifStart == True
               then (menuDiv model)
-      else if model.ifRules == True
+      else if model.flags.ifRules == True
               then (rulesDiv model)
-      else if model.ifAuthors == True
+      else if model.flags.ifAuthors == True
               then (authorsDiv model)
-      else if model.ifEnd == True
+      else if model.flags.ifEnd == True
               then (finalDiv model)
       else (gameDiv model) 
     )
@@ -43,8 +41,8 @@ view model =
 
 getPosition : Model -> Position -> Position
 getPosition model pos =
-  { x = pos.x - ( (model.windSize.width - mainRectW) // 2)
-  , y = pos.y - ( (model.windSize.height - mainRectH) // 2)             
+  { x = pos.x - ( (model.options.winSize.width - mainRectW) // 2)
+  , y = pos.y - ( (model.options.winSize.height - mainRectH) // 2)             
   }
 
 
@@ -59,7 +57,16 @@ update msg model =
       (getPosition model pos)                                                   
       |> moveMsgProccessing model   
     WindowSize { width, height } ->                                               
-      ( { model | windSize = (Size (width) (height)) }, Cmd.none )   
+      ( { model 
+            | options = 
+                { winSize = (Size (width) (height))
+                , timeUnit = model.options.timeUnit
+                , whenGameStarts = model.options.whenGameStarts
+                , currTime = model.options.currTime
+                }
+        }
+      , Cmd.none 
+      )
     Tick time ->
       tickMsgProccessing model time
 
@@ -71,16 +78,20 @@ subscriptions model =
     [ clicks Click  
     , moves Move
     , resizes WindowSize                                                 
-    , every model.timeUnit Tick
+    , every model.options.timeUnit Tick
     ] 
+
+
+fstLevel : Int
+fstLevel = 1
 
 
 -- MAIN                                                                         
 main : Program Never
 main =                                                                          
-  program                                                              
-    { init = (init machine1 transTable1 input1 expectedResult1 1 expectedPos1 
-                   usedCats1 usedBalls1) 
+  program
+    { init = (init input1 machine1 transTable1 fstLevel expectedPos1 
+                   expectedResult1 usedCats1 usedBalls1)
     , view = view                                                               
     , update = update                                                           
     , subscriptions = subscriptions                      

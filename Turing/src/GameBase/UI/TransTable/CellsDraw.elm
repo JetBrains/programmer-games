@@ -1,11 +1,9 @@
-module GameBase.UI.TransTable.CellsDraw exposing (cellsProccessing, cellWidth, 
-                                                  cellHeight)
+module GameBase.UI.TransTable.CellsDraw exposing (cellsProccessing,cellW,cellH)
 
-import GameBase.UI.TransTable.TransTableMargins exposing (cellLeftMargin, cellTopMargin)   
+import GameBase.UI.TransTable.TransTableMargins exposing (cellX, cellY)   
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))     
-import TuringMachine.TuringTypes exposing (Cell(..), Direction(..),             
-                                           UserKeyValue, UserValue,             
-                                           UserTransTable)                      
+import TuringMachine.TuringTypes exposing 
+            (Cell(..), Direction(..), UserKeyValue, UserValue, UserTransTable)                      
 
 import Svg exposing (image, Svg)
 import Svg.Attributes exposing (width, height, x, y, xlinkHref)  
@@ -13,12 +11,12 @@ import Array exposing (length, slice, get)
 import List exposing (drop, head)  
 
 
-cellWidth : Int                                                                 
-cellWidth = 20                                                                  
+cellW : Int                                                                 
+cellW = 25
 
 
-cellHeight : Int                                                                
-cellHeight = 20 
+cellH : Int                                                                
+cellH = 25 
 
 
 getHeadKey : Maybe (UserKeyValue BallOfWool Kitten) ->                          
@@ -54,10 +52,10 @@ getKeys table res =
 
 
 -- svg msg for one (head) cell                                                  
-oneCellDraw : Maybe ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten    
-                    , String) -> List (Svg msg)                                 
+oneCellDraw : Maybe ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten, 
+              String) -> List (Svg msg) 
 oneCellDraw maybeKey =                                                          
-  case maybeKey of                                                              
+  case maybeKey of
     Just k ->                                                                   
       let                                                                       
         href =                                                                  
@@ -75,15 +73,15 @@ oneCellDraw maybeKey =
                 StableCell Violet ->                                            
                   "../img/saimonHead/SaimonHeadSBVerySm.png"                    
                 UserCell White ->                                               
-                  "../img/saimonHead/SaimonHeadWVerySm.png"                     
+                  "../img/saimonHead/SaimonHeadWVerySmInFrame.png"                     
                 UserCell LightGrey ->                                           
-                  "../img/saimonHead/SaimonHeadLGVerySm.png"                    
+                  "../img/saimonHead/SaimonHeadLGVerySmInFrame.png"                    
                 UserCell Grey ->                                                
-                  "../img/saimonHead/SaimonHeadGVerySm.png"                     
+                  "../img/saimonHead/SaimonHeadGVerySmInFrame.png"                     
                 UserCell Orange ->                                              
-                  "../img/saimonHead/SaimonHeadOVerySm.png"                     
+                  "../img/saimonHead/SaimonHeadOVerySmInFrame.png"                     
                 UserCell Violet ->                                              
-                  "../img/saimonHead/SaimonHeadSBVerySm.png"                    
+                  "../img/saimonHead/SaimonHeadSBVerySmInFrame.png"                    
                 EmptyCell ->                                                    
                   "../img/elements/quesSmall.png"                               
             ((st, sym), {state, symb, dir}, "symb") ->                          
@@ -99,15 +97,15 @@ oneCellDraw maybeKey =
                 StableCell Nothing ->                                           
                   "../img/ballInBasket/transpBall.png"                          
                 UserCell (Just Blue) ->                                         
-                  "../img/ballInBasket/blueBall.png"                            
+                  "../img/ballInBasket/blueBallInFrame.png"                            
                 UserCell (Just Green) ->                                        
-                  "../img/ballInBasket/greenBall.png"                           
+                  "../img/ballInBasket/greenBallInFrame.png"                           
                 UserCell (Just Red) ->                                          
-                  "../img/ballInBasket/redBall.png"                             
+                  "../img/ballInBasket/redBallInFrame.png"                             
                 UserCell (Just Yellow) ->                                       
-                  "../img/ballInBasket/yellowBall.png"                          
+                  "../img/ballInBasket/yellowBallInFrame.png"                          
                 UserCell Nothing ->                                             
-                  "../img/ballInBasket/transpBall.png"                          
+                  "../img/ballInBasket/transpBallInFrame.png"                          
                 EmptyCell ->                                                    
                   "../img/elements/quesSmall.png"
             ((st, sym), {state, symb, dir}, _) ->                               
@@ -119,19 +117,19 @@ oneCellDraw maybeKey =
                 StableCell Stay ->                                              
                   "../img/elements/arrowTransp.png"                             
                 UserCell MoveRight ->                                           
-                  "../img/elements/arrowR.png"                                  
+                  "../img/elements/arrowRInFrame.png"                                  
                 UserCell MoveLeft ->                                            
-                  "../img/elements/arrowL.png"                                  
+                  "../img/elements/arrowLInFrame.png"                                  
                 UserCell Stay ->                                                
-                  "../img/elements/arrowTransp.png"                             
+                  "../img/elements/arrowTranspInFrame.png"                             
                 EmptyCell ->                                                    
                   "../img/elements/quesSmall.png"                               
       in                                                                        
         [ image                                                                 
-            [ x (toString (cellLeftMargin k) ++ "px")                           
-            , y (toString (cellTopMargin k) ++ "px")                            
-            , width ((toString cellWidth) ++ "px")                              
-            , height ((toString cellHeight) ++ "px")                            
+            [ x (toString (cellX k) ++ "px")                           
+            , y (toString (cellY k) ++ "px")                            
+            , width ((toString cellW) ++ "px")                              
+            , height ((toString cellH) ++ "px")                            
             , xlinkHref href                                                    
             ]                                                                   
             []                                                                  
@@ -140,8 +138,8 @@ oneCellDraw maybeKey =
       [ image                                                                   
           [ x "5px"                                                             
           , y "5px"                                                             
-          , width ((toString cellWidth) ++ "px")                                
-          , height ((toString cellHeight) ++ "px")                              
+          , width ((toString cellW) ++ "px")                                
+          , height ((toString cellH) ++ "px")                              
           , xlinkHref ("../img/elements/quesSmall.png")                         
           ]                                                                     
           []                                                                    

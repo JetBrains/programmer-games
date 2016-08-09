@@ -1,11 +1,16 @@
-module GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..), Position, Msg(..), Model)
+module GameBase.Data.GameTypes exposing 
+                        (BallOfWool(..), Kitten(..), Position, Msg(..), Model, 
+                         ModelOptions, ModelMachine, ModelTransTables, 
+                         ModelImgParam, ModelLevels, ModelExpResults, 
+                         ModelFlags, ModelObjectsSet)
+
+import TuringMachine.TuringTypes exposing 
+                (Machine, UserTransTable, MachineCfg, Cell(..), Direction(..))
 
 import Time exposing (Time)
 import Window exposing (Size)
-import Array exposing (Array)
+import Array exposing (Array) 
 
-import TuringMachine.TuringTypes exposing (Machine, UserTransTable, MachineCfg, 
-                                           Cell(..), Direction(..))
 
 --white is start, orange is natural, violet is reject                           
 type BallOfWool = Red | Yellow | Green | Blue -- a  
@@ -16,52 +21,84 @@ type alias Position =
   { x : Int, y : Int }                                                          
 
 
--- MODEL                                                                        
-type alias Model =                                                              
-  { --options                                                                  
-    windSize       : Size -- for WindowsSize message                            
-  , timeUnit       : Time                                                       
-  , whenGameStarts : Time                                                       
-  , currTime       : Time                                                       
-  --machine                                                                    
-  , input        : List (Maybe BallOfWool)                                      
+-- MODEL
+type alias Model =  
+  { options      : ModelOptions  
+  , modelMachine : ModelMachine
+  , transTables  : ModelTransTables
+  , imgParam     : ModelImgParam 
+  , levels       : ModelLevels
+  , expResults   : ModelExpResults 
+  , flags        : ModelFlags
+  , usedObj      : ModelObjectsSet
+  }  
+
+
+type alias ModelOptions = 
+  { winSize       : Size -- for WindowsSize message                            
+  , timeUnit       : Time -- seconds or milliseconds                                                      
+  , whenGameStarts : Time -- for looking cat drawing                                                      
+  , currTime       : Time -- for looking cat drawing  
+  }
+
+
+type alias ModelMachine =
+  { input        : List (Maybe BallOfWool)                                      
   , machine      : Machine BallOfWool Kitten                                    
-  , machineCfgs  : List (MachineCfg BallOfWool Kitten)                          
-  --tables                                                                      
-  , trTableInit  : UserTransTable BallOfWool Kitten                                 
-  , trTableUser  : UserTransTable BallOfWool Kitten                                 
-  --pictures                                                                    
-  , catLeft      : Int    -- different for catImg                               
-  , menuCatTop   : Int                                                          
-  , catPos       : Int                                                          
+  , machineCfgs  : List (MachineCfg BallOfWool Kitten)     
+  }
+
+
+type alias ModelTransTables =
+  { trTableInit  : UserTransTable BallOfWool Kitten                             
+  , trTableUser  : UserTransTable BallOfWool Kitten  
+  }
+
+
+type alias ModelImgParam = 
+  { catLeft      : Int    -- different for catImg                               
+  , menuCatTop   : Int    -- for menu cat                                                      
+  , catPos       : Int    -- for game cat                                                      
   , catImg       : String -- catPush, catThink                                  
   , helpImg      : String -- help text                                          
-  , finalImg     : String                                                       
-  --levels
-  , currLevel    : Int                                                          
-  , maxLevel     : Int                                                          
-  --expected results                                                           
-  , expPos       : Int                                                          
-  , expRes       : List (Maybe BallOfWool)                                      
-  --flags                                                                      
-  , ifPushRun    : Bool                                                         
-  , ifStart      : Bool                                                         
-  , ifPlay       : Bool                                                         
-  , ifRules      : Bool                                                         
-  , ifAuthors    : Bool                                                         
-  , ifEnd        : Bool                                                         
-  , ifCatLooks   : Bool 
-  , ifTableFull  : Bool
-  --current used cats and balls
-  , usedCats  : Array (Cell Kitten)  
-  , usedBalls : Array (Cell (Maybe BallOfWool))
-  , usedDirs  : Array (Cell Direction)
-  }  
+  , finalImg     : String -- pos, neg, final
+  }
+
+
+type alias ModelLevels = 
+  { currLevel    : Int                                                          
+  , maxLevel     : Int  
+  }
+
+
+type alias ModelExpResults = 
+  { expPos       : Int                                                          
+  , expRes       : List (Maybe BallOfWool)  
+  }
+
+
+type alias ModelFlags =
+  { ifPushRun    : Bool -- if run button was pushed                                                       
+  , ifStart      : Bool -- if menu window                                                         
+  , ifPlay       : Bool -- if game window                                                       
+  , ifRules      : Bool -- if rules window                                                       
+  , ifAuthors    : Bool -- if authors window                                                       
+  , ifEnd        : Bool -- if final img window                                                       
+  , ifCatLooks   : Bool -- if drawing looking cat                                                       
+  , ifTableFull  : Bool -- if user fill all gaps 
+  }
+
+
+type alias ModelObjectsSet =
+  { usedCats  : Array (Cell Kitten) -- different for levels                                           
+  , usedBalls : Array (Cell (Maybe BallOfWool))                                 
+  , usedDirs  : Array (Cell Direction) 
+  }
 
 
 -- MESSAGES                                                                     
 type Msg                                                                        
-  = Click Position                                                              
-  | Move Position                                                               
-  | WindowSize Size                                                             
-  | Tick Time  
+  = Click Position  -- for all clicks                                                            
+  | Move Position   -- for menu cat                                                            
+  | WindowSize Size -- window size change                                                            
+  | Tick Time       -- for machine run and looking cat

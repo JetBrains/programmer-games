@@ -3,16 +3,18 @@ module GameBase.Data.LevelsData exposing (machine1, transTable1, input1,
                                           usedCats1, usedBalls1,          
                                           machine2, transTable2, input2,      
                                           expectedResult2, expectedPos2,        
-                                          usedCats2, usedBalls2)  
+                                          usedCats2, usedBalls2, levelsNumber)  
 
-import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))
 import TuringMachine.TuringTypes exposing ( Direction(..), Machine, 
                                             UserTransTable, Cell(..))
 import TuringMachine.RunTuring exposing (transFunc)
+import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))
 
 import Array exposing (Array, fromList)
 
-------------------------------------------------------------------------------  
+
+levelsNumber : Int
+levelsNumber = 2
 
 machine1 : Machine BallOfWool Kitten                                            
 machine1 =                                                                      
@@ -158,6 +160,4 @@ usedCats2 = fromList [UserCell White, UserCell LightGrey]
 usedBalls2 : Array (Cell (Maybe BallOfWool))  
 usedBalls2 = fromList [UserCell (Just Red), UserCell (Just Yellow), 
                        UserCell (Just Green), UserCell (Just Blue), 
-                       UserCell Nothing]  
-                                                                                
-------------------------------------------------------------------------------  
+                       UserCell Nothing]

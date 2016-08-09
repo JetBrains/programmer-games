@@ -1,39 +1,52 @@
-module GameBase.UI.DivSvgStyles exposing (divStyle, svgStyle, mainRectW, 
-                                          mainRectH, fullScreenImg)
+module GameBase.UI.MainObjects.DivSvgStyles exposing 
+        (divStyle, svgStyle, mainRectW,  mainRectH, fullScreenImg)
 
 import GameBase.Data.GameTypes exposing (Model)
 
 import Html exposing (Html)
 import Html.Attributes exposing (style) 
 import Svg exposing (Svg, image)
-import Svg.Attributes exposing (width, height, x, y, version, viewBox, xlinkHref)  
+import Svg.Attributes exposing 
+                (width, height, x, y, version, viewBox, xlinkHref)
 
 
+--MAIN DIV PARAMETERS--------------------------------------------
 mainRectW : Int                                                                 
 mainRectW = 800                                                                 
-
-
+                                                                                
+                                                                                
 mainRectH : Int                                                                 
 mainRectH = 600                                                                 
-
-
+                                                                                
+                                                                                
 topMargin : Model -> String                                                     
 topMargin model =                                                               
-  ((toString ((model.windSize.height - mainRectH)//2))++"px")                   
-
-
+  (toString ((model.options.winSize.height - mainRectH)//2) ++ "px")                   
+                                                                                
+                                                                                
 leftMargin : Model -> String                                                    
 leftMargin model =                                                              
-  ((toString ((model.windSize.width - mainRectW)//2))++"px")                    
+  (toString ((model.options.winSize.width - mainRectW)//2) ++ "px")      
+-----------------------------------------------------------------
+
+
+--FULL SCREEN IMG PARAMETERS-------------------------------------
+fullScreenImgWH : Int
+fullScreenImgWH = 800
+
+
+fullScreenImgXY : Int
+fullScreenImgXY = 0
+-----------------------------------------------------------------
 
 
 fullScreenImg : String -> List (Svg msg)                                        
 fullScreenImg href =                                                            
   [ image                                                                       
-      [ x "0px"                                                                 
-      , y "0px"                                                                 
-      , width  "800px"                                                          
-      , height "800px"                                                          
+      [ x ((toString fullScreenImgXY) ++ "px")                                                                
+      , y ((toString fullScreenImgXY) ++ "px")                                                                 
+      , width  ((toString fullScreenImgWH) ++ "px")                                                          
+      , height ((toString fullScreenImgWH) ++ "px")                                                           
       , xlinkHref href                                                          
       ]                                                                         
       []                                                                        
@@ -53,8 +66,8 @@ divStyle model color =
     ]                                                                           
                                                                                 
                                                                                 
-svgStyle : Model -> List (Svg.Attribute msg)                                    
-svgStyle model =                                                                
+svgStyle : List (Svg.Attribute msg)                                    
+svgStyle =                                                                
   [ version "1.1"                                                               
   , width  (toString mainRectW)                                  
   , height (toString mainRectH)                                  

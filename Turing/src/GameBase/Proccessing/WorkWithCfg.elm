@@ -26,7 +26,8 @@ emptyMCfg =
   }
 
 
-getTapeFromCfg : Maybe (MachineCfg BallOfWool Kitten) -> List (Maybe BallOfWool)                                     
+getTapeFromCfg : Maybe (MachineCfg BallOfWool Kitten) -> 
+                 List (Maybe BallOfWool)                                     
 getTapeFromCfg maybeCfg =                                                       
   case maybeCfg of                                                              
     Just cfg ->                                                                 
@@ -40,24 +41,35 @@ getTapeFromCfg maybeCfg =
 
 getHeadCfg : Model -> MachineCfg BallOfWool Kitten                              
 getHeadCfg model =                                                              
-    case (head (model.machineCfgs)) of                                          
+    case (head (model.modelMachine.machineCfgs)) of                                          
       Just c -> c                                                               
       Nothing -> emptyMCfg                                                      
                                                                                 
                                                                                 
 getAllCfgs : Model -> Model                                                     
-getAllCfgs model =                                                              
+getAllCfgs m =                                                              
   let                                                                           
-    updModel = (getTrTFromUserTrT model)
+    updModel = (getTrTFromUserTrT m)
     initCfg  = (getHeadCfg updModel)
   in     
-    if updModel.ifTableFull == False 
+    if updModel.flags.ifTableFull == False 
        then updModel
     else { updModel
-              | machineCfgs = (runMachine updModel.machine initCfg [initCfg])     
-         }                                                                           
+            | modelMachine = 
+                { input = updModel.modelMachine.input                                    
+                , machine = updModel.modelMachine.machine                                       
+                , machineCfgs = (runMachine updModel.modelMachine.machine 
+                                            initCfg [initCfg])     
+                }
+         }
                                                                                 
                                                                                 
 getNextCfg : Model -> Model                                                     
 getNextCfg model =                                                              
-  { model | machineCfgs = (drop 1 model.machineCfgs) }     
+  { model 
+      | modelMachine = 
+        { input = model.modelMachine.input
+        , machine = model.modelMachine.machine
+        , machineCfgs = (drop 1 model.modelMachine.machineCfgs)
+        }
+  }

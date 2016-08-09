@@ -1,7 +1,7 @@
 module GameBase.UI.TransTable.EmptyCellsCoord exposing (getEmptyCellsCoord)
 
-import GameBase.UI.TransTable.CellsDraw exposing (cellHeight, cellWidth)
-import GameBase.UI.TransTable.TransTableMargins exposing (cellLeftMargin, cellTopMargin) 
+import GameBase.UI.TransTable.CellsDraw exposing (cellH, cellW)
+import GameBase.UI.TransTable.TransTableMargins exposing (cellX, cellY) 
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))     
 import TuringMachine.TuringTypes exposing (Cell(..), UserKeyValue, 
                                            UserTransTable) 
@@ -15,10 +15,10 @@ ifSymbEmpty userKV arrInd =
   case userKV.value.symb of                                                     
     EmptyCell ->                                                                
       let                                                                       
-        topFrom = cellTopMargin (userKV.key, userKV.value, "symb")              
-        topTo = topFrom + cellHeight                                            
-        leftFrom = cellLeftMargin (userKV.key, userKV.value, "symb")            
-        leftTo = leftFrom + cellWidth                                           
+        topFrom = cellY (userKV.key, userKV.value, "symb")              
+        topTo = topFrom + cellH                                            
+        leftFrom = cellX (userKV.key, userKV.value, "symb")            
+        leftTo = leftFrom + cellW                                           
       in                                                                        
         [(topFrom, topTo, leftFrom, leftTo, arrInd, "symb")]                                   
     _ -> []                                                                     
@@ -30,10 +30,10 @@ ifStateEmpty userKV arrInd =
   case userKV.value.state of                                                    
     EmptyCell ->                                                                
       let                                                                       
-        topFrom = cellTopMargin (userKV.key, userKV.value, "state")             
-        topTo = topFrom + cellHeight                                            
-        leftFrom = cellLeftMargin (userKV.key, userKV.value, "state")           
-        leftTo = leftFrom + cellWidth                                           
+        topFrom = cellY (userKV.key, userKV.value, "state")             
+        topTo = topFrom + cellH                                            
+        leftFrom = cellX (userKV.key, userKV.value, "state")           
+        leftTo = leftFrom + cellW                                           
       in                                                                        
         [(topFrom, topTo, leftFrom, leftTo, arrInd, "state")]                                   
     _ -> []                                                                     
@@ -45,10 +45,10 @@ ifDirEmpty userKV arrInd =
   case userKV.value.dir of                                                      
     EmptyCell ->                                                                
       let                                                                       
-        topFrom = cellTopMargin (userKV.key, userKV.value, "dir")               
-        topTo = topFrom + cellHeight                                            
-        leftFrom = cellLeftMargin (userKV.key, userKV.value, "dir")             
-        leftTo = leftFrom + cellWidth                                           
+        topFrom = cellY (userKV.key, userKV.value, "dir")               
+        topTo = topFrom + cellH                                            
+        leftFrom = cellX (userKV.key, userKV.value, "dir")             
+        leftTo = leftFrom + cellW                                           
       in                                                                        
         [(topFrom, topTo, leftFrom, leftTo, arrInd, "dir")]                                   
     _ -> [] 

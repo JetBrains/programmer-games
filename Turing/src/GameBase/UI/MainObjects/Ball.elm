@@ -1,32 +1,31 @@
-module GameBase.UI.Ball exposing (ballsOfOneTapeDraw)
+module GameBase.UI.MainObjects.Ball exposing (ballsOfOneTapeDraw)
 
-import Svg exposing (Svg)                                                 
+import Svg exposing (Svg, image) 
 import Svg.Attributes exposing (width, height, x, y, xlinkHref) 
 import List exposing (head, drop)
 
 import GameBase.Data.GameTypes exposing (BallOfWool(..))
-import GameBase.UI.Basket exposing (basketLeftMarginI, basketTopMarginI)
+import GameBase.UI.MainObjects.Basket exposing (basketX, basketY)
 
-ballLeftMarginI : Int -> Int                                                    
-ballLeftMarginI ind =                                                           
-  (basketLeftMarginI ind) + 27                                                  
+
+ballX : Int -> Int                                                    
+ballX ind =                                                           
+  (basketX ind) + 27
                                                                                 
                                                                                 
-ballTopMarginI : Int                                                            
-ballTopMarginI =                                                                
-  (basketTopMarginI) + 15                                                       
+ballY : Int
+ballY =
+  (basketY) + 15
                                                                                 
-                                                                                
-ballLeftMarginS : Int -> String                                                 
-ballLeftMarginS ind =                                                           
-  (toString (ballLeftMarginI ind) ++ "px")                                      
-                                                                                
-                                                                                
-ballTopMarginS : String                                                         
-ballTopMarginS =                                                                
-   (toString (ballTopMarginI) ++ "px")                                          
-                                                                                
-                                                                                
+
+ballW : Int
+ballW = 50
+
+
+ballH : Int
+ballH = 50
+
+
 getBallColor : Maybe (Maybe BallOfWool) -> String                               
 getBallColor inpVal =                                                           
   case inpVal of                                                                
@@ -42,14 +41,14 @@ getNewBall ind inpVal =
   let                                                                           
     color = (getBallColor inpVal)                                               
   in                                                                            
-    Svg.image                                                                   
-        [ x (ballLeftMarginS ind)                                               
-        , y (ballTopMarginS)                                                    
-        , Svg.Attributes.width "50px"                                           
-        , Svg.Attributes.height "50px"                                          
-        , xlinkHref ("../img/balls/" ++ color ++ "Ball.png")                    
-        ]                                                                       
-        []     
+    image                                                                   
+      [ x (toString (ballX ind) ++ "px")                                               
+      , y (toString (ballY) ++ "px")                                                    
+      , width ((toString ballW) ++ "px")                                         
+      , height ((toString ballH) ++ "px")                                          
+      , xlinkHref ("../img/balls/" ++ color ++ "Ball.png")                    
+      ]                                                                       
+      []     
 
 
 getInpV : List (Maybe BallOfWool) -> Int -> Maybe (Maybe BallOfWool)            

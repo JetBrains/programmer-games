@@ -1,51 +1,56 @@
 module GameBase.UI.TransTable.TransTableDraw exposing (transTableDraw, 
                                                        tableNotFullDraw, 
-                                                       trTableWidth, 
-                                                       trTableHeight)
+                                                       trTableW,trTableH)
 
-import GameBase.UI.TransTable.TransTableMargins exposing (trTableLeftMargin, 
-                                               trTableTopMargin)
-import GameBase.UI.TransTable.CellsDraw exposing (cellsProccessing, cellWidth, 
-                                                  cellHeight)
+import GameBase.UI.TransTable.TransTableMargins exposing (trTableX, trTableY)
+import GameBase.UI.TransTable.CellsDraw exposing (cellsProccessing,cellW,cellH)
 import GameBase.Data.GameTypes exposing (Model)           
 
 import Svg exposing (Svg, image, text, text')                              
 import Svg.Attributes exposing (width,height,x,y,xlinkHref,fontStyle,fontSize)  
 
 
-trTableWidth : Int 
-trTableWidth = 460
+trTableW : Int 
+trTableW = 460
 
 
-trTableHeight : Int
-trTableHeight = 250
+trTableH : Int
+trTableH = 250
 
 
 -- draw trans table with img from level dir
 transTableDraw : Model -> List (Svg msg)                                          
 transTableDraw m =  
   ( [image                                                                   
-      [ x ((toString trTableLeftMargin) ++ "px")
-      , y ((toString trTableTopMargin) ++ "px")
-      , width ((toString trTableWidth) ++ "px")   
-      , height ((toString trTableHeight) ++ "px")   
-      , xlinkHref ( "../img/level" ++ (toString m.currLevel) ++ 
+      [ x ((toString trTableX) ++ "px")
+      , y ((toString trTableY) ++ "px")
+      , width ((toString trTableW) ++ "px")   
+      , height ((toString trTableH) ++ "px")   
+      , xlinkHref ( "../img/level" ++ (toString m.levels.currLevel) ++ 
                     "/transTable.png" )   
       ]
       []  
     ]
     ++
-    (cellsProccessing m.trTableUser)
+    (cellsProccessing m.transTables.trTableUser)
   )
-                                                                                
+                 
+
+notFullMsgX : Int
+notFullMsgX = 20
+
+
+notFullMsgY : Int
+notFullMsgY = 350
+
 
 -- draw msg about table is not full
 tableNotFullDraw : Model -> List (Svg msg)                                      
 tableNotFullDraw m =                                                            
-  if m.ifTableFull == False                                                     
+  if m.flags.ifTableFull == False                                                     
      then [ text'                                                               
-              [ x "20px"                                                        
-              , y "350px"                                                       
+              [ x ((toString notFullMsgX) ++ "px")                                                        
+              , y ((toString notFullMsgY) ++ "px")                                                       
               , fontStyle "italic"                                              
               , fontSize "15px"                                                 
               ]                                                                 

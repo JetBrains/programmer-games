@@ -2,9 +2,9 @@ module GameBase.Proccessing.TranslateTables exposing (getTrTFromUserTrT,
                                                       checkIfTableFull)
 
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..), Model)
-import TuringMachine.TuringTypes exposing ( Direction(..), Machine, TransTable, 
-                                            TransTable, UserTransTable, 
-                                            KeyValue, UserKeyValue, Cell(..))
+import TuringMachine.TuringTypes exposing (Direction(..), Machine, TransTable, 
+                                           TransTable, UserTransTable, 
+                                           KeyValue, UserKeyValue, Cell(..))
 import TuringMachine.RunTuring exposing (transFunc)
 
 import Array exposing (push, get, slice, empty, length, isEmpty)
@@ -109,18 +109,49 @@ translateFullTable userTable res =
 getTrTFromUserTrT : Model -> Model
 getTrTFromUserTrT m =
   let
-    userTable = m.trTableUser
+    userTable = m.transTables.trTableUser
     transTable = (translateFullTable userTable empty)
   in
     if (checkIfTableFull userTable True) == True
-      then { m | machine = { transition = (transFunc transTable 
-                                                   (Violet, Nothing, MoveLeft)) 
-                           , initHeadPosForDraw = m.machine.initHeadPosForDraw
-                           , initHeadPosForMach = m.machine.initHeadPosForMach
-                           , startState = m.machine.startState
-                           , acceptState = m.machine.acceptState
-                           , rejectState = m.machine.rejectState
-                           } 
-               , ifTableFull = True
-           }
-    else { m | ifTableFull = False } -- userTable is not full 
+      then { m 
+              | modelMachine = 
+                  { input = m.modelMachine.input                                    
+                  , machine = 
+                      { transition = (transFunc transTable                  
+                                      (Violet, Nothing, MoveLeft))              
+                      , initHeadPosForDraw =                                
+                          m.modelMachine.machine.initHeadPosForDraw         
+                      , initHeadPosForMach =                                
+                          m.modelMachine.machine.initHeadPosForMach         
+                      , startState =                                        
+                          m.modelMachine.machine.startState                 
+                      , acceptState =                                       
+                          m.modelMachine.machine.acceptState                
+                      , rejectState =                                       
+                          m.modelMachine.machine.rejectState                
+                      }    
+                  , machineCfgs = m.modelMachine.machineCfgs  
+                  }
+              , flags = 
+                  { ifPushRun = m.flags.ifPushRun
+                  , ifStart = m.flags.ifStart
+                  , ifPlay = m.flags.ifPlay
+                  , ifRules = m.flags.ifRules                                         
+                  , ifAuthors = m.flags.ifAuthors                                               
+                  , ifEnd = m.flags.ifEnd                                  
+                  , ifCatLooks = m.flags.ifCatLooks                                                
+                  , ifTableFull = True 
+                  }
+          }
+      else { m 
+              | flags = 
+                  { ifPushRun = m.flags.ifPushRun                               
+                  , ifStart = m.flags.ifStart                                   
+                  , ifPlay = m.flags.ifPlay                                     
+                  , ifRules = m.flags.ifRules                                       
+                  , ifAuthors = m.flags.ifAuthors                                   
+                  , ifEnd = m.flags.ifEnd                                       
+                  , ifCatLooks = m.flags.ifCatLooks                                 
+                  , ifTableFull = False
+                  } 
+            }
