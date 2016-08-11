@@ -8,13 +8,23 @@ import GameBase.Data.GameTypes exposing
                          ModelOptions, ModelMachine, ModelTransTables,          
                          ModelImgParam, ModelLevels, ModelExpResults,           
                          ModelFlags, ModelObjectsSet)  
-import GameBase.Data.LevelsData exposing 
-  (levelsNumber, machineDemo, inputDemo, transTableDemo, expectedResultDemo,    
-  expectedPosDemo, usedCatsDemo, usedBallsDemo, machine1_1, input1_1,          
-  transTable1_1, expectedResult1_1, expectedPos1_1, usedCats1_1, usedBalls1_1, 
-  machine1_2, input1_2, transTable1_2, expectedResult1_2, expectedPos1_2,      
-  usedCats1_2, usedBalls1_2, machine1_3, input1_3, transTable1_3,              
-  expectedResult1_3, expectedPos1_3, usedCats1_3, usedBalls1_3)  
+import GameBase.Data.LevelsData.DemoLevelData exposing                                     
+            (levelsNumber, machineDemo, inputDemo, transTableDemo,              
+             expectedResultDemo, expectedPosDemo, usedCatsDemo, usedBallsDemo)  
+import GameBase.Data.LevelsData.TasksBlock1Data exposing                                   
+            (machine1_1, input1_1, transTable1_1,                               
+             expectedResult1_1, expectedPos1_1, usedCats1_1, usedBalls1_1,      
+             machine1_2, input1_2, transTable1_2,                               
+             expectedResult1_2, expectedPos1_2, usedCats1_2, usedBalls1_2,      
+             machine1_3, input1_3, transTable1_3,                               
+             expectedResult1_3, expectedPos1_3, usedCats1_3, usedBalls1_3)  
+import GameBase.Data.LevelsData.TasksBlock2Data exposing                        
+            (machine2_1, input2_1, transTable2_1,                               
+             expectedResult2_1, expectedPos2_1, usedCats2_1, usedBalls2_1,      
+             machine2_2, input2_2, transTable2_2,                               
+             expectedResult2_2, expectedPos2_2, usedCats2_2, usedBalls2_2,
+             machine2_3, input2_3, transTable2_3,                               
+             expectedResult2_3, expectedPos2_3, usedCats2_3, usedBalls2_3) 
 import GameBase.UI.MainObjects.Cat exposing 
                              (catThinkX, catShowSndItemY)  
 
@@ -136,6 +146,15 @@ getInitByLevel level oldModel =
     3 -> -- 1_2
       (initModel oldModel.options.winSize input1_2 machine1_2 transTable1_2 3   
                     expectedPos1_2 expectedResult1_2 usedCats1_2 usedBalls1_2)  
-    _ -> -- 1_3
+    4 -> -- 1_3
       (initModel oldModel.options.winSize input1_3 machine1_3 transTable1_3 4   
                     expectedPos1_3 expectedResult1_3 usedCats1_3 usedBalls1_3)  
+    5 -> -- 2_1
+      (initModel oldModel.options.winSize input2_1 machine2_1 transTable2_1 5   
+                    expectedPos2_1 expectedResult2_1 usedCats2_1 usedBalls2_1)  
+    6 -> -- 2_2
+      (initModel oldModel.options.winSize input2_2 machine2_2 transTable2_2 6
+       expectedPos2_2 expectedResult2_2 usedCats2_2 usedBalls2_2) 
+    _ -> -- 2_3
+      (initModel oldModel.options.winSize input2_3 machine2_3 transTable2_3 7   
+       expectedPos2_3 expectedResult2_3 usedCats2_3 usedBalls2_3)  

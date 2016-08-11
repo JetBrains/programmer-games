@@ -1,4 +1,4 @@
-import GameBase.Data.LevelsData exposing  
+import GameBase.Data.LevelsData.DemoLevelData exposing  
                (machineDemo, inputDemo, transTableDemo, expectedResultDemo, 
                 expectedPosDemo, usedCatsDemo, usedBallsDemo)
                                                                              
