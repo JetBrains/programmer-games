@@ -8,12 +8,13 @@ import GameBase.Data.GameTypes exposing
                          ModelOptions, ModelMachine, ModelTransTables,          
                          ModelImgParam, ModelLevels, ModelExpResults,           
                          ModelFlags, ModelObjectsSet)  
-import GameBase.Data.LevelsData exposing (machine1, transTable1, input1,        
-                                          expectedResult1, expectedPos1,        
-                                          usedCats1, usedBalls1,                
-                                          machine2, transTable2, input2,        
-                                          expectedResult2, expectedPos2,        
-                                          usedCats2, usedBalls2, levelsNumber) 
+import GameBase.Data.LevelsData exposing 
+  (levelsNumber, machineDemo, inputDemo, transTableDemo, expectedResultDemo,    
+  expectedPosDemo, usedCatsDemo, usedBallsDemo, machine1_1, input1_1,          
+  transTable1_1, expectedResult1_1, expectedPos1_1, usedCats1_1, usedBalls1_1, 
+  machine1_2, input1_2, transTable1_2, expectedResult1_2, expectedPos1_2,      
+  usedCats1_2, usedBalls1_2, machine1_3, input1_3, transTable1_3,              
+  expectedResult1_3, expectedPos1_3, usedCats1_3, usedBalls1_3)  
 import GameBase.UI.MainObjects.Cat exposing 
                              (catThinkX, catShowSndItemY)  
 
@@ -81,7 +82,7 @@ initImgParam : Machine BallOfWool Kitten -> ModelImgParam
 initImgParam machine =
   { catLeft    = catThinkX
   , menuCatTop = catShowSndItemY
-  , catPos     = machine.initHeadPosForDraw                                         
+  , catPos     = machine.initHeadPosForDraw + machine.initHeadPosForMach
   , catImg     = "../img/saimonThink/SaimonThinkW.png"                              
   , helpImg    = " "                                                               
   , finalImg   = " "  
@@ -126,7 +127,15 @@ initObjectsSet usedCats usedBalls =
 getInitByLevel : Int -> Model -> Model                                          
 getInitByLevel level oldModel =                                                 
   case level of 
-    1 -> (initModel oldModel.options.winSize input1 machine1 transTable1 1 
-                    expectedPos1 expectedResult1 usedCats1 usedBalls1)                     
-    _ -> (initModel oldModel.options.winSize input2 machine2 transTable2 2 
-                    expectedPos2 expectedResult2 usedCats2 usedBalls2)
+    1 -> -- Demo
+      (initModel oldModel.options.winSize inputDemo machineDemo transTableDemo 
+              1 expectedPosDemo expectedResultDemo usedCatsDemo usedBallsDemo)                     
+    2 -> -- 1_1
+      (initModel oldModel.options.winSize input1_1 machine1_1 transTable1_1 2 
+                    expectedPos1_1 expectedResult1_1 usedCats1_1 usedBalls1_1)
+    3 -> -- 1_2
+      (initModel oldModel.options.winSize input1_2 machine1_2 transTable1_2 3   
+                    expectedPos1_2 expectedResult1_2 usedCats1_2 usedBalls1_2)  
+    _ -> -- 1_3
+      (initModel oldModel.options.winSize input1_3 machine1_3 transTable1_3 4   
+                    expectedPos1_3 expectedResult1_3 usedCats1_3 usedBalls1_3)  

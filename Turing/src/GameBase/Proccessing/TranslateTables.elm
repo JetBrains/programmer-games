@@ -95,7 +95,7 @@ translateOneValue maybeUserKV =
 
 -- at the beginning res is Array.empty
 translateFullTable : UserTransTable BallOfWool Kitten -> 
-                   TransTable BallOfWool Kitten -> TransTable BallOfWool Kitten                    
+                 TransTable BallOfWool Kitten -> TransTable BallOfWool Kitten                    
 translateFullTable userTable res =
   let 
     updRes = push (translateOneValue (get 0 userTable)) res

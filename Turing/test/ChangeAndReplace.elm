@@ -20,6 +20,8 @@ import InitUpdate exposing (initMachineCfg)
 testMachine : Machine Char Int                                                  
 testMachine =                                                                   
   { transition = (transFunc transTable (4, Nothing, MoveLeft))                  
+  , initHeadPosForDraw = 3                                                      
+  , initHeadPosForMach = 0 
   , startState = 0                                                              
   , acceptState = 3                                                             
   , rejectState = 4                                                             
@@ -45,9 +47,6 @@ inputForCh =
 inputForRepl : List (Maybe Char)                                                
 inputForRepl =                                                                  
   [Nothing, Nothing, Just '0', Just '1', Nothing]   
-
-initHeadPos : Int                                                               
-initHeadPos = 0    
 
 ------------------------------------------------------------------------------  
 ------------------------------------------------------------------------------  
@@ -261,31 +260,41 @@ tests : Test
 tests =                                                                         
   suite "A Test Suite"                                                        
   [ test "head for change test"     
-    <| assertEqual (headCfgForCheck testMachine inputForCh initHeadPos) 
+    <| assertEqual (headCfgForCheck testMachine inputForCh 
+                                    testMachine.initHeadPosForMach)
                    (headCfgCorrect testMachine inputForCh)
   , test "head for replace test"                                                  
-    <| assertEqual (headCfgForCheck testMachine inputForRepl initHeadPos)                        
+    <| assertEqual (headCfgForCheck testMachine inputForRepl 
+                                    testMachine.initHeadPosForMach)                        
                    (headCfgCorrect testMachine inputForRepl)  
   , test "first transition (see in the middle block) for change"  
-    <| assertEqual (fstTransCfgForCheckC testMachine inputForCh initHeadPos)
+    <| assertEqual (fstTransCfgForCheckC testMachine inputForCh 
+                                         testMachine.initHeadPosForMach)
                    (fstTransCfgCorrectC testMachine inputForCh)  
   , test "second transition (see in the middle block) for change"                           
-    <| assertEqual (sndTransCfgForCheckC testMachine inputForCh initHeadPos)                    
+    <| assertEqual (sndTransCfgForCheckC testMachine inputForCh 
+                                         testMachine.initHeadPosForMach)                    
                    (sndTransCfgCorrectC testMachine inputForCh)  
   , test "first transition (see in the middle block) for replace"                           
-    <| assertEqual (fstTransCfgForCheckR testMachine inputForRepl initHeadPos)                    
+    <| assertEqual (fstTransCfgForCheckR testMachine inputForRepl 
+                                         testMachine.initHeadPosForMach)                    
                    (fstTransCfgCorrectR testMachine inputForRepl)                     
   , test "second transition (see in the middle block) for replace"                          
-    <| assertEqual (sndTransCfgForCheckR testMachine inputForRepl initHeadPos)                    
+    <| assertEqual (sndTransCfgForCheckR testMachine inputForRepl 
+                                         testMachine.initHeadPosForMach)                    
                    (sndTransCfgCorrectR testMachine inputForRepl)  
   , test "last for change"                                                                    
-    <| assertEqual (lastCfgForCheck testMachine inputForCh initHeadPos) 
+    <| assertEqual (lastCfgForCheck testMachine inputForCh 
+                                    testMachine.initHeadPosForMach) 
                    (lastCfgCorrectC testMachine inputForCh)
   , test "last for replace"                                                         
-    <| assertEqual (lastCfgForCheck testMachine inputForRepl initHeadPos)                        
+    <| assertEqual (lastCfgForCheck testMachine inputForRepl 
+                                    testMachine.initHeadPosForMach)                        
                    (lastCfgCorrectR testMachine inputForRepl)  
   , test "count for change"
-    <| assertEqual (length (runRes testMachine inputForCh initHeadPos)) 7
+    <| assertEqual (length (runRes testMachine inputForCh 
+                                   testMachine.initHeadPosForMach)) 7
   , test "count for replace"                                                     
-    <| assertEqual (length (runRes testMachine inputForRepl initHeadPos)) 9
+    <| assertEqual (length (runRes testMachine inputForRepl 
+                                   testMachine.initHeadPosForMach)) 9
   ] 

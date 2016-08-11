@@ -19,6 +19,8 @@ import InitUpdate exposing (initMachineCfg)
 testMachine : Machine Char Int                                                  
 testMachine =                                                                   
   { transition = (transFunc transTable (4, Nothing, MoveLeft))                  
+  , initHeadPosForDraw = 3                                                      
+  , initHeadPosForMach = 0 
   , startState = 0                                                              
   , acceptState = 3 
   , rejectState = 4                                                             
@@ -37,9 +39,6 @@ transTable =
 input : List (Maybe Char)                                                       
 input =                                                                         
   [Nothing, Just '0', Just '0', Just '0', Just '0', Nothing]                                
-
-initHeadPos : Int 
-initHeadPos = 0
 
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
@@ -127,11 +126,14 @@ tests : Test
 tests =                                                                         
   suite "A Test Suite"                                                        
   [ test "head"     
-    <| assertEqual (headCfgForCheck testMachine input initHeadPos) 
+    <| assertEqual (headCfgForCheck testMachine input 
+                                    testMachine.initHeadPosForMach) 
                    (headCfgCorrect testMachine input)
   , test "last"                                                                    
-    <| assertEqual (lastCfgForCheck testMachine input initHeadPos) 
+    <| assertEqual (lastCfgForCheck testMachine input 
+                                    testMachine.initHeadPosForMach) 
                    (lastCfgCorrect testMachine input)
   , test "count"
-    <| assertEqual (length (runRes testMachine input initHeadPos)) 7
+    <| assertEqual (length (runRes testMachine input 
+                                   testMachine.initHeadPosForMach)) 7
   ] 

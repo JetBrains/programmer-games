@@ -23,6 +23,8 @@ type Kitten = Grey | Black | Brown | LightGrey
 testMachine : Machine BallOfWool Kitten                                         
 testMachine =                                                                   
   { transition = (transFunc transTable (Black, Nothing, MoveLeft))              
+  , initHeadPosForDraw = 3                                                      
+  , initHeadPosForMach = 0 
   , startState = LightGrey                                                      
   , acceptState = Brown                                                         
   , rejectState = Black                                                         
@@ -47,9 +49,6 @@ transTable =
 input : List (Maybe BallOfWool)                                                 
 input =                                                                         
   [Just Red, Nothing, Just Orange, Just Yellow, Just Green, Just Blue]
-
-initHeadPos : Int
-initHeadPos = 0
 
 ------------------------------------------------------------------------------  
 ------------------------------------------------------------------------------  
@@ -178,14 +177,18 @@ tests : Test
 tests =                                                                         
   suite "A Test Suite"                                                        
   [ test "head"     
-    <| assertEqual (headCfgForCheck testMachine input initHeadPos) 
+    <| assertEqual (headCfgForCheck testMachine input   
+                                    testMachine.initHeadPosForMach) 
                    (headCfgCorrect testMachine input)
   , test "first transition (see in the middle block)"                                                                 
-    <| assertEqual (fstTransCfgForCheck testMachine input initHeadPos)                       
+    <| assertEqual (fstTransCfgForCheck testMachine input 
+                                        testMachine.initHeadPosForMach)                       
                    (fstTransCfgCorrect testMachine input)  
   , test "last"                                                                    
-    <| assertEqual (lastCfgForCheck testMachine input initHeadPos) 
+    <| assertEqual (lastCfgForCheck testMachine input 
+                                    testMachine.initHeadPosForMach) 
                    (lastCfgCorrect testMachine input)
   , test "count"
-    <| assertEqual (length (runRes testMachine input initHeadPos)) 5
+    <| assertEqual (length (runRes testMachine input 
+                                   testMachine.initHeadPosForMach)) 5
   ] 

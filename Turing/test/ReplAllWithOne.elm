@@ -19,6 +19,8 @@ import InitUpdate exposing (initMachineCfg)
 testMachine : Machine Char Int                                                  
 testMachine =                                                                   
   { transition = (transFunc transTable (3, Nothing, MoveLeft))                  
+  , initHeadPosForDraw = 3                                                      
+  , initHeadPosForMach = 0 
   , startState = 0                                                              
   , acceptState = 2 
   , rejectState = 3                                                             
@@ -36,9 +38,6 @@ transTable =
 input : List (Maybe Char)                                                       
 input =                                                                         
   [Nothing, Just '1', Just '2', Just '3', Nothing]                                
-
-initHeadPos : Int                                                               
-initHeadPos = 0    
 
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
@@ -126,11 +125,14 @@ tests : Test
 tests =                                                                         
   suite "A Test Suite"                                                        
   [ test "head"     
-    <| assertEqual (headCfgForCheck testMachine input initHeadPos) 
+    <| assertEqual (headCfgForCheck testMachine input 
+                                    testMachine.initHeadPosForMach) 
                    (headCfgCorrect testMachine input)
   , test "last"                                                                    
-    <| assertEqual (lastCfgForCheck testMachine input initHeadPos) 
+    <| assertEqual (lastCfgForCheck testMachine input 
+                                    testMachine.initHeadPosForMach) 
                    (lastCfgCorrect testMachine input)
   , test "count"
-    <| assertEqual (length (runRes testMachine input initHeadPos)) 6
+    <| assertEqual (length (runRes testMachine input 
+                                   testMachine.initHeadPosForMach)) 6
   ] 

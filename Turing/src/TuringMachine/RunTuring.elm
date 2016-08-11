@@ -4,7 +4,8 @@ import List exposing (map, take)
 import Array exposing (get, slice, length)
 import String exposing (join)
 
-import TuringMachine.TuringTypes exposing (Direction(..), Machine, MachineCfg, TransTable)
+import TuringMachine.TuringTypes exposing 
+                           (Direction(..), Machine, MachineCfg, TransTable)
 import TuringMachine.PrintTuring exposing (printMachineCfg) 
 import TuringMachine.InitUpdate exposing (initMachineCfg, updateMachineCfg)                   
 
@@ -13,8 +14,16 @@ import TuringMachine.InitUpdate exposing (initMachineCfg, updateMachineCfg)
 machineCfgFinal : Machine a b -> MachineCfg a b -> Bool                         
 machineCfgFinal m mcfg =                                                        
   mcfg.currState == m.acceptState || mcfg.currState == m.rejectState            
-                                                                                
-                                                                                
+
+
+upLimitForCyclicalRun : Int
+upLimitForCyclicalRun = 30
+
+
+takeCfgsWhenCycle : Int
+takeCfgsWhenCycle = 10
+
+
 -- run machine while not in final state.                                        
 runMachine : Machine a b -> MachineCfg a b -> List (MachineCfg a b) 
              -> List (MachineCfg a b)
@@ -25,8 +34,8 @@ runMachine m mcfg res =
     if (machineCfgFinal m mcfg) 
        then res
     else 
-      if (List.length res) > 30
-         then (take 10 res) 
+      if (List.length res) > upLimitForCyclicalRun
+         then (take takeCfgsWhenCycle res) 
       else (runMachine m upd (res ++ [upd]))                                          
                                                                                 
                                                                                 

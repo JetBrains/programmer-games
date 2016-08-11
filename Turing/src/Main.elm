@@ -1,9 +1,10 @@
-import GameBase.Data.LevelsData exposing (machine1, transTable1, input1, 
-                                          expectedResult1, expectedPos1,
-                                          usedCats1, usedBalls1)
-import GameBase.Data.GameTypes exposing (Msg(..), Model, Position)       
-import GameBase.Data.Init exposing (init)
-import GameBase.UI.MainObjects.Div exposing 
+import GameBase.Data.LevelsData exposing  
+               (machineDemo, inputDemo, transTableDemo, expectedResultDemo, 
+                expectedPosDemo, usedCatsDemo, usedBallsDemo)
+                                                                             
+import GameBase.Data.GameTypes exposing (Msg(..), Model, Position)          
+import GameBase.Data.Init exposing (init)                                   
+import GameBase.UI.MainObjects.Div exposing                                 
                              (menuDiv,gameDiv,rulesDiv,authorsDiv,finalDiv)
 import GameBase.UI.MainObjects.DivSvgStyles exposing (mainRectW, mainRectH)
 import GameBase.Proccessing.MsgProccessing.MsgProccessing exposing 
@@ -90,8 +91,8 @@ fstLevel = 1
 main : Program Never
 main =                                                                          
   program
-    { init = (init input1 machine1 transTable1 fstLevel expectedPos1 
-                   expectedResult1 usedCats1 usedBalls1)
+    { init = (init inputDemo machineDemo transTableDemo fstLevel 
+                 expectedPosDemo expectedResultDemo usedCatsDemo usedBallsDemo)
     , view = view                                                               
     , update = update                                                           
     , subscriptions = subscriptions                      
