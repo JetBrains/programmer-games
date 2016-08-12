@@ -100,16 +100,16 @@ clickInMenuWin m pos =
 
 -- AR Win is authors and rules windows
 returnFromARWinTopFrom : Int                                                    
-returnFromARWinTopFrom = 520                                                                                
+returnFromARWinTopFrom = 670                                                                                
                                                                                 
 returnFromARWinTopTo : Int                                                      
-returnFromARWinTopTo = 570                                                      
+returnFromARWinTopTo = 740                                                      
                                                                                 
 returnFromARWinLeftFrom : Int                                                   
-returnFromARWinLeftFrom = 515                                                   
+returnFromARWinLeftFrom = 660
                                                                                 
 returnFromARWinLeftTo : Int                                                     
-returnFromARWinLeftTo = 765 
+returnFromARWinLeftTo = 980 
 
 
 clickInAuthorsRulesWin : Model -> Position -> ( Model, Cmd Msg )                
@@ -141,13 +141,13 @@ returnFromGWinTopFrom : Int
 returnFromGWinTopFrom = 20 
                                                                                 
 returnFromGWinTopTo : Int                                                      
-returnFromGWinTopTo = 35
+returnFromGWinTopTo = 40
                                                                                 
 returnFromGWinLeftFrom : Int                                                   
-returnFromGWinLeftFrom = 540 
+returnFromGWinLeftFrom = 690
                                                                                 
 returnFromGWinLeftTo : Int                                                     
-returnFromGWinLeftTo = 740
+returnFromGWinLeftTo = 930
 
 --fastRunButtonX
 clickInGameWin : Model -> Position -> ( Model, Cmd Msg )                        
@@ -218,16 +218,16 @@ clickInGameWin m pos =
 
 -- G Win is game window                                                         
 returnFromFFImgTopFrom : Int                                                     
-returnFromFFImgTopFrom = 350
+returnFromFFImgTopFrom = 455 
                                                                                 
 returnFromFFImgTopTo : Int                                                       
-returnFromFFImgTopTo = 380                                                        
+returnFromFFImgTopTo = 490                                                        
                                                                                 
 returnFromFFImgLeftFrom : Int                                                    
-returnFromFFImgLeftFrom = 155                                                    
+returnFromFFImgLeftFrom = 200                                                    
                                                                                 
 returnFromFFImgLeftTo : Int                                                      
-returnFromFFImgLeftTo = 680
+returnFromFFImgLeftTo = 860 
 
 
 clickInFinalFinImg : Model -> Position -> ( Model, Cmd Msg )                    
@@ -243,16 +243,16 @@ clickInFinalFinImg m pos =
                       
 
 goNextLevTopFrom : Int
-goNextLevTopFrom = 170
+goNextLevTopFrom = 220
 
 goNextLevelTopTo : Int
-goNextLevelTopTo = 200
+goNextLevelTopTo = 250
 
 goNextLevelLeftFrom : Int
-goNextLevelLeftFrom = 190
+goNextLevelLeftFrom = 240
 
 goNextLevelLeftTo : Int
-goNextLevelLeftTo = 670
+goNextLevelLeftTo = 860
 
 
 clickInFinalPosImg : Model -> Position -> ( Model, Cmd Msg )                    
@@ -269,16 +269,16 @@ clickInFinalPosImg m pos =
                                                                                 
 
 tryAgainTopFrom : Int
-tryAgainTopFrom = 520
+tryAgainTopFrom = 590 
 
 tryAgainTopTo : Int
-tryAgainTopTo = 560
+tryAgainTopTo = 630
 
 tryAgainLeftFrom : Int
-tryAgainLeftFrom = 315
+tryAgainLeftFrom = 440
 
 tryAgainLeftTo : Int
-tryAgainLeftTo = 668
+tryAgainLeftTo = 860
 
 
 clickInFinalNegImg : Model -> Position -> ( Model, Cmd Msg )                    

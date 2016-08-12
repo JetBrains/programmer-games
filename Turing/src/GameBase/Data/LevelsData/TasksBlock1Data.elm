@@ -20,7 +20,7 @@ import Array exposing (Array, fromList)
 machine1_1 : Machine BallOfWool Kitten                                          
 machine1_1 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 3                                                      
+  , initHeadPosForDraw = 4
   , initHeadPosForMach = 0                                                      
   , startState = White                                                          
   , acceptState = Orange                                                        
@@ -76,10 +76,11 @@ expectedResult1_1 =
   [Just Red, Just Blue]                                                         
                                                                                 
 expectedPos1_1 : Int                                                            
-expectedPos1_1 = 3                                                              
+expectedPos1_1 = 4                                                              
                                                                                 
 usedCats1_1 : Array (Cell Kitten)                                               
-usedCats1_1 = fromList [UserCell White, UserCell LightGrey, UserCell Grey]      
+usedCats1_1 = fromList [UserCell White, UserCell LightGrey, UserCell Grey, 
+                        UserCell Brown]      
                                                                                 
 usedBalls1_1 : Array (Cell (Maybe BallOfWool))                                  
 usedBalls1_1 = fromList [UserCell (Just Red), UserCell (Just Yellow),           
@@ -89,7 +90,7 @@ usedBalls1_1 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 machine1_2 : Machine BallOfWool Kitten                                          
 machine1_2 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 2                                                      
+  , initHeadPosForDraw = 3
   , initHeadPosForMach = 1                                                      
   , startState = White                                                          
   , acceptState = Orange                                                        
@@ -145,10 +146,11 @@ expectedResult1_2 =
   [Just Blue, Just Red]                                                         
                                                                                 
 expectedPos1_2 : Int                                                            
-expectedPos1_2 = 3                                                              
+expectedPos1_2 = 4                                                              
                                                                                 
 usedCats1_2 : Array (Cell Kitten)                                               
-usedCats1_2 = fromList [UserCell White, UserCell LightGrey, UserCell Grey]      
+usedCats1_2 = fromList [UserCell White, UserCell LightGrey, UserCell Grey, 
+                        UserCell Brown]
                                                                                 
 usedBalls1_2 : Array (Cell (Maybe BallOfWool))                                  
 usedBalls1_2 = fromList [UserCell (Just Red), UserCell (Just Yellow),           
@@ -158,7 +160,7 @@ usedBalls1_2 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 machine1_3 : Machine BallOfWool Kitten                                          
 machine1_3 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 1                                                      
+  , initHeadPosForDraw = 2
   , initHeadPosForMach = 1                                                      
   , startState = White                                                          
   , acceptState = Orange                                                        
@@ -249,10 +251,11 @@ expectedResult1_3 =
   [Just Blue, Just Red, Just Yellow, Just Green, Just Blue]                     
                                                                                 
 expectedPos1_3 : Int                                                            
-expectedPos1_3 = 2                                                              
+expectedPos1_3 = 3                                                              
                                                                                 
 usedCats1_3 : Array (Cell Kitten)                                               
-usedCats1_3 = fromList [UserCell White, UserCell LightGrey, UserCell Grey]      
+usedCats1_3 = fromList [UserCell White, UserCell LightGrey, UserCell Grey, 
+                        UserCell Brown]
                                                                                 
 usedBalls1_3 : Array (Cell (Maybe BallOfWool))                                  
 usedBalls1_3 = fromList [UserCell (Just Red), UserCell (Just Yellow),           

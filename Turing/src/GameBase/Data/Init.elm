@@ -25,8 +25,19 @@ import GameBase.Data.LevelsData.TasksBlock2Data exposing
              expectedResult2_2, expectedPos2_2, usedCats2_2, usedBalls2_2,
              machine2_3, input2_3, transTable2_3,                               
              expectedResult2_3, expectedPos2_3, usedCats2_3, usedBalls2_3) 
-import GameBase.UI.MainObjects.Cat exposing 
-                             (catThinkX, catShowSndItemY)  
+import GameBase.Data.LevelsData.TasksBlock3Data exposing                        
+            (machine3_1, input3_1, transTable3_1,                               
+             expectedResult3_1, expectedPos3_1, usedCats3_1, usedBalls3_1,      
+             machine3_2, input3_2, transTable3_2,                               
+             expectedResult3_2, expectedPos3_2, usedCats3_2, usedBalls3_2,      
+             machine3_3, input3_3, transTable3_3,                               
+             expectedResult3_3, expectedPos3_3, usedCats3_3, usedBalls3_3,
+             machine3_4, input3_4, transTable3_4,                               
+             expectedResult3_4, expectedPos3_4, usedCats3_4, usedBalls3_4, 
+             machine3_5, input3_5, transTable3_5,                               
+             expectedResult3_5, expectedPos3_5, usedCats3_5, usedBalls3_5) 
+import GameBase.UI.MainObjects.Cat exposing (catThinkX)
+import GameBase.UI.ControlObjects.ControlLabelsParam exposing (menuItemTopFrom)   
 
 import Time exposing (second)                                                   
 import Task exposing (perform)                                                  
@@ -91,7 +102,7 @@ initTransTables initTable =
 initImgParam : Machine BallOfWool Kitten -> ModelImgParam
 initImgParam machine =
   { catLeft    = catThinkX
-  , menuCatTop = catShowSndItemY
+  , menuCatTop = (menuItemTopFrom 1) 
   , catPos     = machine.initHeadPosForDraw + machine.initHeadPosForMach
   , catImg     = "../img/saimonThink/SaimonThinkW.png"                              
   , helpImg    = " "                                                               
@@ -155,6 +166,21 @@ getInitByLevel level oldModel =
     6 -> -- 2_2
       (initModel oldModel.options.winSize input2_2 machine2_2 transTable2_2 6
        expectedPos2_2 expectedResult2_2 usedCats2_2 usedBalls2_2) 
-    _ -> -- 2_3
+    7 -> -- 2_3
       (initModel oldModel.options.winSize input2_3 machine2_3 transTable2_3 7   
        expectedPos2_3 expectedResult2_3 usedCats2_3 usedBalls2_3)  
+    8 -> -- 3_1
+      (initModel oldModel.options.winSize input3_1 machine3_1 transTable3_1 8
+       expectedPos3_1 expectedResult3_1 usedCats3_1 usedBalls3_1)     
+    9 -> -- 3_2
+      (initModel oldModel.options.winSize input3_2 machine3_2 transTable3_2 9  
+       expectedPos3_2 expectedResult3_2 usedCats3_2 usedBalls3_2)
+    10 -> -- 3_3
+      (initModel oldModel.options.winSize input3_3 machine3_3 transTable3_3 10   
+       expectedPos3_3 expectedResult3_3 usedCats3_3 usedBalls3_3) 
+    11 -> -- 3_4
+      (initModel oldModel.options.winSize input3_4 machine3_4 transTable3_4 11  
+       expectedPos3_4 expectedResult3_4 usedCats3_4 usedBalls3_4)  
+    _ -> -- 3_5
+      (initModel oldModel.options.winSize input3_5 machine3_5 transTable3_5 12  
+       expectedPos3_5 expectedResult3_5 usedCats3_5 usedBalls3_5) 

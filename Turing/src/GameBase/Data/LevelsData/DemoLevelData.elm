@@ -11,7 +11,7 @@ import Array exposing (Array, fromList)
                                                                                 
                                                                                 
 levelsNumber : Int                                                              
-levelsNumber = 7
+levelsNumber = 12
 
 
 --DEMO MACHINE----------------------------------------------------------------- 
@@ -20,7 +20,7 @@ levelsNumber = 7
 machineDemo : Machine BallOfWool Kitten                                         
 machineDemo =                                                                   
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 3                                                      
+  , initHeadPosForDraw = 4
   , initHeadPosForMach = 0                                                      
   , startState = White                                                          
   , acceptState = Orange                                                        
@@ -76,7 +76,7 @@ expectedResultDemo =
   [Just Red, Nothing]                                                           
                                                                                 
 expectedPosDemo : Int                                                           
-expectedPosDemo = 4                                                             
+expectedPosDemo = 5                                                      
                                                                                 
 usedCatsDemo : Array (Cell Kitten)                                              
 usedCatsDemo = fromList [UserCell White]                                        

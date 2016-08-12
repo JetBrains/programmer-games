@@ -6,25 +6,25 @@ import TuringMachine.TuringTypes exposing (UserValue)
 
 
 trTableX : Int                                                         
-trTableX = 380                                                         
+trTableX = 370
     
 
 trTableY : Int                                                          
-trTableY = 55
+trTableY = 70 
 
 
 -- elem [0..2], column [0..2]                                                   
 -- symb is 0 elem, dir is 1 elem, state is 2 elem                               
 fromParamToLeftMargin : Int -> Int -> Int                                       
 fromParamToLeftMargin elem column =                                             
-  trTableX + 155 + column*80 + elem*15
+  trTableX + 210 + column*105 + elem*20
                                                                                 
                                                                                 
 -- ifDir is 0 or 1 (bool), row [0..4]                                           
 -- "dir" is 1, _ is 0                                                           
 fromParamToTopMargin : Int -> Int -> Int                                        
 fromParamToTopMargin ifDir row =                                                
-  trTableY + 40 + ifDir*20 + row*45
+  trTableY + 55 + ifDir*25 + row*55
                                                                                 
                                                                                 
 -- get left margin from key parameters                                          
@@ -40,7 +40,10 @@ cellX key =
     ((LightGrey, sym), new, _) -> (fromParamToLeftMargin 1 1)                   
     ((Grey, sym), new, "symb") -> (fromParamToLeftMargin 0 2)                   
     ((Grey, sym), new, "state") -> (fromParamToLeftMargin 2 2)                  
-    ((Grey, sym), new, _) -> (fromParamToLeftMargin 1 2)                        
+    ((Grey, sym), new, _) -> (fromParamToLeftMargin 1 2)  
+    ((Brown, sym), new, "symb") -> (fromParamToLeftMargin 0 3)                   
+    ((Brown, sym), new, "state") -> (fromParamToLeftMargin 2 3)                  
+    ((Brown, sym), new, _) -> (fromParamToLeftMargin 1 3)     
     ((st, sym), new, _) -> (fromParamToLeftMargin 0 3)                          
                                                                                 
                                                                                 

@@ -1,8 +1,9 @@
 module GameBase.UI.MainObjects.Cat exposing 
-          (gameCatDraw, lookingCatDraw, menuCatDraw, updCatParam, menuCatY, 
-           catThinkX, catShowSndItemY)
+  (gameCatDraw, lookingCatDraw, menuCatDraw, updCatParam, menuCatY, catThinkX)
 
 import GameBase.UI.MainObjects.Basket exposing (basketX, basketY)
+import GameBase.UI.ControlObjects.ControlLabelsParam exposing                   
+                                    (fstItemTopFrom, menuItemsInterval)       
 import GameBase.Data.GameTypes exposing (BallOfWool, Kitten(..), Model)
 import TuringMachine.TuringTypes exposing (MachineCfg, Direction(..)) 
 import GameBase.Proccessing.WorkWithCfg exposing (getHeadCfg)
@@ -24,17 +25,17 @@ gameCatX hpos left =
 
 
 gameCatW : Int
-gameCatW = 155
+gameCatW = 165
 
 
 gameCatH : Int
-gameCatH = 155
+gameCatH = 165
 ----------------------------------------------------------------
 
 
 --LOOKING CAT PARAMETERS----------------------------------------
 lookingCatY : Int
-lookingCatY = 200
+lookingCatY = 280 
 
 
 lookingCatX : Int
@@ -42,34 +43,22 @@ lookingCatX = 0
 
 
 lookingCatW : Int
-lookingCatW = 400
+lookingCatW = 513
 
 
 lookingCatH : Int
-lookingCatH = 397
+lookingCatH = 509
 ---------------------------------------------------------------
 
 
 --MENU CAT PARAMETERS------------------------------------------
-catShowFstItemY : Int
-catShowFstItemY = 180
-
-
-catShowSndItemY : Int                                                     
-catShowSndItemY = 240 
-
-
-menuItemsInterval : Int
-menuItemsInterval = 60
-
-
 menuCatY : Int -> Int
 menuCatY itemInd =
-  catShowFstItemY + itemInd * menuItemsInterval
+  fstItemTopFrom + itemInd * menuItemsInterval
 
 
 menuCatX : Int
-menuCatX = 60
+menuCatX = 160
 
 
 menuCatW : Int
@@ -95,7 +84,8 @@ getCatColour state =
   case state of                                                                 
     White -> "W"                                                                
     LightGrey -> "LG"                                                           
-    Grey -> "G"                                                                 
+    Grey -> "G"   
+    Brown -> "B"
     Orange -> "O"                                                               
     Violet -> "V" 
 

@@ -47,7 +47,8 @@ moveMsgProccessing : Model -> Position -> ( Model, Cmd Msg )
 moveMsgProccessing m pos =                                                      
   if m.flags.ifStart == True                                                     
      -- if click "Continue"
-     then if m.levels.currLevel > 1 && pos.y >= (menuItemTopFrom 0) &&
+     then if m.levels.currLevel > 1 && 
+                                pos.y >= (menuItemTopFrom 0) &&
                                 pos.y <= (menuItemTopTo 0) && 
                                 pos.x >= menuItemLeftFrom &&
                                 pos.x <= fstMenuItemLength

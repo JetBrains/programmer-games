@@ -8,10 +8,10 @@ import Svg.Attributes exposing ( fontSize, fontStyle, width, height, x, y,
                                  
 ------------------------------------------------------------------------------
 runButtonX : Int
-runButtonX = 535
+runButtonX = 588
 
 runButtonY : Int
-runButtonY = 330
+runButtonY = 430
 
 runButtonW : Int
 runButtonW = 50
@@ -34,7 +34,7 @@ runButtonDraw =
 
 ------------------------------------------------------------------------------
 fastRunButtonX : Int                                                                
-fastRunButtonX = runButtonX - 74
+fastRunButtonX = runButtonX - 103
                                                                                 
 runFastButtonDraw : List (Svg msg)                                                    
 runFastButtonDraw =                                                                   
@@ -51,7 +51,7 @@ runFastButtonDraw =
 
 ------------------------------------------------------------------------------
 quesButtonX : Int                                                                
-quesButtonX = runButtonX + 80
+quesButtonX = runButtonX + 102
                                                                                 
 quesButtonY : Int                                                                
 quesButtonY = runButtonY
@@ -77,10 +77,10 @@ quesButtonDraw =
 
 ------------------------------------------------------------------------------
 helpMsgX : Int
-helpMsgX = 10
+helpMsgX = 70
 
 helpMsgY : Int
-helpMsgY = 10
+helpMsgY = 20
 
 helpMsgW : Int
 helpMsgW = 537
@@ -103,10 +103,10 @@ helpMsgDraw hmsg =
 
 ------------------------------------------------------------------------------
 levelLabelX : Int
-levelLabelX = quesButtonX + 80
+levelLabelX = quesButtonX + 86
 
 levelLabelY : Int
-levelLabelY = quesButtonY + 38
+levelLabelY = quesButtonY + 36
 
 levelDraw : Int -> Int -> List (Svg msg)                                        
 levelDraw level max =                                                           

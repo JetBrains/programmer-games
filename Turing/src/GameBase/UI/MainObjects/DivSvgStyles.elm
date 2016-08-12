@@ -12,11 +12,11 @@ import Svg.Attributes exposing
 
 --MAIN DIV PARAMETERS--------------------------------------------
 mainRectW : Int                                                                 
-mainRectW = 800                                                                 
+mainRectW = 1024
                                                                                 
                                                                                 
 mainRectH : Int                                                                 
-mainRectH = 600                                                                 
+mainRectH = 768                                                                
                                                                                 
                                                                                 
 topMargin : Model -> String                                                     
@@ -32,7 +32,7 @@ leftMargin model =
 
 --FULL SCREEN IMG PARAMETERS-------------------------------------
 fullScreenImgWH : Int
-fullScreenImgWH = 800
+fullScreenImgWH = 1024
 
 
 fullScreenImgXY : Int

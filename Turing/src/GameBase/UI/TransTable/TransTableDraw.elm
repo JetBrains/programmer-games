@@ -11,11 +11,11 @@ import Svg.Attributes exposing (width,height,x,y,xlinkHref,fontStyle,fontSize)
 
 
 trTableW : Int 
-trTableW = 460
+trTableW = 800 
 
 
 trTableH : Int
-trTableH = 250
+trTableH = 350
 
 
 -- draw trans table with img from level dir
@@ -25,9 +25,9 @@ transTableDraw m =
       [ x ((toString trTableX) ++ "px")
       , y ((toString trTableY) ++ "px")
       , width ((toString trTableW) ++ "px")   
-      , height ((toString trTableH) ++ "px")   
-      , xlinkHref ( "../img/level" ++ (toString m.levels.currLevel) ++ 
-                    "/transTable.png" )   
+      , height ((toString trTableH) ++ "px") 
+      , xlinkHref ("../img/transTable/transTableLevel" ++ 
+                   (toString m.levels.currLevel) ++ ".png")
       ]
       []  
     ]
@@ -37,11 +37,11 @@ transTableDraw m =
                  
 
 notFullMsgX : Int
-notFullMsgX = 20
+notFullMsgX = 65
 
 
 notFullMsgY : Int
-notFullMsgY = 350
+notFullMsgY = 460
 
 
 -- draw msg about table is not full

@@ -1,33 +1,46 @@
 module GameBase.UI.ControlObjects.ControlLabelsParam exposing 
         (menuItemTopFrom, menuItemTopTo, menuItemLeftFrom, fstMenuItemLength, 
-         sndMenuItemLength, thirdMenuItemLength, fourthMenuItemLength)
+         sndMenuItemLength, thirdMenuItemLength, fourthMenuItemLength, 
+         fstItemTopFrom, menuItemsInterval)
 
 
-menuItemTopFrom : Int -> Int                                                    
-menuItemTopFrom ind =                                                           
-  190 + ind * 57                                                                
+fstItemTopFrom : Int 
+fstItemTopFrom = 250
 
 
-menuItemTopTo : Int -> Int                                                      
-menuItemTopTo ind =                                                             
-  (menuItemTopFrom ind) + 27                                                    
+menuItemsInterval : Int 
+menuItemsInterval = 70
 
 
-menuItemLeftFrom : Int                                                          
-menuItemLeftFrom = 360                                                          
+menuItemHeight : Int
+menuItemHeight = 27
 
 
-fstMenuItemLength : Int                                                         
-fstMenuItemLength = 525                                                         
+menuItemTopFrom : Int -> Int 
+menuItemTopFrom ind =
+  fstItemTopFrom + ind * menuItemsInterval
 
 
-sndMenuItemLength : Int                                                         
-sndMenuItemLength = 525                                                         
+menuItemTopTo : Int -> Int 
+menuItemTopTo ind =  
+  (menuItemTopFrom ind) + menuItemHeight
 
 
-thirdMenuItemLength : Int                                                       
-thirdMenuItemLength = 460                                                       
+menuItemLeftFrom : Int 
+menuItemLeftFrom = 460  
 
 
-fourthMenuItemLength : Int                                                      
-fourthMenuItemLength = 713    
+fstMenuItemLength : Int  
+fstMenuItemLength = 670
+
+
+sndMenuItemLength : Int    
+sndMenuItemLength = 670   
+
+
+thirdMenuItemLength : Int  
+thirdMenuItemLength = 585  
+
+
+fourthMenuItemLength : Int  
+fourthMenuItemLength = 910

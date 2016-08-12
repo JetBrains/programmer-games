@@ -45,20 +45,19 @@ transTable2_1 =
        , clickNum = 0                                                           
       }                                                                         
     , { key = (Grey, Nothing)                                                   
-       , value = { state = StableCell (Orange)                                  
+       , value = { state = EmptyCell                                  
                  , symb  = StableCell (Just Green)                              
                  , dir   = StableCell (MoveRight)                               
                  }                                                              
        , clickNum = 0                                                           
       }                                                                         
-      {-                                                                        
     , { key = (Brown, Nothing)                                                  
       , value = { state = StableCell (Orange)                                    
                 , symb  = StableCell (Just Blue)                                
                 , dir   = StableCell (MoveRight)                                
                 }                                                               
       , clickNum = 0                                                            
-      } -}                                                                      
+      }                                                                      
     ]                                                                           
                                                                                 
 input2_1 : List (Maybe BallOfWool)                                              
@@ -67,13 +66,14 @@ input2_1 =
                                                                                 
 expectedResult2_1 : List (Maybe BallOfWool)                                     
 expectedResult2_1 =                                                             
-  [Just Red, Just Yellow, Just Green, Nothing]                                           
+  [Just Red, Just Yellow, Just Green, Just Blue, Nothing]                                           
                                                                                 
 expectedPos2_1 : Int                                                            
-expectedPos2_1 = 3
+expectedPos2_1 = 4
 
 usedCats2_1 : Array (Cell Kitten)                                               
-usedCats2_1 = fromList [UserCell White, UserCell LightGrey, UserCell Grey]      
+usedCats2_1 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
+                        UserCell Brown]
                                                                                 
 usedBalls2_1 : Array (Cell (Maybe BallOfWool))                                  
 usedBalls2_1 = fromList [UserCell (Just Red), UserCell (Just Yellow),           
@@ -84,7 +84,7 @@ usedBalls2_1 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 machine2_2 : Machine BallOfWool Kitten                                          
 machine2_2 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0                                                      
+  , initHeadPosForDraw = 1
   , initHeadPosForMach = 0                                                      
   , startState = White                                                          
   , acceptState = Orange                                                        
@@ -133,10 +133,11 @@ expectedResult2_2 =
   [Just Red, Nothing, Just Green, Nothing, Just Green, Nothing, Just Blue]                                  
                                                                                 
 expectedPos2_2 : Int                                                            
-expectedPos2_2 = 5   
+expectedPos2_2 = 6   
 
 usedCats2_2 : Array (Cell Kitten)                                               
-usedCats2_2 = fromList [UserCell White, UserCell LightGrey, UserCell Grey]      
+usedCats2_2 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
+                        UserCell Brown]
                                                                                 
 usedBalls2_2 : Array (Cell (Maybe BallOfWool))                                  
 usedBalls2_2 = fromList [UserCell (Just Red), UserCell (Just Yellow),           
@@ -147,7 +148,7 @@ usedBalls2_2 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 machine2_3 : Machine BallOfWool Kitten                                          
 machine2_3 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0                                                      
+  , initHeadPosForDraw = 2
   , initHeadPosForMach = 0                                                      
   , startState = White                                                          
   , acceptState = Orange                                                        
@@ -196,10 +197,11 @@ expectedResult2_3 =
   [Just Red, Just Green, Nothing, Just Red, Just Green, Nothing]      
                                                                                 
 expectedPos2_3 : Int                                                            
-expectedPos2_3 = 4
+expectedPos2_3 = 6
                                                                                 
 usedCats2_3 : Array (Cell Kitten)                                               
-usedCats2_3 = fromList [UserCell White, UserCell LightGrey, UserCell Grey]      
+usedCats2_3 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
+                        UserCell Brown]
                                                                                 
 usedBalls2_3 : Array (Cell (Maybe BallOfWool))                                  
 usedBalls2_3 = fromList [UserCell (Just Red), UserCell (Just Yellow),           

@@ -67,7 +67,9 @@ oneCellDraw maybeKey =
                 StableCell LightGrey ->                                         
                   "../img/saimonHead/SaimonHeadLGVerySm.png"                    
                 StableCell Grey ->                                              
-                  "../img/saimonHead/SaimonHeadGVerySm.png"                     
+                  "../img/saimonHead/SaimonHeadGVerySm.png"               
+                StableCell Brown ->                                              
+                  "../img/saimonHead/SaimonHeadBVerySm.png"     
                 StableCell Orange ->                                            
                   "../img/saimonHead/SaimonHeadOVerySm.png"                     
                 StableCell Violet ->                                            
@@ -78,6 +80,8 @@ oneCellDraw maybeKey =
                   "../img/saimonHead/SaimonHeadLGVerySmInFrame.png"                    
                 UserCell Grey ->                                                
                   "../img/saimonHead/SaimonHeadGVerySmInFrame.png"                     
+                UserCell Brown ->                                             
+                  "../img/saimonHead/SaimonHeadBVerySmInFrame.png" 
                 UserCell Orange ->                                              
                   "../img/saimonHead/SaimonHeadOVerySmInFrame.png"                     
                 UserCell Violet ->                                              

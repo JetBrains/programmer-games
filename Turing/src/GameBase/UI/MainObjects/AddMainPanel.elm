@@ -1,7 +1,7 @@
 module GameBase.UI.MainObjects.AddMainPanel exposing (addMainPanel)
 
 import GameBase.UI.MainObjects.Ball exposing (ballsOfOneTapeDraw)
-import GameBase.UI.MainObjects.Basket exposing (allBasketsDraw) 
+import GameBase.UI.MainObjects.Basket exposing (allBasketsDraw, basketNumber) 
 import GameBase.UI.MainObjects.Cat exposing (gameCatDraw, lookingCatDraw)
 import GameBase.UI.ControlObjects.ControlElements exposing 
     (runButtonDraw, runFastButtonDraw, quesButtonDraw, helpMsgDraw, levelDraw)
@@ -21,13 +21,13 @@ mirrorX : Int
 mirrorX = 30
 
 mirrorY : Int
-mirrorY = 55
+mirrorY = 80
 
 mirrorW : Int
-mirrorW = 335
+mirrorW = 450 
 
 mirrorH : Int
-mirrorH = 270
+mirrorH = 300
 
 
 mirrorDraw : Int -> List (Svg msg)                                              
@@ -46,10 +46,6 @@ mirrorDraw level =
 tableDraw : List (Svg msg)                                                      
 tableDraw =                                                                     
   (fullScreenImg "../img/table.jpg")
-
-
-basketNumber : Int
-basketNumber = 7
 
 
 addMainPanel : Model -> Html msg                                                
