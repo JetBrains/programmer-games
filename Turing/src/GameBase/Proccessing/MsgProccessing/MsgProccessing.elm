@@ -128,6 +128,7 @@ tickMsgProccessing m time =
                     , timeUnit = m.options.timeUnit
                     , whenGameStarts = time
                     , currTime = time
+                    , tapeCellsNumb = m.options.tapeCellsNumb   
                     } 
             }                                                                   
           , Cmd.none                                                            
@@ -153,6 +154,7 @@ tickMsgProccessing m time =
                               , timeUnit = m.options.timeUnit
                               , whenGameStarts = m.options.whenGameStarts
                               , currTime = time   
+                              , tapeCellsNumb = m.options.tapeCellsNumb
                               }
                         }
                        , Cmd.none
@@ -162,7 +164,8 @@ tickMsgProccessing m time =
                             { winSize = m.options.winSize                     
                             , timeUnit = m.options.timeUnit                   
                             , whenGameStarts = m.options.whenGameStarts       
-                            , currTime = time                                 
+                            , currTime = time 
+                            , tapeCellsNumb = m.options.tapeCellsNumb
                             } 
                      }
                     , Cmd.none
@@ -180,7 +183,8 @@ tickMsgProccessing m time =
             { winSize = m.options.winSize                     
             , timeUnit = m.options.timeUnit                   
             , whenGameStarts = m.options.whenGameStarts       
-            , currTime = time                                 
+            , currTime = time
+            , tapeCellsNumb = m.options.tapeCellsNumb
             } 
      }
     , Cmd.none

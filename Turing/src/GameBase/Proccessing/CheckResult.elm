@@ -60,6 +60,7 @@ resultModel model href level time =
             , timeUnit = model.options.timeUnit
             , whenGameStarts = model.options.whenGameStarts
             , currTime = time
+            , tapeCellsNumb = model.options.tapeCellsNumb
             }
     }                                                                           
   , Cmd.none                                                                    

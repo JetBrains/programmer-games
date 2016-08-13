@@ -149,7 +149,6 @@ returnFromGWinLeftFrom = 690
 returnFromGWinLeftTo : Int                                                     
 returnFromGWinLeftTo = 930
 
---fastRunButtonX
 clickInGameWin : Model -> Position -> ( Model, Cmd Msg )                        
 clickInGameWin m pos =                                                          
   if m.flags.ifCatLooks == True &&
@@ -169,7 +168,8 @@ clickInGameWin m pos =
                   { winSize = m.options.winSize                                 
                   , timeUnit = m.options.timeUnit                                                          
                   , whenGameStarts = m.options.currTime                                                                   
-                  , currTime = m.options.currTime                               
+                  , currTime = m.options.currTime       
+                  , tapeCellsNumb = m.options.tapeCellsNumb
                   }  
             }                                                                   
           , Cmd.none                                                          
@@ -227,7 +227,7 @@ returnFromFFImgLeftFrom : Int
 returnFromFFImgLeftFrom = 200                                                    
                                                                                 
 returnFromFFImgLeftTo : Int                                                      
-returnFromFFImgLeftTo = 860 
+returnFromFFImgLeftTo = 840 
 
 
 clickInFinalFinImg : Model -> Position -> ( Model, Cmd Msg )                    

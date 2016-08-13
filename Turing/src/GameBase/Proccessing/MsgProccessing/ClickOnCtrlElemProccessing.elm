@@ -36,7 +36,8 @@ setTime time model =
           { winSize = model.options.winSize                                                            
           , timeUnit = time
           , whenGameStarts = model.options.whenGameStarts                                                     
-          , currTime = model.options.currTime                                                            
+          , currTime = model.options.currTime
+          , tapeCellsNumb = model.options.tapeCellsNumb
           } 
   }
 

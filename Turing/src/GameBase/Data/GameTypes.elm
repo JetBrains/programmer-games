@@ -35,10 +35,11 @@ type alias Model =
 
 
 type alias ModelOptions = 
-  { winSize       : Size -- for WindowsSize message                            
+  { winSize        : Size -- for WindowsSize message                            
   , timeUnit       : Time -- seconds or milliseconds                                                      
   , whenGameStarts : Time -- for looking cat drawing                                                      
-  , currTime       : Time -- for looking cat drawing  
+  , currTime       : Time -- for looking cat drawing
+  , tapeCellsNumb  : Int  -- number of baskets on the tape
   }
 
 

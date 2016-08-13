@@ -118,6 +118,7 @@ updCatParam time model =
             , timeUnit = model.options.timeUnit
             , whenGameStarts = model.options.whenGameStarts
             , currTime = time
+            , tapeCellsNumb = model.options.tapeCellsNumb
             }                                                        
     } 
 ---------------------------------------------------------------                  

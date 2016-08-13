@@ -1,6 +1,6 @@
 import GameBase.Data.LevelsData.DemoLevelData exposing  
-               (machineDemo, inputDemo, transTableDemo, expectedResultDemo, 
-                expectedPosDemo, usedCatsDemo, usedBallsDemo)
+            (machineDemo, inputDemo, transTableDemo, expectedResultDemo, 
+             expectedPosDemo, usedCatsDemo, usedBallsDemo, basketsNumbDemo)
                                                                              
 import GameBase.Data.GameTypes exposing (Msg(..), Model, Position)          
 import GameBase.Data.Init exposing (init)                                   
@@ -64,6 +64,7 @@ update msg model =
                 , timeUnit = model.options.timeUnit
                 , whenGameStarts = model.options.whenGameStarts
                 , currTime = model.options.currTime
+                , tapeCellsNumb = model.options.tapeCellsNumb
                 }
         }
       , Cmd.none 
@@ -91,8 +92,8 @@ fstLevel = 1
 main : Program Never
 main =                                                                          
   program
-    { init = (init inputDemo machineDemo transTableDemo fstLevel 
-                 expectedPosDemo expectedResultDemo usedCatsDemo usedBallsDemo)
+    { init = (init basketsNumbDemo inputDemo machineDemo transTableDemo 
+        fstLevel expectedPosDemo expectedResultDemo usedCatsDemo usedBallsDemo)
     , view = view                                                               
     , update = update                                                           
     , subscriptions = subscriptions                      

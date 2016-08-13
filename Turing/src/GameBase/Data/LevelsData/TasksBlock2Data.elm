@@ -1,26 +1,33 @@
 module GameBase.Data.LevelsData.TasksBlock2Data exposing                                   
-            (machine2_1, input2_1, transTable2_1,                               
+            (basketsNumb2_1, machine2_1, input2_1, transTable2_1,                               
              expectedResult2_1, expectedPos2_1, usedCats2_1, usedBalls2_1,
-             machine2_2, input2_2, transTable2_2,                               
+             basketsNumb2_2, machine2_2, input2_2, transTable2_2,                               
              expectedResult2_2, expectedPos2_2, usedCats2_2, usedBalls2_2,
-             machine2_3, input2_3, transTable2_3,
+             basketsNumb2_3, machine2_3, input2_3, transTable2_3,
              expectedResult2_3, expectedPos2_3, usedCats2_3, usedBalls2_3)  
                                                                                 
 import TuringMachine.TuringTypes exposing ( Direction(..), Machine,             
                                             UserTransTable, Cell(..))           
 import TuringMachine.RunTuring exposing (transFunc)                             
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))            
+import GameBase.UI.MainObjects.Basket exposing 
+                             (sixBaskets, sevenBaskets, nineBaskets)
                                                                                 
 import Array exposing (Array, fromList)
 
 
 --BLOCK 2 : Writing the sequence of balls on the tape-------------------------- 
-                                                                                
--- 2_1 - arrange balls by colors of the rainbow (on empty tape)                 
+
+
+-- 2_1 - arrange balls by colors of the rainbow (on empty tape) 
+
+basketsNumb2_1 : Int                                                            
+basketsNumb2_1 = sixBaskets
+
 machine2_1 : Machine BallOfWool Kitten                                          
 machine2_1 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0                                                      
+  , initHeadPosForDraw = 1
   , initHeadPosForMach = 0                                                      
   , startState = White                                                          
   , acceptState = Orange                                                        
@@ -69,7 +76,7 @@ expectedResult2_1 =
   [Just Red, Just Yellow, Just Green, Just Blue, Nothing]                                           
                                                                                 
 expectedPos2_1 : Int                                                            
-expectedPos2_1 = 4
+expectedPos2_1 = 5
 
 usedCats2_1 : Array (Cell Kitten)                                               
 usedCats2_1 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
@@ -81,6 +88,10 @@ usedBalls2_1 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 
 
 -- 2_2 - put balls on empty tape with a space after each one
+
+basketsNumb2_2 : Int                                                            
+basketsNumb2_2 = nineBaskets
+
 machine2_2 : Machine BallOfWool Kitten                                          
 machine2_2 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
@@ -145,10 +156,14 @@ usedBalls2_2 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 
 
 -- 2_3 - put pairs of red and green balls and separate them by a space          
+
+basketsNumb2_3 : Int                                                            
+basketsNumb2_3 = sevenBaskets
+
 machine2_3 : Machine BallOfWool Kitten                                          
 machine2_3 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 2
+  , initHeadPosForDraw = 1
   , initHeadPosForMach = 0                                                      
   , startState = White                                                          
   , acceptState = Orange                                                        
@@ -197,7 +212,7 @@ expectedResult2_3 =
   [Just Red, Just Green, Nothing, Just Red, Just Green, Nothing]      
                                                                                 
 expectedPos2_3 : Int                                                            
-expectedPos2_3 = 6
+expectedPos2_3 = 5
                                                                                 
 usedCats2_3 : Array (Cell Kitten)                                               
 usedCats2_3 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,

@@ -1,7 +1,7 @@
 module GameBase.UI.MainObjects.AddMainPanel exposing (addMainPanel)
 
 import GameBase.UI.MainObjects.Ball exposing (ballsOfOneTapeDraw)
-import GameBase.UI.MainObjects.Basket exposing (allBasketsDraw, basketNumber) 
+import GameBase.UI.MainObjects.Basket exposing (allBasketsDraw) 
 import GameBase.UI.MainObjects.Cat exposing (gameCatDraw, lookingCatDraw)
 import GameBase.UI.ControlObjects.ControlElements exposing 
     (runButtonDraw, runFastButtonDraw, quesButtonDraw, helpMsgDraw, levelDraw)
@@ -48,38 +48,38 @@ tableDraw =
   (fullScreenImg "../img/table.jpg")
 
 
-addMainPanel : Model -> Html msg                                                
-addMainPanel model =                                                            
-  let                                                                           
-    hpos = model.modelMachine.machine.initHeadPosForDraw                                     
-    curTape = (getTapeFromCfg (head model.modelMachine.machineCfgs))                         
-  in                                                                            
-    svg                                                                     
-      svgStyle                                                        
-      (                                                                       
-        tableDraw                                                             
-        ++                                                                    
-        (mirrorDraw model.levels.currLevel)                                          
-        ++                                                                    
-        (allBasketsDraw basketNumber [])                                                 
-        ++                                                                    
-        (ballsOfOneTapeDraw basketNumber [] curTape hpos)                                
-        ++                                                                    
-        (gameCatDraw model)                                                       
-        ++                                                                    
-        (transTableDraw model)                                      
-        ++                                                                    
-        runFastButtonDraw                                                           
-        ++                                                                    
-        runButtonDraw                                                         
-        ++                                                                    
-        quesButtonDraw                                                        
-        ++                                                                    
-        (helpMsgDraw model.imgParam.helpImg)                                           
-        ++                                                                    
+addMainPanel : Model -> Html msg
+addMainPanel model =
+  let
+    hpos = model.modelMachine.machine.initHeadPosForDraw
+    curTape = (getTapeFromCfg (head model.modelMachine.machineCfgs))
+  in
+    svg 
+      svgStyle
+      (
+        tableDraw
+        ++
+        (mirrorDraw model.levels.currLevel)
+        ++
+        (allBasketsDraw model.options.tapeCellsNumb [])
+        ++
+        (ballsOfOneTapeDraw model.options.tapeCellsNumb [] curTape hpos)
+        ++
+        (gameCatDraw model)
+        ++
+        (transTableDraw model)
+        ++
+        runFastButtonDraw
+        ++
+        runButtonDraw 
+        ++
+        quesButtonDraw
+        ++
+        (helpMsgDraw model.imgParam.helpImg)
+        ++
         (levelDraw model.levels.currLevel model.levels.maxLevel)
-        ++                                                                    
-        (lookingCatDraw model)  
+        ++
+        (lookingCatDraw model)
         ++
         (tableNotFullDraw model)
       )  
