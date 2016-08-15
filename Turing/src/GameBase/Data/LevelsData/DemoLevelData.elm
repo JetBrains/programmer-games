@@ -26,7 +26,7 @@ machineDemo : Machine BallOfWool Kitten
 machineDemo =                                                                   
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
   , initHeadPosForDraw = 1
-  , initHeadPosForMach = 0                                                      
+  , initHeadPosForMach = 0
   , startState = White                                                          
   , acceptState = Orange                                                        
   , rejectState = Violet                                                        

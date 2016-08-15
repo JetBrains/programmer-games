@@ -1,6 +1,6 @@
 module GameBase.UI.MainObjects.AddMainPanel exposing (addMainPanel)
 
-import GameBase.UI.MainObjects.Ball exposing (ballsOfOneTapeDraw)
+import GameBase.UI.MainObjects.Ball exposing (ballsOfOneCfgDraw)
 import GameBase.UI.MainObjects.Basket exposing (allBasketsDraw) 
 import GameBase.UI.MainObjects.Cat exposing (gameCatDraw, lookingCatDraw)
 import GameBase.UI.ControlObjects.ControlElements exposing 
@@ -61,9 +61,11 @@ addMainPanel model =
         ++
         (mirrorDraw model.levels.currLevel)
         ++
-        (allBasketsDraw model.options.tapeCellsNumb [])
+        (allBasketsDraw model.options.tapeCellsNumb []
+                        model.options.tapeCellsNumb) 
         ++
-        (ballsOfOneTapeDraw model.options.tapeCellsNumb [] curTape hpos)
+        (ballsOfOneCfgDraw model.options.tapeCellsNumb 
+                           model.options.tapeCellsNumb [] curTape hpos)
         ++
         (gameCatDraw model)
         ++

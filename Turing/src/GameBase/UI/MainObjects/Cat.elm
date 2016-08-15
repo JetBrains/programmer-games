@@ -19,9 +19,9 @@ gameCatY =
   basketY + 35                                                         
 
 
-gameCatX : Int -> Int -> Int                                           
-gameCatX hpos left =                                                   
-  (basketX hpos) - left
+gameCatX : Int -> Int -> Int -> Int                                          
+gameCatX basketInd basketsNumb left =                                                   
+  (basketX basketInd basketsNumb) - left
 
 
 gameCatW : Int
@@ -126,14 +126,14 @@ updCatParam time model =
 
 --DRAW FUNCTIONS-----------------------------------------------                                       
 gameCatDraw : Model -> List (Svg msg)                                               
-gameCatDraw model =                                                                 
+gameCatDraw m =                                                                 
   let                                                                           
-    href = model.imgParam.catImg                                                         
-    left = model.imgParam.catLeft                                                        
-    hpos = model.imgParam.catPos                                                         
+    href = m.imgParam.catImg                                                         
+    left = m.imgParam.catLeft                                                        
+    basketInd = m.imgParam.catPos                                                         
   in                                                                            
     [image                                                                 
-       [ x (toString (gameCatX hpos left) ++ "px")
+       [ x (toString (gameCatX basketInd m.options.tapeCellsNumb left) ++ "px")
        , y (toString (gameCatY) ++ "px") 
        , width  ((toString gameCatW) ++ "px")                                        
        , height ((toString gameCatH) ++ "px")                                       
