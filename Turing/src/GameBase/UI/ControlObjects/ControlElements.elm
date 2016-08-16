@@ -80,10 +80,10 @@ helpMsgX : Int
 helpMsgX = 70
 
 helpMsgY : Int
-helpMsgY = 20
+helpMsgY = 25
 
 helpMsgW : Int
-helpMsgW = 537
+helpMsgW = 474
   
 helpMsgH : Int
 helpMsgH = 40

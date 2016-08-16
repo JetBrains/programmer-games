@@ -15,7 +15,7 @@ import GameBase.UI.MainObjects.Basket exposing (fourBaskets, sevenBaskets)
 import Array exposing (Array, fromList) 
 
 
---BLOCK 1 : Head movement and addition balls at the end of input word----------
+-- BLOCK 1 : Head movement and addition balls at the end of input word---------
 
 
 -- 1_1 - put blue ball at the right end of word                                 

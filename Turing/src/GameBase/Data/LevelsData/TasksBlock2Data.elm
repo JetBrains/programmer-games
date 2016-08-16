@@ -16,7 +16,7 @@ import GameBase.UI.MainObjects.Basket exposing
 import Array exposing (Array, fromList)
 
 
---BLOCK 2 : Writing the sequence of balls on the tape-------------------------- 
+-- BLOCK 2 : Writing the sequence of balls on the tape------------------------- 
 
 
 -- 2_1 - arrange balls by colors of the rainbow (on empty tape) 

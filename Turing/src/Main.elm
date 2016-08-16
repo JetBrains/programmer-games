@@ -1,7 +1,6 @@
 import GameBase.Data.LevelsData.DemoLevelData exposing  
             (machineDemo, inputDemo, transTableDemo, expectedResultDemo, 
              expectedPosDemo, usedCatsDemo, usedBallsDemo, basketsNumbDemo)
-                                                                             
 import GameBase.Data.GameTypes exposing (Msg(..), Model, Position)          
 import GameBase.Data.Init exposing (init)                                   
 import GameBase.UI.MainObjects.Div exposing                                 
@@ -93,7 +92,7 @@ main : Program Never
 main =                                                                          
   program
     { init = (init basketsNumbDemo inputDemo machineDemo transTableDemo 
-        fstLevel expectedPosDemo expectedResultDemo usedCatsDemo usedBallsDemo)
+       fstLevel expectedPosDemo expectedResultDemo usedCatsDemo usedBallsDemo)
     , view = view                                                               
     , update = update                                                           
     , subscriptions = subscriptions                      

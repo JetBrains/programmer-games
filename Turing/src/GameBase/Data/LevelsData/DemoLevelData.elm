@@ -12,7 +12,7 @@ import Array exposing (Array, fromList)
                                                                                 
                                                                                 
 levelsNumber : Int                                                              
-levelsNumber = 12
+levelsNumber = 23
 
 
 --DEMO MACHINE----------------------------------------------------------------- 
