@@ -1,6 +1,10 @@
 import GameBase.Data.LevelsData.DemoLevelData exposing  
             (machineDemo, inputDemo, transTableDemo, expectedResultDemo, 
              expectedPosDemo, usedCatsDemo, usedBallsDemo, basketsNumbDemo)
+import GameBase.Data.LevelsData.TasksBlock5Data exposing                        
+            (basketsNumb5_5, machine5_5, input5_5, transTable5_5,               
+             expectedResult5_5, expectedPos5_5, usedCats5_5, usedBalls5_5)
+
 import GameBase.Data.GameTypes exposing (Msg(..), Model, Position)          
 import GameBase.Data.Init exposing (init)                                   
 import GameBase.UI.MainObjects.Div exposing                                 
@@ -91,8 +95,10 @@ fstLevel = 1
 main : Program Never
 main =                                                                          
   program
-    { init = (init basketsNumbDemo inputDemo machineDemo transTableDemo 
-       fstLevel expectedPosDemo expectedResultDemo usedCatsDemo usedBallsDemo)
+    { --init = (init basketsNumbDemo inputDemo machineDemo transTableDemo 
+      -- fstLevel expectedPosDemo expectedResultDemo usedCatsDemo usedBallsDemo)
+      init = (init basketsNumb5_5 input5_5 machine5_5 transTable5_5       
+              28 expectedPos5_5 expectedResult5_5 usedCats5_5 usedBalls5_5)
     , view = view                                                               
     , update = update                                                           
     , subscriptions = subscriptions                      

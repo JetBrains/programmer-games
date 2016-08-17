@@ -24,8 +24,8 @@ import GameBase.UI.MainObjects.Basket exposing
 import Array exposing (Array, fromList)
 
 
--- BLOCK 4 : analysis and comparison of symbols 
--- (by transition to different states)-----------------------------------------
+-- BLOCK 4 : analysis and comparison of symbols (by transition to different 
+-- states)---------------------------------------------------------------------
 
 
 -- 4_1 - Add same item, dont change empty word (_ 0 _ _ -> _ 0 0 _)
