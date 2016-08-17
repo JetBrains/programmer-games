@@ -72,9 +72,9 @@ import GameBase.Data.LevelsData.TasksBlock5Data exposing
              basketsNumb5_5, machine5_5, input5_5, transTable5_5,               
              expectedResult5_5, expectedPos5_5, usedCats5_5, usedBalls5_5,
              basketsNumb5_6, machine5_6, input5_6, transTable5_6,               
-             expectedResult5_6, expectedPos5_6, usedCats5_6, usedBalls5_6,
-             basketsNumb5_7, machine5_7, input5_7, transTable5_7,               
-             expectedResult5_7, expectedPos5_7, usedCats5_7, usedBalls5_7) 
+             expectedResult5_6, expectedPos5_6, usedCats5_6, usedBalls5_6)
+             {-basketsNumb5_7, machine5_7, input5_7, transTable5_7,               
+             expectedResult5_7, expectedPos5_7, usedCats5_7, usedBalls5_7)-} 
 import GameBase.UI.MainObjects.Cat exposing (catThinkX)
 import GameBase.UI.ControlObjects.ControlLabelsParam exposing (menuItemTopFrom)   
 
@@ -301,11 +301,11 @@ getInitByLevel level oldModel =
       (initModel oldModel.options.winSize basketsNumb5_5 input5_5 machine5_5    
                            transTable5_5 28 expectedPos5_5 expectedResult5_5    
                            usedCats5_5 usedBalls5_5)
-    29 -> -- 5_6
+    _  -> -- 5_6
       (initModel oldModel.options.winSize basketsNumb5_6 input5_6 machine5_6    
                            transTable5_6 29 expectedPos5_6 expectedResult5_6    
                            usedCats5_6 usedBalls5_6)
-    _  -> -- 5_7
+    {-_  -> -- 5_7
       (initModel oldModel.options.winSize basketsNumb5_7 input5_7 machine5_7    
                            transTable5_7 30 expectedPos5_7 expectedResult5_7    
-                           usedCats5_7 usedBalls5_7)   
+                           usedCats5_7 usedBalls5_7) -}

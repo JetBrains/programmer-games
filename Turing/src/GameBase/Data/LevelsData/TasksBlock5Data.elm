@@ -10,10 +10,10 @@ module GameBase.Data.LevelsData.TasksBlock5Data exposing
              basketsNumb5_5, machine5_5, input5_5, transTable5_5,               
              expectedResult5_5, expectedPos5_5, usedCats5_5, usedBalls5_5,
              basketsNumb5_6, machine5_6, input5_6, transTable5_6,               
-             expectedResult5_6, expectedPos5_6, usedCats5_6, usedBalls5_6,
-             basketsNumb5_7, machine5_7, input5_7, transTable5_7,               
+             expectedResult5_6, expectedPos5_6, usedCats5_6, usedBalls5_6)
+             {-basketsNumb5_7, machine5_7, input5_7, transTable5_7,               
              expectedResult5_7, expectedPos5_7, usedCats5_7, usedBalls5_7)
-             {-basketsNumb5_8, machine5_8, input5_8, transTable5_8,               
+             basketsNumb5_8, machine5_8, input5_8, transTable5_8,               
              expectedResult5_8, expectedPos5_8, usedCats5_8, usedBalls5_8,    
              basketsNumb5_9, machine5_9, input5_9, transTable5_9,               
              expectedResult5_9, expectedPos5_9, usedCats5_9, usedBalls5_9)-}    
@@ -775,7 +775,7 @@ usedBalls5_6 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 
 
 -- INSERTION AND DELETION------------------------------------------------------
-
+{-
 -- 5_7 - Расположить клубки по цветам радуги путем удаления и вставки (сортировка)
 
 basketsNumb5_7 : Int                                                            
@@ -828,7 +828,7 @@ usedCats5_7 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
 usedBalls5_7 : Array (Cell (Maybe BallOfWool))                                  
 usedBalls5_7 = fromList [UserCell (Just Red), UserCell (Just Yellow),           
                 UserCell (Just Green), UserCell (Just Blue), UserCell Nothing]
-
+-}
 
 {-
 -- 5_8 - Заменить в P каждое вхождение красного клубка на два зеленых 
