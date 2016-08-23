@@ -86,6 +86,7 @@ getCatColour state =
     LightGrey -> "LG"                                                           
     Grey -> "G"   
     Brown -> "B"
+    DarkBrown -> "DB"
     Orange -> "O"                                                               
     Violet -> "V" 
 

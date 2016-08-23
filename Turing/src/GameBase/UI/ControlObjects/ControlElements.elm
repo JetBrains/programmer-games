@@ -80,13 +80,13 @@ helpMsgX : Int
 helpMsgX = 70
 
 helpMsgY : Int
-helpMsgY = 25
+helpMsgY = 15
 
 helpMsgW : Int
 helpMsgW = 474
   
 helpMsgH : Int
-helpMsgH = 40
+helpMsgH = 80
 
 helpMsgDraw : String -> List (Svg msg)                                          
 helpMsgDraw hmsg =                                                              

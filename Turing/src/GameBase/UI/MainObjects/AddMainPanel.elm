@@ -18,16 +18,16 @@ import List exposing (head)
 
 
 mirrorX : Int
-mirrorX = 30
+mirrorX = 0
 
 mirrorY : Int
-mirrorY = 80
+mirrorY = 90
 
 mirrorW : Int
-mirrorW = 450 
+mirrorW = 440 
 
 mirrorH : Int
-mirrorH = 300
+mirrorH = 290
 
 
 mirrorDraw : Int -> List (Svg msg)                                              

@@ -6,7 +6,7 @@ import TuringMachine.TuringTypes exposing (UserValue)
 
 
 trTableX : Int                                                         
-trTableX = 370
+trTableX = 270 
     
 
 trTableY : Int                                                          
@@ -17,7 +17,7 @@ trTableY = 70
 -- symb is 0 elem, dir is 1 elem, state is 2 elem                               
 fromParamToLeftMargin : Int -> Int -> Int                                       
 fromParamToLeftMargin elem column =                                             
-  trTableX + 210 + column*105 + elem*20
+  trTableX + 205 + column*105 + elem*20
                                                                                 
                                                                                 
 -- ifDir is 0 or 1 (bool), row [0..4]                                           
@@ -28,8 +28,7 @@ fromParamToTopMargin ifDir row =
                                                                                 
                                                                                 
 -- get left margin from key parameters                                          
-cellX : ((Kitten, Maybe BallOfWool), UserValue BallOfWool Kitten       
-                 , String) -> Int                                               
+cellX : ((Kitten,Maybe BallOfWool),UserValue BallOfWool Kitten,String) -> Int                                             
 cellX key =                                                            
   case key of                                                                   
     ((White, sym), new, "symb") -> (fromParamToLeftMargin 0 0)                  
@@ -44,6 +43,9 @@ cellX key =
     ((Brown, sym), new, "symb") -> (fromParamToLeftMargin 0 3)                   
     ((Brown, sym), new, "state") -> (fromParamToLeftMargin 2 3)                  
     ((Brown, sym), new, _) -> (fromParamToLeftMargin 1 3)     
+    ((DarkBrown, sym), new, "symb") -> (fromParamToLeftMargin 0 4)                  
+    ((DarkBrown, sym), new, "state") -> (fromParamToLeftMargin 2 4)                 
+    ((DarkBrown, sym), new, _) -> (fromParamToLeftMargin 1 4) 
     ((st, sym), new, _) -> (fromParamToLeftMargin 0 3)                          
                                                                                 
                                                                                 

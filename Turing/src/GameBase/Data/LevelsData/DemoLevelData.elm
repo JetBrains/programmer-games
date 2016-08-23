@@ -12,12 +12,12 @@ import Array exposing (Array, fromList)
                                                                                 
                                                                                 
 levelsNumber : Int                                                              
-levelsNumber = 32
+levelsNumber = 35
 
 
 --DEMO MACHINE----------------------------------------------------------------- 
                                                                                 
--- recolor input ball in red color                                              
+-- 0 - Change input ball to red ball
 
 basketsNumbDemo : Int
 basketsNumbDemo = threeBaskets
@@ -56,7 +56,7 @@ expectedPosDemo : Int
 expectedPosDemo = 2                                                      
                                                                                 
 usedCatsDemo : Array (Cell Kitten)                                              
-usedCatsDemo = fromList [UserCell White]                                        
+usedCatsDemo = fromList [UserCell White]
                                                                                 
 usedBallsDemo : Array (Cell (Maybe BallOfWool))                                 
 usedBallsDemo = fromList [UserCell (Just Yellow), UserCell (Just Red),          

@@ -13,8 +13,8 @@ import Array exposing (Array)
 
 
 --white is start, orange is natural, violet is reject                           
-type BallOfWool = Red | Yellow | Green | Blue -- a  
-type Kitten = White | LightGrey | Grey | Brown | Orange | Violet -- b   
+type BallOfWool = Red | Yellow | Green | Blue   
+type Kitten = White | LightGrey | Grey | Brown | DarkBrown | Orange | Violet    
 
 
 type alias Position =                                                           

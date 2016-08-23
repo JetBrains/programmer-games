@@ -19,7 +19,7 @@ import Array exposing (Array, fromList)
 -- BLOCK 2 : Writing the sequence of balls on the tape------------------------- 
 
 
--- 2_1 - arrange balls by colors of the rainbow (on empty tape) 
+-- 2_1 - Arrange balls in colors of the rainbow (on empty tape)
 
 basketsNumb2_1 : Int                                                            
 basketsNumb2_1 = sixBaskets
@@ -29,7 +29,7 @@ machine2_1 =
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
   , initHeadPosForDraw = 1
   , initHeadPosForMach = 0                                                      
-  , startState = White                                                          
+  , startState  = White                                                          
   , acceptState = Orange                                                        
   , rejectState = Violet                                                        
   }                                                                             
@@ -37,28 +37,28 @@ machine2_1 =
 transTable2_1 : UserTransTable BallOfWool Kitten                                
 transTable2_1 =                                                                 
   fromList                                                                      
-    [ { key = (White, Nothing)                                                  
+    [ { key   = (White, Nothing)                                                  
       , value = { state = EmptyCell                                             
                 , symb  = StableCell (Just Red)                                 
                 , dir   = StableCell (MoveRight)                                
                 }                                                               
       , clickNum = 0                                                            
       }                                                                         
-    , { key = (LightGrey, Nothing)                                              
+    , { key    = (LightGrey, Nothing)                                              
        , value = { state = EmptyCell                                            
                  , symb  = StableCell (Just Yellow)                             
                  , dir   = StableCell (MoveRight)                               
                  }                                                              
        , clickNum = 0                                                           
       }                                                                         
-    , { key = (Grey, Nothing)                                                   
+    , { key    = (Grey, Nothing)                                                   
        , value = { state = EmptyCell                                  
                  , symb  = StableCell (Just Green)                              
                  , dir   = StableCell (MoveRight)                               
                  }                                                              
        , clickNum = 0                                                           
       }                                                                         
-    , { key = (Brown, Nothing)                                                  
+    , { key   = (Brown, Nothing)                                                  
       , value = { state = StableCell (Orange)                                    
                 , symb  = StableCell (Just Blue)                                
                 , dir   = StableCell (MoveRight)                                
@@ -79,15 +79,15 @@ expectedPos2_1 : Int
 expectedPos2_1 = 5
 
 usedCats2_1 : Array (Cell Kitten)                                               
-usedCats2_1 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
-                        UserCell Brown]
+usedCats2_1 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,      
+                        UserCell Brown, UserCell DarkBrown]
                                                                                 
 usedBalls2_1 : Array (Cell (Maybe BallOfWool))                                  
 usedBalls2_1 = fromList [UserCell (Just Red), UserCell (Just Yellow),           
                 UserCell (Just Green), UserCell (Just Blue), UserCell Nothing]  
 
 
--- 2_2 - put balls on empty tape with a space after each one
+-- 2_2 - Put balls on empty tape with a space after each one
 
 basketsNumb2_2 : Int                                                            
 basketsNumb2_2 = nineBaskets
@@ -97,7 +97,7 @@ machine2_2 =
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
   , initHeadPosForDraw = 1
   , initHeadPosForMach = 0                                                      
-  , startState = White                                                          
+  , startState  = White                                                          
   , acceptState = Orange                                                        
   , rejectState = Violet                                                        
   }                                                                             
@@ -105,28 +105,28 @@ machine2_2 =
 transTable2_2 : UserTransTable BallOfWool Kitten                                
 transTable2_2 =                                                                 
   fromList                                                                      
-    [ { key = (White, Nothing)                                                  
+    [ { key   = (White, Nothing)                                                  
       , value = { state = EmptyCell                                             
                 , symb  = StableCell (Just Red)                                 
                 , dir   = StableCell (MoveRight)                                
                 }                                                               
       , clickNum = 0                                                            
       }                                                                         
-    , { key = (LightGrey, Nothing)                                              
+    , { key    = (LightGrey, Nothing)                                              
        , value = { state = EmptyCell                                            
                  , symb  = EmptyCell                             
                  , dir   = StableCell (MoveRight)                               
                  }                                                              
        , clickNum = 0                                                           
       }                                                                         
-    , { key = (Grey, Nothing)                                                   
+    , { key    = (Grey, Nothing)                                                   
        , value = { state = EmptyCell                                  
                  , symb  = StableCell (Just Green)                              
                  , dir   = StableCell (MoveRight)                               
                  }                                                              
        , clickNum = 0                                                           
       }                     
-    , { key = (Grey, Just Blue)                                                   
+    , { key    = (Grey, Just Blue)                                                   
        , value = { state = StableCell (Orange)                               
                  , symb  = StableCell (Just Blue)                             
                  , dir   = StableCell (MoveLeft)                               
@@ -147,15 +147,15 @@ expectedPos2_2 : Int
 expectedPos2_2 = 6   
 
 usedCats2_2 : Array (Cell Kitten)                                               
-usedCats2_2 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
-                        UserCell Brown]
+usedCats2_2 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,      
+                        UserCell Brown, UserCell DarkBrown]
                                                                                 
 usedBalls2_2 : Array (Cell (Maybe BallOfWool))                                  
 usedBalls2_2 = fromList [UserCell (Just Red), UserCell (Just Yellow),           
                 UserCell (Just Green), UserCell (Just Blue), UserCell Nothing] 
 
 
--- 2_3 - put pairs of red and green balls and separate them by a space          
+-- 2_3 - Put pairs of red and green balls and separate them by a space          
 
 basketsNumb2_3 : Int                                                            
 basketsNumb2_3 = sevenBaskets
@@ -165,7 +165,7 @@ machine2_3 =
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
   , initHeadPosForDraw = 1
   , initHeadPosForMach = 0                                                      
-  , startState = White                                                          
+  , startState  = White                                                          
   , acceptState = Orange                                                        
   , rejectState = Violet                                                        
   }                                                                             
@@ -173,28 +173,28 @@ machine2_3 =
 transTable2_3 : UserTransTable BallOfWool Kitten                                
 transTable2_3 =                                                                 
   fromList                                                                      
-    [ { key = (White, Nothing)                                                  
+    [ { key   = (White, Nothing)                                                  
       , value = { state = EmptyCell                                             
                 , symb  = StableCell (Just Red)                                 
                 , dir   = StableCell (MoveRight)                                
                 }                                                               
       , clickNum = 0                                                            
       }                                                                         
-    , { key = (LightGrey, Nothing)                                              
+    , { key    = (LightGrey, Nothing)                                              
        , value = { state = EmptyCell                                            
                  , symb  = StableCell (Just Green)                                            
                  , dir   = StableCell (MoveRight)                               
                  }                                                              
        , clickNum = 0                                                           
       }                                                                         
-    , { key = (Grey, Nothing)                                                   
+    , { key    = (Grey, Nothing)                                                   
        , value = { state = EmptyCell                                            
                  , symb  = StableCell (Nothing)                              
                  , dir   = StableCell (MoveRight)                               
                  }                                                              
        , clickNum = 0                                                           
       }                                                                         
-    , { key = (Grey, Just Blue)                                                 
+    , { key    = (Grey, Just Blue)                                                 
        , value = { state = StableCell (Orange)                                  
                  , symb  = EmptyCell                               
                  , dir   = StableCell (MoveLeft)                                
@@ -215,8 +215,8 @@ expectedPos2_3 : Int
 expectedPos2_3 = 5
                                                                                 
 usedCats2_3 : Array (Cell Kitten)                                               
-usedCats2_3 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
-                        UserCell Brown]
+usedCats2_3 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,      
+                        UserCell Brown, UserCell DarkBrown]
                                                                                 
 usedBalls2_3 : Array (Cell (Maybe BallOfWool))                                  
 usedBalls2_3 = fromList [UserCell (Just Red), UserCell (Just Yellow),           

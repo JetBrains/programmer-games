@@ -83,11 +83,13 @@ import GameBase.Data.LevelsData.TasksBlock5Data_InsertAndDelete exposing
              expectedResult5_8, expectedPos5_8, usedCats5_8, usedBalls5_8)
 import GameBase.Data.LevelsData.TasksBlock6Data exposing
             (basketsNumb6_1, machine6_1, input6_1, transTable6_1,               
-             expectedResult6_1, expectedPos6_1, usedCats6_1, usedBalls6_1)
-             {-basketsNumb6_2, machine6_2, input6_2, transTable6_2,
-             expectedResult6_2, expectedPos6_2, usedCats6_2, usedBalls6_2)
+             expectedResult6_1, expectedPos6_1, usedCats6_1, usedBalls6_1,
+             basketsNumb6_2, machine6_2, input6_2, transTable6_2,
+             expectedResult6_2, expectedPos6_2, usedCats6_2, usedBalls6_2,
              basketsNumb6_3, machine6_3, input6_3, transTable6_3,               
-             expectedResult6_3, expectedPos6_3, usedCats6_3, usedBalls6_3)-}   
+             expectedResult6_3, expectedPos6_3, usedCats6_3, usedBalls6_3,
+             basketsNumb6_4, machine6_4, input6_4, transTable6_4,               
+             expectedResult6_4, expectedPos6_4, usedCats6_4, usedBalls6_4)
 import GameBase.UI.MainObjects.Cat exposing (catThinkX)
 import GameBase.UI.ControlObjects.ControlLabelsParam exposing (menuItemTopFrom)   
 
@@ -326,11 +328,19 @@ getInitByLevel level oldModel =
       (initModel oldModel.options.winSize basketsNumb5_8 input5_8 machine5_8    
                            transTable5_8 31 expectedPos5_8 expectedResult5_8    
                            usedCats5_8 usedBalls5_8)
-    _  -> -- 6_1
+    32 -> -- 6_1
       (initModel oldModel.options.winSize basketsNumb6_1 input6_1 machine6_1    
                            transTable6_1 32 expectedPos6_1 expectedResult6_1    
                            usedCats6_1 usedBalls6_1)
-   {- _  -> -- 6_2
+    33 -> -- 6_2
       (initModel oldModel.options.winSize basketsNumb6_2 input6_2 machine6_2    
                            transTable6_2 33 expectedPos6_2 expectedResult6_2    
-                           usedCats6_2 usedBalls6_2)    -}
+                           usedCats6_2 usedBalls6_2)
+    34 -> -- 6_3
+      (initModel oldModel.options.winSize basketsNumb6_3 input6_3 machine6_3    
+                           transTable6_3 34 expectedPos6_3 expectedResult6_3    
+                           usedCats6_3 usedBalls6_3)  
+    _  -> -- 6_4
+      (initModel oldModel.options.winSize basketsNumb6_4 input6_4 machine6_4    
+                           transTable6_4 35 expectedPos6_4 expectedResult6_4    
+                           usedCats6_4 usedBalls6_4) 

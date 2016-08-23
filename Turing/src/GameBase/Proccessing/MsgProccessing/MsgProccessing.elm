@@ -114,7 +114,7 @@ moveMsgProccessing m pos =
 
 
 timeLimitForFillingGaps : Float
-timeLimitForFillingGaps = 40
+timeLimitForFillingGaps = 60
 
 
 -- proccessing time parameters for checking result, 

@@ -1,12 +1,8 @@
 import GameBase.Data.LevelsData.DemoLevelData exposing  
             (machineDemo, inputDemo, transTableDemo, expectedResultDemo, 
              expectedPosDemo, usedCatsDemo, usedBallsDemo, basketsNumbDemo)
-import GameBase.Data.LevelsData.TasksBlock6Data exposing                        
-            (basketsNumb6_1, machine6_1, input6_1, transTable6_1,               
-             expectedResult6_1, expectedPos6_1, usedCats6_1, usedBalls6_1)
-
-import GameBase.Data.GameTypes exposing (Msg(..), Model, Position)          
-import GameBase.Data.Init exposing (init)                                   
+import GameBase.Data.GameTypes exposing (Msg(..), Model, Position)
+import GameBase.Data.Init exposing (init)
 import GameBase.UI.MainObjects.Div exposing                                 
                              (menuDiv,gameDiv,rulesDiv,authorsDiv,finalDiv)
 import GameBase.UI.MainObjects.DivSvgStyles exposing (mainRectW, mainRectH)
@@ -95,10 +91,8 @@ fstLevel = 1
 main : Program Never
 main =                                                                          
   program
-    { --init = (init basketsNumbDemo inputDemo machineDemo transTableDemo 
-      -- fstLevel expectedPosDemo expectedResultDemo usedCatsDemo usedBallsDemo)
-      init = (init basketsNumb6_1 input6_1 machine6_1 transTable6_1       
-              32 expectedPos6_1 expectedResult6_1 usedCats6_1 usedBalls6_1)
+    { init = (init basketsNumbDemo inputDemo machineDemo transTableDemo 
+       fstLevel expectedPosDemo expectedResultDemo usedCatsDemo usedBallsDemo)
     , view = view                                                               
     , update = update                                                           
     , subscriptions = subscriptions                      

@@ -17,7 +17,7 @@ machineCfgFinal m mcfg =
 
 
 upLimitForCyclicalRun : Int
-upLimitForCyclicalRun = 30
+upLimitForCyclicalRun = 100
 
 
 takeCfgsWhenCycle : Int

@@ -178,7 +178,9 @@ clickHelpProccessing model =
                   , menuCatTop = model.imgParam.menuCatTop
                   , catPos = model.imgParam.catPos
                   , catImg = model.imgParam.catImg
-                  , helpImg = "../img/help.png"
+                  , helpImg = "../img/helpMsg/helpLevel" ++ 
+                              (toString model.levels.currLevel) ++ 
+                              ".png"
                   , finalImg = model.imgParam.finalImg
                   }
            }
