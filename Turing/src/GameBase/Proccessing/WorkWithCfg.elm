@@ -12,8 +12,8 @@ import GameBase.Proccessing.TranslateTables exposing (getTrTFromUserTrT)
 
 emptyTape : TapeCfg BallOfWool                                                  
 emptyTape =                                                                     
-  { leftSyms = empty                                                            
-  , currSym = Nothing                                                           
+  { leftSyms  = empty                                                            
+  , currSym   = Nothing                                                           
   , rightSyms = empty                                                           
   }                                                                             
                                                                                 
@@ -21,8 +21,8 @@ emptyTape =
 emptyMCfg : MachineCfg BallOfWool Kitten                                        
 emptyMCfg =                                                                     
   { currState = White                                                           
-  , currDir = Stay                                                              
-  , tapeCfg  = emptyTape                                                        
+  , currDir   = Stay                                                              
+  , tapeCfg   = emptyTape                                                        
   }
 
 
@@ -36,13 +36,13 @@ getTapeFromCfg maybeCfg =
         [cfg.tapeCfg.currSym] ++                                                
         (toList cfg.tapeCfg.rightSyms)                                          
       )                                                                         
-    Nothing -> []  
+    Nothing  -> []  
 
 
 getHeadCfg : Model -> MachineCfg BallOfWool Kitten                              
 getHeadCfg model =                                                              
     case (head (model.modelMachine.machineCfgs)) of                                          
-      Just c -> c                                                               
+      Just c  -> c                                                               
       Nothing -> emptyMCfg                                                      
                                                                                 
                                                                                 
@@ -56,8 +56,8 @@ getAllCfgs m =
        then updModel
     else { updModel
             | modelMachine = 
-                { input = updModel.modelMachine.input                                    
-                , machine = updModel.modelMachine.machine                                       
+                { input       = updModel.modelMachine.input                                    
+                , machine     = updModel.modelMachine.machine                                       
                 , machineCfgs = (runMachine updModel.modelMachine.machine 
                                             initCfg [initCfg])     
                 }
@@ -68,8 +68,8 @@ getNextCfg : Model -> Model
 getNextCfg model =                                                              
   { model 
       | modelMachine = 
-        { input = model.modelMachine.input
-        , machine = model.modelMachine.machine
+        { input       = model.modelMachine.input
+        , machine     = model.modelMachine.machine
         , machineCfgs = (drop 1 model.modelMachine.machineCfgs)
         }
   }

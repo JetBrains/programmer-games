@@ -59,10 +59,12 @@ type alias ModelTransTables =
 type alias ModelImgParam = 
   { catLeft      : Int    -- different for catImg                               
   , menuCatTop   : Int    -- for menu cat                                                      
-  , catPos       : Int    -- for game cat                                                      
+  , catPos       : Int    -- for game cat
+  , gameHistPage : Int
   , catImg       : String -- catPush, catThink                                  
   , helpImg      : String -- help text                                          
   , finalImg     : String -- pos, neg, final
+  , gameHistImg  : String
   }
 
 
@@ -79,14 +81,15 @@ type alias ModelExpResults =
 
 
 type alias ModelFlags =
-  { ifPushRun    : Bool -- if run button was pushed                                                       
-  , ifStart      : Bool -- if menu window                                                         
-  , ifPlay       : Bool -- if game window                                                       
-  , ifRules      : Bool -- if rules window                                                       
-  , ifAuthors    : Bool -- if authors window                                                       
-  , ifEnd        : Bool -- if final img window                                                       
-  , ifCatLooks   : Bool -- if drawing looking cat                                                       
-  , ifTableFull  : Bool -- if user fill all gaps 
+  { ifPushRun    : Bool -- if run button was pushed
+  , ifStart      : Bool -- if menu window
+  , ifPlay       : Bool -- if game window
+  , ifHistory    : Bool -- if game history window
+  , ifRules      : Bool -- if rules window
+  , ifAuthors    : Bool -- if authors window 
+  , ifEnd        : Bool -- if final img window 
+  , ifCatLooks   : Bool -- if drawing looking cat
+  , ifTableFull  : Bool -- if user fill all gaps
   }
 
 

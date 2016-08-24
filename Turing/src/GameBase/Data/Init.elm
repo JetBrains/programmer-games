@@ -157,12 +157,14 @@ initTransTables initTable =
 
 initImgParam : Machine BallOfWool Kitten -> ModelImgParam
 initImgParam machine =
-  { catLeft    = catThinkX
-  , menuCatTop = (menuItemTopFrom 1) 
-  , catPos     = machine.initHeadPosForDraw + machine.initHeadPosForMach
-  , catImg     = "../img/saimonThink/SaimonThinkW.png"                              
-  , helpImg    = " "                                                               
-  , finalImg   = " "  
+  { catLeft      = catThinkX
+  , menuCatTop   = (menuItemTopFrom 1) 
+  , catPos       = machine.initHeadPosForDraw + machine.initHeadPosForMach
+  , gameHistPage = 0
+  , catImg       = "../img/saimonThink/SaimonThinkW.png"                              
+  , helpImg      = " "                                                               
+  , finalImg     = " "  
+  , gameHistImg  = " "
   }
 
 initLevels : Int -> ModelLevels
@@ -183,7 +185,8 @@ initFlags : ModelFlags
 initFlags =
   { ifPushRun   = False                                                           
   , ifStart     = True                                                              
-  , ifPlay      = False                                                              
+  , ifPlay      = False  
+  , ifHistory   = False
   , ifRules     = False                                                             
   , ifAuthors   = False                                                           
   , ifEnd       = False                                                               
@@ -204,39 +207,39 @@ initObjectsSet usedCats usedBalls =
 getInitByLevel : Int -> Model -> Model                                          
 getInitByLevel level oldModel =                                                 
   case level of 
-    1 -> -- Demo
+    1  -> -- Demo
       (initModel oldModel.options.winSize basketsNumbDemo inputDemo 
-                        machineDemo transTableDemo 1 expectedPosDemo 
-                        expectedResultDemo usedCatsDemo usedBallsDemo)                     
-    2 -> -- 1_1
+                            machineDemo transTableDemo 1 expectedPosDemo 
+                            expectedResultDemo usedCatsDemo usedBallsDemo)                     
+    2  -> -- 1_1
       (initModel oldModel.options.winSize basketsNumb1_1 input1_1 machine1_1 
                             transTable1_1 2 expectedPos1_1 expectedResult1_1 
                             usedCats1_1 usedBalls1_1)
-    3 -> -- 1_2
+    3  -> -- 1_2
       (initModel oldModel.options.winSize basketsNumb1_2 input1_2 machine1_2 
                             transTable1_2 3 expectedPos1_2 expectedResult1_2 
                             usedCats1_2 usedBalls1_2)  
-    4 -> -- 1_3
+    4  -> -- 1_3
       (initModel oldModel.options.winSize basketsNumb1_3 input1_3 machine1_3 
                             transTable1_3 4 expectedPos1_3 expectedResult1_3 
                             usedCats1_3 usedBalls1_3)  
-    5 -> -- 2_1
+    5  -> -- 2_1
       (initModel oldModel.options.winSize basketsNumb2_1 input2_1 machine2_1 
                             transTable2_1 5 expectedPos2_1 expectedResult2_1 
                             usedCats2_1 usedBalls2_1)  
-    6 -> -- 2_2
+    6  -> -- 2_2
       (initModel oldModel.options.winSize basketsNumb2_2 input2_2 machine2_2 
                             transTable2_2 6 expectedPos2_2 expectedResult2_2 
                             usedCats2_2 usedBalls2_2) 
-    7 -> -- 2_3
+    7  -> -- 2_3
       (initModel oldModel.options.winSize basketsNumb2_3 input2_3 machine2_3 
                             transTable2_3 7 expectedPos2_3 expectedResult2_3 
                             usedCats2_3 usedBalls2_3)  
-    8 -> -- 3_1
+    8  -> -- 3_1
       (initModel oldModel.options.winSize basketsNumb3_1 input3_1 machine3_1 
                             transTable3_1 8 expectedPos3_1 expectedResult3_1 
                             usedCats3_1 usedBalls3_1)     
-    9 -> -- 3_2
+    9  -> -- 3_2
       (initModel oldModel.options.winSize basketsNumb3_2 input3_2 machine3_2 
                             transTable3_2 9 expectedPos3_2 expectedResult3_2 
                             usedCats3_2 usedBalls3_2)
@@ -246,8 +249,8 @@ getInitByLevel level oldModel =
                            usedCats3_3 usedBalls3_3) 
     11 -> -- 3_4
       (initModel oldModel.options.winSize basketsNumb3_4 input3_4 machine3_4 
-                            transTable3_4 11 expectedPos3_4 expectedResult3_4 
-                            usedCats3_4 usedBalls3_4)  
+                           transTable3_4 11 expectedPos3_4 expectedResult3_4 
+                           usedCats3_4 usedBalls3_4)  
     12 -> -- 3_5
       (initModel oldModel.options.winSize basketsNumb3_5 input3_5 machine3_5 
                            transTable3_5 12 expectedPos3_5 expectedResult3_5 

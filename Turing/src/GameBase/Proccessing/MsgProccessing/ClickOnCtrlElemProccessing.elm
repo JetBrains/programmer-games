@@ -17,13 +17,14 @@ setPushFlag : Model -> Model
 setPushFlag model =                                                             
   { model 
       | flags =
-          { ifPushRun = True
-          , ifStart = model.flags.ifStart
-          , ifPlay = model.flags.ifPlay 
-          , ifRules = model.flags.ifRules  
-          , ifAuthors = model.flags.ifAuthors
-          , ifEnd = model.flags.ifEnd 
-          , ifCatLooks = model.flags.ifCatLooks  
+          { ifPushRun   = True
+          , ifStart     = model.flags.ifStart
+          , ifPlay      = model.flags.ifPlay 
+          , ifHistory   = model.flags.ifHistory  
+          , ifRules     = model.flags.ifRules  
+          , ifAuthors   = model.flags.ifAuthors
+          , ifEnd       = model.flags.ifEnd 
+          , ifCatLooks  = model.flags.ifCatLooks  
           , ifTableFull = model.flags.ifTableFull
           }
   } 
@@ -33,11 +34,11 @@ setTime : Time -> Model -> Model
 setTime time model =                                                            
   { model                                                                       
       | options = 
-          { winSize = model.options.winSize                                                            
-          , timeUnit = time
+          { winSize        = model.options.winSize                                                            
+          , timeUnit       = time
           , whenGameStarts = model.options.whenGameStarts                                                     
-          , currTime = model.options.currTime
-          , tapeCellsNumb = model.options.tapeCellsNumb
+          , currTime       = model.options.currTime
+          , tapeCellsNumb  = model.options.tapeCellsNumb
           } 
   }
 
@@ -54,7 +55,7 @@ getStateByClick clickNum m =
     else                                                                        
       case (get clickNum m.usedObj.usedCats) of                                         
         Just state -> state                                                     
-        Nothing -> EmptyCell
+        Nothing    -> EmptyCell
                                                                                 
                                                                                 
 -- get Symb from usedBalls array by click number                                  
@@ -69,7 +70,7 @@ getSymbByClick clickNum m =
     else                                                                        
       case (get clickNum m.usedObj.usedBalls) of                                        
         Just symb -> symb                                                       
-        Nothing -> EmptyCell                                                    
+        Nothing   -> EmptyCell                                                    
                                                                                 
                                                                                 
 -- get Dir from usedDirs array by click number                                  
@@ -84,7 +85,7 @@ getDirByClick clickNum m =
     else                                                                        
       case (get clickNum m.usedObj.usedDirs) of                                         
         Just dir -> dir                                                         
-        Nothing -> EmptyCell   
+        Nothing  -> EmptyCell   
 
 
 emptyCoord : (Int, Int, Int, Int, Int, String)
@@ -100,7 +101,7 @@ getIndIfClickOnEmpty pos list =
     (topFrom, topTo, leftFrom, leftTo, arrInd, elemName) =                      
       case (head list) of                                                       
         Just coord -> coord                                                     
-        Nothing -> emptyCoord                                     
+        Nothing    -> emptyCoord                                     
                                                                                 
   in                                                                            
      if (List.isEmpty list) == False                                            
@@ -122,10 +123,10 @@ clickTrTableProccessing m pos =
     kvForChange =                                                               
       case (get kvIndForChange m.transTables.trTableUser) of                                
         Just kv -> kv                                                           
-        Nothing -> { key = (Violet, Nothing)                                    
+        Nothing -> { key   = (Violet, Nothing)                                    
                    , value = { state = EmptyCell                                
-                             , symb = EmptyCell                                 
-                             , dir = EmptyCell}                                 
+                             , symb  = EmptyCell                                 
+                             , dir   = EmptyCell}                                 
                    , clickNum = 0                                               
                    }                                                            
   in
@@ -151,7 +152,7 @@ clickTrTableProccessing m pos =
                         { trTableInit = m.transTables.trTableInit
                         , trTableUser = 
                             ( set kvIndForChange                         
-                                  { key = kvForChange.key                
+                                  { key   = kvForChange.key                
                                   , value =                              
                                       { state = newState                  
                                       , symb  = newSymb                   
@@ -174,26 +175,30 @@ clickHelpProccessing model =
   if model.imgParam.helpImg == " "
      then ({model 
               | imgParam = 
-                  { catLeft = model.imgParam.catLeft
-                  , menuCatTop = model.imgParam.menuCatTop
-                  , catPos = model.imgParam.catPos
-                  , catImg = model.imgParam.catImg
-                  , helpImg = "../img/helpMsg/helpLevel" ++ 
-                              (toString model.levels.currLevel) ++ 
-                              ".png"
-                  , finalImg = model.imgParam.finalImg
+                  { catLeft      = model.imgParam.catLeft
+                  , menuCatTop   = model.imgParam.menuCatTop
+                  , catPos       = model.imgParam.catPos
+                  , gameHistPage = model.imgParam.gameHistPage 
+                  , catImg       = model.imgParam.catImg
+                  , helpImg      = "../img/helpMsg/helpLevel" ++ 
+                                   (toString model.levels.currLevel) ++ 
+                                   ".png"
+                  , finalImg     = model.imgParam.finalImg
+                  , gameHistImg  = model.imgParam.gameHistImg
                   }
            }
           , Cmd.none
           )
   else ({ model 
             | imgParam =    
-                { catLeft = model.imgParam.catLeft
-                , menuCatTop = model.imgParam.menuCatTop
-                , catPos = model.imgParam.catPos 
-                , catImg = model.imgParam.catImg 
-                , helpImg = " "
-                , finalImg = model.imgParam.finalImg
+                { catLeft      = model.imgParam.catLeft
+                , menuCatTop   = model.imgParam.menuCatTop
+                , catPos       = model.imgParam.catPos
+                , gameHistPage = model.imgParam.gameHistPage 
+                , catImg       = model.imgParam.catImg 
+                , helpImg      = " "
+                , finalImg     = model.imgParam.finalImg
+                , gameHistImg  = model.imgParam.gameHistImg
                 }
         }
        , Cmd.none

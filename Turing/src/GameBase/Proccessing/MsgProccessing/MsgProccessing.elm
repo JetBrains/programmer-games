@@ -4,7 +4,8 @@ module GameBase.Proccessing.MsgProccessing.MsgProccessing exposing
 import GameBase.Proccessing.WorkWithCfg exposing (getNextCfg)
 import GameBase.Proccessing.CheckResult exposing (checkResult)
 import GameBase.Proccessing.MsgProccessing.ClickInWinProccessing exposing                         
-                 (clickInMenuWin, clickInAuthorsRulesWin, clickInGameWin,            
+                 (clickInGameWin, clickInGameHistWin,
+                  clickInMenuWin, clickInAuthorsRulesWin,
                   clickInFinalFinImg, clickInFinalPosImg, clickInFinalNegImg) 
 import GameBase.Data.GameTypes exposing (Msg(..), Model, Position)
 import GameBase.UI.MainObjects.Cat exposing (updCatParam, menuCatY)
@@ -25,17 +26,20 @@ clickMsgProccessing m pos =
   else if m.flags.ifAuthors == True || m.flags.ifRules == True
           then (clickInAuthorsRulesWin m pos)
   -- if win all levels                                                          
-  else if m.flags.ifEnd == True && 
+  else if m.flags.ifEnd       == True && 
           m.imgParam.finalImg == "../img/finalImg/final.png"    
           then (clickInFinalFinImg m pos)
   -- if go to the next level                                                    
-  else if m.flags.ifEnd == True && 
+  else if m.flags.ifEnd       == True && 
           m.imgParam.finalImg == "../img/finalImg/pos.jpg"  
           then (clickInFinalPosImg m pos)
   -- if go to the current level again                                           
-  else if m.flags.ifEnd == True && 
+  else if m.flags.ifEnd       == True && 
           m.imgParam.finalImg == "../img/finalImg/neg.png"    
           then (clickInFinalNegImg m pos)
+  -- in game history window
+  else if m.flags.ifHistory == True
+          then (clickInGameHistWin m pos) 
   -- in game window
   else if m.flags.ifPlay == True
           then (clickInGameWin m pos) 
@@ -54,12 +58,14 @@ moveMsgProccessing m pos =
                                 pos.x <= fstMenuItemLength
                   then ( { m                                                    
                             | imgParam = 
-                                { catLeft = m.imgParam.catLeft
-                                , menuCatTop = (menuCatY 0)
-                                , catPos = m.imgParam.catPos
-                                , catImg = m.imgParam.catImg
-                                , helpImg = m.imgParam.helpImg
-                                , finalImg = m.imgParam.finalImg
+                                { catLeft      = m.imgParam.catLeft
+                                , menuCatTop   = (menuCatY 0)
+                                , catPos       = m.imgParam.catPos
+                                , gameHistPage = m.imgParam.gameHistPage
+                                , catImg       = m.imgParam.catImg
+                                , helpImg      = m.imgParam.helpImg
+                                , finalImg     = m.imgParam.finalImg
+                                , gameHistImg  = m.imgParam.gameHistImg
                                 }
                           }                                                     
                        , Cmd.none                                               
@@ -69,12 +75,14 @@ moveMsgProccessing m pos =
                   pos.x >= menuItemLeftFrom && pos.x <= sndMenuItemLength
                   then ( { m    
                             | imgParam =
-                                { catLeft = m.imgParam.catLeft                     
-                                , menuCatTop = (menuCatY 1)
-                                , catPos = m.imgParam.catPos                       
-                                , catImg = m.imgParam.catImg                       
-                                , helpImg = m.imgParam.helpImg                  
-                                , finalImg = m.imgParam.finalImg                
+                                { catLeft      = m.imgParam.catLeft                     
+                                , menuCatTop   = (menuCatY 1)
+                                , catPos       = m.imgParam.catPos  
+                                , gameHistPage = m.imgParam.gameHistPage
+                                , catImg       = m.imgParam.catImg                       
+                                , helpImg      = m.imgParam.helpImg                  
+                                , finalImg     = m.imgParam.finalImg  
+                                , gameHistImg  = m.imgParam.gameHistImg
                                 } 
                           }   
                        , Cmd.none   
@@ -84,12 +92,14 @@ moveMsgProccessing m pos =
                   pos.x >= menuItemLeftFrom && pos.x <= thirdMenuItemLength  
                   then ( { m                                                    
                             | imgParam = 
-                                { catLeft = m.imgParam.catLeft                  
-                                , menuCatTop = (menuCatY 2)                     
-                                , catPos = m.imgParam.catPos                    
-                                , catImg = m.imgParam.catImg                    
-                                , helpImg = m.imgParam.helpImg                  
-                                , finalImg = m.imgParam.finalImg                
+                                { catLeft      = m.imgParam.catLeft                  
+                                , menuCatTop   = (menuCatY 2)                     
+                                , catPos       = m.imgParam.catPos      
+                                , gameHistPage = m.imgParam.gameHistPage
+                                , catImg       = m.imgParam.catImg                    
+                                , helpImg      = m.imgParam.helpImg                  
+                                , finalImg     = m.imgParam.finalImg
+                                , gameHistImg  = m.imgParam.gameHistImg
                                 }   
                           }   
                        , Cmd.none   
@@ -99,12 +109,14 @@ moveMsgProccessing m pos =
                   pos.x >= menuItemLeftFrom && pos.x <= fourthMenuItemLength
                   then ( { m  
                             | imgParam = 
-                                { catLeft = m.imgParam.catLeft                  
-                                , menuCatTop = (menuCatY 3)                     
-                                , catPos = m.imgParam.catPos                    
-                                , catImg = m.imgParam.catImg                    
-                                , helpImg = m.imgParam.helpImg                  
-                                , finalImg = m.imgParam.finalImg                
+                                { catLeft      = m.imgParam.catLeft                  
+                                , menuCatTop   = (menuCatY 3)                     
+                                , catPos       = m.imgParam.catPos 
+                                , gameHistPage = m.imgParam.gameHistPage 
+                                , catImg       = m.imgParam.catImg                    
+                                , helpImg      = m.imgParam.helpImg                  
+                                , finalImg     = m.imgParam.finalImg
+                                , gameHistImg  = m.imgParam.gameHistImg
                                 }   
                           } 
                        , Cmd.none     
@@ -121,14 +133,14 @@ timeLimitForFillingGaps = 60
 -- getting next cfg for drawing, drawing CatLooks
 tickMsgProccessing : Model -> Time -> ( Model, Cmd Msg )                        
 tickMsgProccessing m time =                                                     
-  if m.options.whenGameStarts == 0 && m.flags.ifPlay == True                                  
+  if m.options.whenGameStarts == 0 && m.flags.ifPlay == True
      then ( { m                                                                 
                 | options =                                          
-                    { winSize = m.options.winSize
-                    , timeUnit = m.options.timeUnit
+                    { winSize        = m.options.winSize
+                    , timeUnit       = m.options.timeUnit
                     , whenGameStarts = time
-                    , currTime = time
-                    , tapeCellsNumb = m.options.tapeCellsNumb   
+                    , currTime       = time
+                    , tapeCellsNumb  = m.options.tapeCellsNumb   
                     } 
             }                                                                   
           , Cmd.none                                                            
@@ -140,32 +152,33 @@ tickMsgProccessing m time =
                                                   timeLimitForFillingGaps 
                   then ({m 
                           | flags =  
-                              { ifPushRun = m.flags.ifPushRun
-                              , ifStart = m.flags.ifStart
-                              , ifPlay = m.flags.ifPlay
-                              , ifRules = m.flags.ifRules
-                              , ifAuthors = m.flags.ifAuthors
-                              , ifEnd =  m.flags.ifEnd
-                              , ifCatLooks = True 
+                              { ifPushRun   = m.flags.ifPushRun
+                              , ifStart     = m.flags.ifStart
+                              , ifPlay      = m.flags.ifPlay
+                              , ifHistory   = m.flags.ifHistory
+                              , ifRules     = m.flags.ifRules
+                              , ifAuthors   = m.flags.ifAuthors
+                              , ifEnd       =  m.flags.ifEnd
+                              , ifCatLooks  = True 
                               , ifTableFull = m.flags.ifTableFull
                               }
                           , options = 
-                              { winSize = m.options.winSize 
-                              , timeUnit = m.options.timeUnit
+                              { winSize        = m.options.winSize 
+                              , timeUnit       = m.options.timeUnit
                               , whenGameStarts = m.options.whenGameStarts
-                              , currTime = time   
-                              , tapeCellsNumb = m.options.tapeCellsNumb
+                              , currTime       = time   
+                              , tapeCellsNumb  = m.options.tapeCellsNumb
                               }
                         }
                        , Cmd.none
                        )     
                else ({m 
                         | options =
-                            { winSize = m.options.winSize                     
-                            , timeUnit = m.options.timeUnit                   
+                            { winSize        = m.options.winSize                     
+                            , timeUnit       = m.options.timeUnit                   
                             , whenGameStarts = m.options.whenGameStarts       
-                            , currTime = time 
-                            , tapeCellsNumb = m.options.tapeCellsNumb
+                            , currTime       = time 
+                            , tapeCellsNumb  = m.options.tapeCellsNumb
                             } 
                      }
                     , Cmd.none
@@ -180,11 +193,11 @@ tickMsgProccessing m time =
   else                                                                          
     ({m
         | options =
-            { winSize = m.options.winSize                     
-            , timeUnit = m.options.timeUnit                   
+            { winSize        = m.options.winSize                     
+            , timeUnit       = m.options.timeUnit                   
             , whenGameStarts = m.options.whenGameStarts       
-            , currTime = time
-            , tapeCellsNumb = m.options.tapeCellsNumb
+            , currTime       = time
+            , tapeCellsNumb  = m.options.tapeCellsNumb
             } 
      }
     , Cmd.none

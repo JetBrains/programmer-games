@@ -75,20 +75,20 @@ getCurCatPos : MachineCfg BallOfWool Kitten -> Int
 getCurCatPos cfg = 
   case cfg.currDir of                                                           
     MoveRight -> 1                                                              
-    MoveLeft -> -1                                                              
-    Stay -> 0  
+    MoveLeft  -> -1                                                              
+    Stay      -> 0  
 
 
 getCatColour : Kitten -> String                                                 
 getCatColour state =                                                            
   case state of                                                                 
-    White -> "W"                                                                
+    White     -> "W"                                                                
     LightGrey -> "LG"                                                           
-    Grey -> "G"   
-    Brown -> "B"
+    Grey      -> "G"   
+    Brown     -> "B"
     DarkBrown -> "DB"
-    Orange -> "O"                                                               
-    Violet -> "V" 
+    Orange    -> "O"                                                               
+    Violet    -> "V" 
 
 
 catPushX : Int
@@ -106,20 +106,22 @@ updCatParam time model =
   in                                                                            
     { model                                                                     
         | imgParam =
-            { catLeft = catPushX
-            , menuCatTop = model.imgParam.menuCatTop
-            , catPos = model.imgParam.catPos + (getCurCatPos cfg) 
-            , catImg = "../img/saimonPush/SaimonPush" ++ 
-                       (getCatColour cfg.currState) ++ ".png"
-            , helpImg = model.imgParam.helpImg
-            , finalImg = model.imgParam.finalImg
+            { catLeft      = catPushX
+            , menuCatTop   = model.imgParam.menuCatTop
+            , catPos       = model.imgParam.catPos + (getCurCatPos cfg) 
+            , gameHistPage = model.imgParam.gameHistPage
+            , catImg       = "../img/saimonPush/SaimonPush" ++ 
+                             (getCatColour cfg.currState) ++ ".png"
+            , helpImg      = model.imgParam.helpImg
+            , finalImg     = model.imgParam.finalImg
+            , gameHistImg  = model.imgParam.gameHistImg
             }
         , options = 
-            { winSize = model.options.winSize
-            , timeUnit = model.options.timeUnit
+            { winSize        = model.options.winSize
+            , timeUnit       = model.options.timeUnit
             , whenGameStarts = model.options.whenGameStarts
-            , currTime = time
-            , tapeCellsNumb = model.options.tapeCellsNumb
+            , currTime       = time
+            , tapeCellsNumb  = model.options.tapeCellsNumb
             }                                                        
     } 
 ---------------------------------------------------------------                  
@@ -129,8 +131,8 @@ updCatParam time model =
 gameCatDraw : Model -> List (Svg msg)                                               
 gameCatDraw m =                                                                 
   let                                                                           
-    href = m.imgParam.catImg                                                         
-    left = m.imgParam.catLeft                                                        
+    href      = m.imgParam.catImg                                                         
+    left      = m.imgParam.catLeft                                                        
     basketInd = m.imgParam.catPos                                                         
   in                                                                            
     [image                                                                 

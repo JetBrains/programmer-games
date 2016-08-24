@@ -1,6 +1,7 @@
 module GameBase.Proccessing.MsgProccessing.ClickInWinProccessing exposing 
-            (clickInMenuWin, clickInAuthorsRulesWin, clickInGameWin, 
-             clickInFinalFinImg, clickInFinalPosImg, clickInFinalNegImg)
+               (clickInGameWin, clickInGameHistWin,
+                clickInMenuWin, clickInAuthorsRulesWin, 
+                clickInFinalFinImg, clickInFinalPosImg, clickInFinalNegImg)
 
 import GameBase.Data.GameTypes exposing (Msg(..), Model, Position)              
 import GameBase.Data.Init exposing (getInitByLevel)
@@ -26,16 +27,65 @@ playGameFlags : Model -> Model
 playGameFlags model =                                                           
   { model 
       | flags =
-          { ifPushRun = model.flags.ifPushRun
-          , ifStart = False 
-          , ifPlay = True 
-          , ifRules = model.flags.ifRules
-          , ifAuthors = model.flags.ifAuthors
-          , ifEnd = model.flags.ifEnd
-          , ifCatLooks = model.flags.ifCatLooks
+          { ifPushRun   = model.flags.ifPushRun
+          , ifStart     = False 
+          , ifPlay      = True                                      
+          , ifHistory   = False 
+          , ifRules     = model.flags.ifRules
+          , ifAuthors   = model.flags.ifAuthors
+          , ifEnd       = model.flags.ifEnd
+          , ifCatLooks  = model.flags.ifCatLooks
           , ifTableFull = model.flags.ifTableFull
           }
   }    
+
+
+showHistoryModel : Model -> Model
+showHistoryModel model =
+  let                                                                           
+    nextPageNum = model.imgParam.gameHistPage + 1                                   
+  in 
+    { model 
+        | flags =                                                                 
+            { ifPushRun   = model.flags.ifPushRun 
+            , ifStart     = False 
+            , ifPlay      = False 
+            , ifHistory   = True
+            , ifRules     = model.flags.ifRules                                       
+            , ifAuthors   = model.flags.ifAuthors                                   
+            , ifEnd       = model.flags.ifEnd                                           
+            , ifCatLooks  = model.flags.ifCatLooks
+            , ifTableFull = model.flags.ifTableFull 
+            }
+        , imgParam =                                        
+            { catLeft      = model.imgParam.catLeft             
+            , menuCatTop   = model.imgParam.menuCatTop          
+            , catPos       = model.imgParam.catPos              
+            , gameHistPage = nextPageNum                     
+            , catImg       = model.imgParam.catImg              
+            , helpImg      = model.imgParam.helpImg             
+            , finalImg     = model.imgParam.finalImg            
+            , gameHistImg  = "../img/windows/gameHistory" ++ 
+                             (toString nextPageNum) ++ ".jpg"                      
+            }   
+    }
+
+
+updHPageAfterInit : Int -> Model -> Model
+updHPageAfterInit pageNumb model =
+  { model 
+      | imgParam =                                                            
+          { catLeft      = model.imgParam.catLeft                             
+          , menuCatTop   = model.imgParam.menuCatTop                          
+          , catPos       = model.imgParam.catPos                              
+          , gameHistPage = pageNumb                                        
+          , catImg       = model.imgParam.catImg                              
+          , helpImg      = model.imgParam.helpImg                             
+          , finalImg     = model.imgParam.finalImg                            
+          , gameHistImg  = "../img/windows/gameHistory" ++                    
+                           (toString pageNumb) ++ ".jpg"                   
+          }                                                                   
+  } 
 
 
 clickInMenuWin : Model -> Position -> ( Model, Cmd Msg )                        
@@ -54,8 +104,10 @@ clickInMenuWin m pos =
           pos.x >= menuItemLeftFrom && 
           pos.x <= sndMenuItemLength
           then ( (getInitByLevel 1 m)  
-                 |> playGameFlags 
-               , (perform (\_ -> Debug.crash "time") Tick now)
+                 |> showHistoryModel
+                 -- dont start time because catLooks img should not be showed 
+                 -- during history
+               , Cmd.none
                )
   -- if click "Rules"
   else if pos.y >= (menuItemTopFrom 2) && 
@@ -64,13 +116,14 @@ clickInMenuWin m pos =
           pos.x <= thirdMenuItemLength
           then ( { m                                                            
                     | flags =                                                   
-                        { ifPushRun = m.flags.ifPushRun                     
-                        , ifStart = False                                       
-                        , ifPlay = m.flags.ifPlay                           
-                        , ifRules = True                         
-                        , ifAuthors = m.flags.ifAuthors                                       
-                        , ifEnd = m.flags.ifEnd                             
-                        , ifCatLooks = m.flags.ifCatLooks                   
+                        { ifPushRun   = m.flags.ifPushRun                     
+                        , ifStart     = False                                       
+                        , ifPlay      = m.flags.ifPlay                           
+                        , ifHistory   = m.flags.ifHistory
+                        , ifRules     = True                         
+                        , ifAuthors   = m.flags.ifAuthors                                       
+                        , ifEnd       = m.flags.ifEnd                             
+                        , ifCatLooks  = m.flags.ifCatLooks                   
                         , ifTableFull = m.flags.ifTableFull                 
                         }        
                  }  
@@ -83,13 +136,14 @@ clickInMenuWin m pos =
           pos.x <= fourthMenuItemLength          
           then ({ m                                                                       
                     | flags =                                                                 
-                        { ifPushRun = m.flags.ifPushRun                                   
-                        , ifStart = False                                                     
-                        , ifPlay = m.flags.ifPlay                                                       
-                        , ifRules = m.flags.ifRules                                       
-                        , ifAuthors = True                                   
-                        , ifEnd = m.flags.ifEnd                                           
-                        , ifCatLooks = m.flags.ifCatLooks                                 
+                        { ifPushRun   = m.flags.ifPushRun                                   
+                        , ifStart     = False                                                     
+                        , ifPlay      = m.flags.ifPlay                                                       
+                        , ifHistory   = m.flags.ifHistory 
+                        , ifRules     = m.flags.ifRules                                       
+                        , ifAuthors   = True                                   
+                        , ifEnd       = m.flags.ifEnd                                           
+                        , ifCatLooks  = m.flags.ifCatLooks                                 
                         , ifTableFull = m.flags.ifTableFull                               
                         }                                                                     
                 } 
@@ -121,19 +175,110 @@ clickInAuthorsRulesWin m pos =
      pos.x <= returnFromARWinLeftTo               
      then ( { m                                                                 
                 | flags =
-                    { ifPushRun = m.flags.ifPushRun                     
-                    , ifStart = True
-                    , ifPlay = m.flags.ifPlay                           
-                    , ifRules = False                         
-                    , ifAuthors = False                                      
-                    , ifEnd = m.flags.ifEnd                             
-                    , ifCatLooks = m.flags.ifCatLooks                   
+                    { ifPushRun   = m.flags.ifPushRun                     
+                    , ifStart     = True
+                    , ifPlay      = m.flags.ifPlay  
+                    , ifHistory   = m.flags.ifHistory
+                    , ifRules     = False                         
+                    , ifAuthors   = False                                      
+                    , ifEnd       = m.flags.ifEnd                             
+                    , ifCatLooks  = m.flags.ifCatLooks                   
                     , ifTableFull = m.flags.ifTableFull                 
                     } 
             }                                                                   
           , Cmd.none                                                            
           ) 
-  else (m, Cmd.none)  
+  else (m, Cmd.none)
+
+                                        
+skipButtonTopFrom : Int 
+skipButtonTopFrom = 650
+                                                                                
+skipButtonTopTo : Int
+skipButtonTopTo = skipButtonTopFrom + skipButtonH
+
+skipButtonLeftFrom : Int  
+skipButtonLeftFrom = 105
+
+skipButtonLeftTo : Int
+skipButtonLeftTo = skipButtonLeftFrom + skipButtonW
+
+skipButtonW : Int 
+skipButtonW = 85
+                                                                                
+skipButtonH : Int 
+skipButtonH = 20
+
+nextButtonTopFrom : Int                                                         
+nextButtonTopFrom = 650
+                                                                                
+nextButtonTopTo : Int                                                           
+nextButtonTopTo = nextButtonTopFrom + nextButtonH                                                              
+                                                                                
+nextButtonLeftFrom : Int                                                        
+nextButtonLeftFrom = 825
+                                                                                
+nextButtonLeftTo : Int                                                          
+nextButtonLeftTo = nextButtonLeftFrom + nextButtonW 
+
+nextButtonW : Int                                                               
+nextButtonW = 90
+                                                                                
+nextButtonH : Int                                                               
+nextButtonH = 20 
+
+
+clickInGameHistWin : Model -> Position -> ( Model, Cmd Msg )                
+clickInGameHistWin m pos =
+  -- click Skip button
+  if pos.y >= skipButtonTopFrom  &&                                         
+     pos.y <= skipButtonTopTo    &&                                           
+     pos.x >= skipButtonLeftFrom &&                                        
+     pos.x <= skipButtonLeftTo                                             
+     then 
+       if m.imgParam.gameHistPage < 3 
+          then ({ m 
+                    | imgParam =                                                              
+                        { catLeft      = m.imgParam.catLeft                               
+                        , menuCatTop   = m.imgParam.menuCatTop                            
+                        , catPos       = m.imgParam.catPos                                
+                        , gameHistPage = m.imgParam.gameHistPage + 
+                                         (3 - m.imgParam.gameHistPage)
+                        , catImg       = m.imgParam.catImg                                
+                        , helpImg      = m.imgParam.helpImg                               
+                        , finalImg     = m.imgParam.finalImg                              
+                        , gameHistImg  = m.imgParam.gameHistImg                        
+                        }     
+                }
+                |> playGameFlags
+               , perform (\_ -> Debug.crash "time") Tick now
+               )
+       else
+          ( (playGameFlags m)    
+          , perform (\_ -> Debug.crash "time") Tick now  
+          )   
+  -- click Next button                                                          
+  else if pos.y >= nextButtonTopFrom  &&       
+          pos.y <= nextButtonTopTo    &&   
+          pos.x >= nextButtonLeftFrom &&   
+          pos.x <= nextButtonLeftTo  
+          -- go from hist to game
+          then if m.imgParam.gameHistPage == 3 || -- after start history 
+                  m.imgParam.gameHistPage == 4 || -- after block 1 history
+                  m.imgParam.gameHistPage == 5 || -- after block 2 history
+                  m.imgParam.gameHistPage == 6 || -- after block 3 history 
+                  m.imgParam.gameHistPage == 7 || -- after block 4 history
+                  m.imgParam.gameHistPage == 8 || -- after block 5 history
+                  m.imgParam.gameHistPage == 9    -- after block 6 history  
+                  then
+                    ( (playGameFlags m)   
+                    , perform (\_ -> Debug.crash "time") Tick now                                                    
+                    )     
+               else   
+                 ( (showHistoryModel m) -- go to next hist img
+                 , Cmd.none                                                            
+                 )                                                                     
+  else (m, Cmd.none)
 
 
 -- G Win is game window
@@ -155,21 +300,22 @@ clickInGameWin m pos =
      pos.y >= 0 && pos.y <= mainRectH && pos.x >= 0 && pos.x <= mainRectW                   
      then ( {m                                                                  
               | flags =                                                         
-                  { ifPushRun = m.flags.ifPushRun                           
-                  , ifStart = m.flags.ifStart                               
-                  , ifPlay = m.flags.ifPlay                                 
-                  , ifRules = m.flags.ifRules                               
-                  , ifAuthors = m.flags.ifAuthors                           
-                  , ifEnd = m.flags.ifEnd                                   
-                  , ifCatLooks = False                                          
+                  { ifPushRun   = m.flags.ifPushRun                           
+                  , ifStart     = m.flags.ifStart                               
+                  , ifPlay      = m.flags.ifPlay 
+                  , ifHistory   = m.flags.ifHistory  
+                  , ifRules     = m.flags.ifRules                               
+                  , ifAuthors   = m.flags.ifAuthors                           
+                  , ifEnd       = m.flags.ifEnd                                   
+                  , ifCatLooks  = False                                          
                   , ifTableFull = m.flags.ifTableFull                       
                   }                                                             
               , options =                                                                  
-                  { winSize = m.options.winSize                                 
-                  , timeUnit = m.options.timeUnit                                                          
+                  { winSize        = m.options.winSize                                 
+                  , timeUnit       = m.options.timeUnit                                                          
                   , whenGameStarts = m.options.currTime                                                                   
-                  , currTime = m.options.currTime       
-                  , tapeCellsNumb = m.options.tapeCellsNumb
+                  , currTime       = m.options.currTime       
+                  , tapeCellsNumb  = m.options.tapeCellsNumb
                   }  
             }                                                                   
           , Cmd.none                                                          
@@ -181,13 +327,14 @@ clickInGameWin m pos =
           pos.x <= returnFromGWinLeftTo
           then ({ m 
                     | flags =
-                        { ifPushRun = m.flags.ifPushRun                           
-                        , ifStart = True                                
-                        , ifPlay = False                                 
-                        , ifRules = m.flags.ifRules                               
-                        , ifAuthors = m.flags.ifAuthors                           
-                        , ifEnd = m.flags.ifEnd                                   
-                        , ifCatLooks = False                                          
+                        { ifPushRun   = m.flags.ifPushRun                           
+                        , ifStart     = True                                
+                        , ifPlay      = False  
+                        , ifHistory   = m.flags.ifHistory  
+                        , ifRules     = m.flags.ifRules                               
+                        , ifAuthors   = m.flags.ifAuthors                           
+                        , ifEnd       = m.flags.ifEnd                                   
+                        , ifCatLooks  = False                                          
                         , ifTableFull = m.flags.ifTableFull                       
                         }     
                 }
@@ -256,16 +403,36 @@ goNextLevelLeftTo = 860
 
 
 clickInFinalPosImg : Model -> Position -> ( Model, Cmd Msg )                    
-clickInFinalPosImg m pos =                                                      
-  if pos.y >= goNextLevTopFrom && 
-     pos.y <= goNextLevelTopTo && 
-     pos.x >= goNextLevelLeftFrom && 
-     pos.x <= goNextLevelLeftTo  
-     then ( (getInitByLevel m.levels.currLevel m)
-            |> playGameFlags
-          , Cmd.none                 
-          )                                                                     
-  else (m, Cmd.none)                                                            
+clickInFinalPosImg m pos =    
+  let
+    lastPageViewed = m.imgParam.gameHistPage
+  in 
+    if pos.y >= goNextLevTopFrom && 
+       pos.y <= goNextLevelTopTo && 
+       pos.x >= goNextLevelLeftFrom && 
+       pos.x <= goNextLevelLeftTo  
+       then 
+         -- go to history img after last level in block
+         -- m.levels.currLevel is the next level number there
+         if m.levels.currLevel == 2  || -- if the next lev is 1_1 show history
+            m.levels.currLevel == 5  || -- if the next lev is 2_1 show history
+            m.levels.currLevel == 8  || -- if the next lev is 3_1 show history
+            m.levels.currLevel == 17 || -- if the next lev is 4_1 show history
+            m.levels.currLevel == 24 || -- if the next lev is 5_1 show history
+            m.levels.currLevel == 32    -- if the next lev is 6_1 show history 
+            then
+              ( (getInitByLevel m.levels.currLevel m)
+                |> updHPageAfterInit lastPageViewed
+                |> showHistoryModel
+              , Cmd.none                 
+              )  
+         else
+           ( (getInitByLevel m.levels.currLevel m)   
+             |> updHPageAfterInit lastPageViewed
+             |> playGameFlags                                               
+           , Cmd.none                                                          
+           )   
+    else (m, Cmd.none)                                                            
                                                                                 
 
 tryAgainTopFrom : Int
@@ -282,13 +449,17 @@ tryAgainLeftTo = 860
 
 
 clickInFinalNegImg : Model -> Position -> ( Model, Cmd Msg )                    
-clickInFinalNegImg m pos =                                                      
-  if pos.y >= tryAgainTopFrom && 
-     pos.y <= tryAgainTopTo && 
-     pos.x >= tryAgainLeftFrom && 
-     pos.x <= tryAgainLeftTo   
-     then ( (getInitByLevel m.levels.currLevel m)
-            |> playGameFlags
-          , Cmd.none
-          )                                                                     
-  else (m, Cmd.none)  
+clickInFinalNegImg m pos =      
+  let                                                                           
+    lastPageViewed = m.imgParam.gameHistPage                                    
+  in     
+    if pos.y >= tryAgainTopFrom && 
+       pos.y <= tryAgainTopTo && 
+       pos.x >= tryAgainLeftFrom && 
+       pos.x <= tryAgainLeftTo   
+       then ( (getInitByLevel m.levels.currLevel m)
+              |> updHPageAfterInit lastPageViewed
+              |> playGameFlags
+            , Cmd.none
+            )                                                                     
+    else (m, Cmd.none)  

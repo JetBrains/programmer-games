@@ -4,7 +4,7 @@ import GameBase.Data.LevelsData.DemoLevelData exposing
 import GameBase.Data.GameTypes exposing (Msg(..), Model, Position)
 import GameBase.Data.Init exposing (init)
 import GameBase.UI.MainObjects.Div exposing                                 
-                             (menuDiv,gameDiv,rulesDiv,authorsDiv,finalDiv)
+         (menuDiv, gameDiv, gameHistoryDiv, finalDiv, rulesDiv, authorsDiv)
 import GameBase.UI.MainObjects.DivSvgStyles exposing (mainRectW, mainRectH)
 import GameBase.Proccessing.MsgProccessing.MsgProccessing exposing 
               (clickMsgProccessing, moveMsgProccessing, tickMsgProccessing)
@@ -35,6 +35,8 @@ view model =
               then (authorsDiv model)
       else if model.flags.ifEnd == True
               then (finalDiv model)
+      else if model.flags.ifHistory == True
+              then (gameHistoryDiv model)
       else (gameDiv model) 
     )
 

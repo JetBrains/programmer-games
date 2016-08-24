@@ -17,7 +17,7 @@ import GameBase.UI.MainObjects.Basket exposing (fourBaskets, fiveBaskets)
 import Array exposing (Array, fromList)
 
 
--- BLOCK 4 : analysis and comparison of symbols (by transition to different 
+-- BLOCK 4 : Analysis and comparison of the symbols (by transition to different     
 -- states)---------------------------------------------------------------------
 
 

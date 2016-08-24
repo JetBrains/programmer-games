@@ -18,8 +18,8 @@ import GameBase.UI.MainObjects.Basket exposing (fourBaskets, fiveBaskets,
 import Array exposing (Array, fromList)
 
 
--- BLOCK 5 : deletion and insertion of symbols (by compression and extension of
--- word)-----------------------------------------------------------------------
+-- BLOCK 5 : Deletion and insertion of the symbols (by compression and 
+-- extension of the word)------------------------------------------------------
 
 
 -------DELETION----------------------------------------------------------------

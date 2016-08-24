@@ -17,7 +17,7 @@ import GameBase.UI.MainObjects.Basket exposing
 import Array exposing (Array, fromList)
 
 
--- BLOCK 6 : Make result on new place and fixing place on the tape-------------
+-- BLOCK 6 : Get result on new place and fixing place on the tape--------------
 
 
 -- 6_1 - Delete yellow balls from the word, if they exist, else dont change the 
