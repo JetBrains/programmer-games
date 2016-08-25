@@ -159,7 +159,7 @@ transTable5_1 =
                                                                                 
 input5_1 : List (Maybe BallOfWool)                                              
 input5_1 =                                                                      
-  [Just Red, Just Yellow, Just Green, Nothing]                                                                     
+  [Just Red, Just Yellow, Just Green, Nothing]
                                                                                 
 expectedResult5_1 : List (Maybe BallOfWool)                                     
 expectedResult5_1 =                                                             
