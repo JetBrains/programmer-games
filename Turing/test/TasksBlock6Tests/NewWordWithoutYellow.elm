@@ -268,7 +268,7 @@ twentySecondCorrectCfg =
 --TESTS------------------------------------------------------------------------
 tests : Test                                                                    
 tests =                                                                         
-  suite "A Test Suite"                                                        
+  suite "TasksBlock6Tests.NewWordWithoutYellow"                                                        
     [ test "first cfg"     
       <| assertEqual (fstTestedCfg machine input machine.initHeadPosForMach)
                      fstCorrectMaybeCfg

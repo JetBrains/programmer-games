@@ -168,7 +168,7 @@ fourthCorrectCfg =
 --TESTS------------------------------------------------------------------------
 tests : Test                                                                    
 tests =                                                                         
-  suite "A Test Suite"                                                        
+  suite "TasksBlock5Tests.YellowAfterFirst"                                                        
     [ test "first cfg"     
       <| assertEqual (fstTestedCfg machine input machine.initHeadPosForMach)
                      fstCorrectMaybeCfg

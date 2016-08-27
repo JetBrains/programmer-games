@@ -240,7 +240,7 @@ twentySecondCorrectCfg =
 --TESTS------------------------------------------------------------------------
 tests : Test                                                                    
 tests =                                                                         
-  suite "A Test Suite"                                                        
+  suite "TasksBlock5Tests.DeleteIdenticalBalls"                                                        
     [ test "first cfg"     
       <| assertEqual (fstTestedCfg machine input machine.initHeadPosForMach)
                      fstCorrectMaybeCfg

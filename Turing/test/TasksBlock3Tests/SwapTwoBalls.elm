@@ -1,7 +1,6 @@
--- 4_1 - Add the same item, dont change empty word (for red, yellow, green
--- first balls)
+-- 3_4 - Swap two balls
 
-module TasksBlock4Tests.AddSame exposing (tests)
+module TasksBlock3Tests.SwapTwoBalls exposing (tests)
 
 import TuringMachine.TuringTypes exposing
         (Machine, MachineCfg, TapeCfg, Direction(..), TransTable)
@@ -18,47 +17,35 @@ type BallOfWool = Red | Yellow | Green | Blue
 type Kitten = White | LightGrey | Grey | Brown | DarkBrown | Orange | Violet
 
 
-machine : Machine BallOfWool Kitten                                                  
-machine =       
+machine : Machine BallOfWool Kitten                                          
+machine =                                                                    
   { transition = (transFunc transTable (Violet, Nothing, MoveLeft))          
   , initHeadPosForDraw = 1                                                      
   , initHeadPosForMach = 0                                                      
   , startState  = White                                                         
   , acceptState = Orange                                                        
   , rejectState = Violet                                                        
-  } 
+  }
 
 
 transTable : TransTable BallOfWool Kitten                                
 transTable =                                                                 
   fromList                                                                      
-    [ { key   = (White, Just Red)                                               
-      , value = (LightGrey, Just Red, MoveRight)
+    [ { key   = (White, Just Yellow)                                            
+      , value = (White, Just Blue, MoveRight)                                
       }                                                                         
-    , { key   = (White, Just Yellow)                                            
-      , value = (Grey, Just Yellow, MoveRight)                                
-      }                                                                         
-    , { key   = (White, Just Green)                                             
-      , value = (Brown, Just Green, MoveRight)
+    , { key   = (White, Just Blue)                                              
+      , value = (White, Just Yellow, MoveRight)                                
       }                                                                         
     , { key   = (White, Nothing)                                                
-      , value = (Orange, Nothing, MoveRight)
+      , value = (Orange, Nothing, MoveLeft)                                 
       }                                                                         
-    , { key   = (LightGrey, Nothing)                                            
-      , value = (Orange, Just Red, MoveLeft)                                 
-      }                                                                         
-    , { key   = (Grey, Nothing)                                                 
-      , value = (Orange, Just Yellow, MoveLeft)                                 
-      }                                                                         
-    , { key   = (Brown, Nothing)                                                
-      , value = (Orange, Just Green, MoveLeft)
-      }                                                                         
-    ]  
+    ]
 
 
 input : List (Maybe BallOfWool)                                              
 input =                                                                      
-  [Just Red, Nothing, Nothing]                                                  
+  [Just Yellow, Just Blue, Nothing]                                             
 -------------------------------------------------------------------------------
 
 
@@ -88,9 +75,9 @@ fstCorrectCfg =
   { currState = White
   , currDir   = Stay
   , tapeCfg   = 
-      { leftSyms  = empty                                                           
-      , currSym   = Just Red                                                        
-      , rightSyms = fromList [Nothing, Nothing]                                     
+      { leftSyms  = empty                                                          
+      , currSym   = Just Yellow                                                        
+      , rightSyms = fromList [Just Blue, Nothing]                                     
       }  
   }                                                                             
 -----------------------
@@ -109,57 +96,57 @@ sndCorrectMaybeCfg = Just sndCorrectCfg
 
 sndCorrectCfg : MachineCfg BallOfWool Kitten             
 sndCorrectCfg =                                                                    
-  { currState = LightGrey 
+  { currState = White
   , currDir   = MoveRight
   , tapeCfg   =                                                         
-      { leftSyms  = fromList [Just Red]                                 
-      , currSym   = Nothing                                     
+      { leftSyms  = fromList [Just Blue]                                
+      , currSym   = Just Blue
       , rightSyms = fromList [Nothing]                                
       }
   } 
 -----------------------
 
-thirdTestedCfg : Machine BallOfWool Kitten -> List (Maybe BallOfWool) -> 
-               Int -> Maybe (MachineCfg BallOfWool Kitten)
-thirdTestedCfg m inp hpos =  
-  (runMach m inp hpos)
-  |> reverse
-  |> head                                                      
-                                     
-
-thirdCorrectMaybeCfg : Maybe (MachineCfg BallOfWool Kitten)
-thirdCorrectMaybeCfg = Just thirdCorrectCfg
-
-
-thirdCorrectCfg : MachineCfg BallOfWool Kitten         
-thirdCorrectCfg =                                                                
-  { currState = Orange   
-  , currDir   = MoveLeft
-  , tapeCfg   =                                                     
-      { leftSyms  = empty 
-      , currSym   = Just Red                                                                
-      , rightSyms = fromList [Just Red, Nothing]          
-      }
-  }     
+fourthTestedCfg : Machine BallOfWool Kitten -> List (Maybe BallOfWool) ->        
+                  Int -> Maybe (MachineCfg BallOfWool Kitten)                    
+fourthTestedCfg m inp hpos =                                                     
+  (runMach m inp hpos)                                                          
+  |> reverse                                                                   
+  |> head                                                                       
+                                                                                
+                                                                                
+fourthCorrectMaybeCfg : Maybe (MachineCfg BallOfWool Kitten)                     
+fourthCorrectMaybeCfg = Just fourthCorrectCfg                                     
+                                                                                
+                                                                                
+fourthCorrectCfg : MachineCfg BallOfWool Kitten                                  
+fourthCorrectCfg =                                                               
+  { currState = Orange                                                          
+  , currDir   = MoveLeft                                                       
+  , tapeCfg   =                                                                 
+      { leftSyms  = fromList [Just Blue]                            
+      , currSym   = Just Yellow
+      , rightSyms = fromList [Nothing]                                                     
+      }                                                                         
+  }
 -------------------------------------------------------------------------------
 
 
 --TESTS------------------------------------------------------------------------
 tests : Test                                                                    
 tests =                                                                         
-  suite "TasksBlock4Tests.AddSame"                                                        
+  suite "TasksBlock3Tests.SwapTwoBalls"                                                        
     [ test "first cfg"     
       <| assertEqual (fstTestedCfg machine input machine.initHeadPosForMach)
                      fstCorrectMaybeCfg
     , test "second cfg"                                                                 
       <| assertEqual (sndTestedCfg machine input machine.initHeadPosForMach) 
                      sndCorrectMaybeCfg
-    , test "last cfg"                                                                    
-      <| assertEqual (thirdTestedCfg machine input machine.initHeadPosForMach) 
-                     thirdCorrectMaybeCfg 
+    , test "last cfg"                                                           
+      <| assertEqual (fourthTestedCfg machine input machine.initHeadPosForMach)  
+                     fourthCorrectMaybeCfg 
     , test "number of cfgs"
       <| assertEqual ((runMach machine input machine.initHeadPosForMach) 
                       |> length)
-                     3
+                     4
     ]
 -------------------------------------------------------------------------------

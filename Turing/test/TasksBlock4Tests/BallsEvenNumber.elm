@@ -204,7 +204,7 @@ fifthCorrectCfg =
 --TESTS------------------------------------------------------------------------
 tests : Test                                                                    
 tests =                                                                         
-  suite "A Test Suite"                                                        
+  suite "TasksBlock4Tests.BallsEvenNumber"                                                        
     [ test "first cfg"     
       <| assertEqual (fstTestedCfg machine input machine.initHeadPosForMach)
                      fstCorrectMaybeCfg

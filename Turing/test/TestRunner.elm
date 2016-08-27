@@ -1,3 +1,18 @@
+import TasksBlock1Tests.BlueAtRightEnd
+import TasksBlock1Tests.BlueAtLeftEnd
+import TasksBlock1Tests.BlueAtBothEnds
+import TasksBlock2Tests.RainbowOnEmptyTape
+import TasksBlock2Tests.BallsWithSpaceAfterEachOne
+import TasksBlock2Tests.SpaceBetweenRedGreenPairs
+import TasksBlock3Tests.ChangeInputBall
+import TasksBlock3Tests.ChangeLastBall
+import TasksBlock3Tests.ReplaceAllWithBlue
+import TasksBlock3Tests.SwapTwoBalls
+import TasksBlock3Tests.DeleteAllExceptFirst
+import TasksBlock3Tests.DeleteAllExceptLast
+import TasksBlock3Tests.GreenOnLeftYellowOnRight
+import TasksBlock3Tests.YellowToGreenYellowAfterWord
+import TasksBlock3Tests.ChangeEachSecond
 import TasksBlock4Tests.AddSame  
 import TasksBlock4Tests.FirstToEnd
 import TasksBlock4Tests.LastToLeftEnd
@@ -17,18 +32,27 @@ import TasksBlock6Tests.NewWordWithoutYellow
 import TasksBlock6Tests.NewRainbowWord
 import TasksBlock6Tests.TurnWord
 import TasksBlock6Tests.DoubleWord
---import TasksBlock4Tests.CatWoolTest 
---import TasksBlock4Tests.ChangeAndReplace  
---import TasksBlock4Tests.ChangeLast
---import TasksBlock4Tests.ChangeEachSnd
---import TasksBlock4Tests.ReplAllWithOne
-
 import ElmTest exposing (Test, suite, runSuite)
 
 tests : Test
 tests = 
-  suite "A Test Suite"                                                          
-    [ TasksBlock4Tests.AddSame.tests
+  suite "All tests"                                                          
+    [ TasksBlock1Tests.BlueAtRightEnd.tests
+    , TasksBlock1Tests.BlueAtLeftEnd.tests
+    , TasksBlock1Tests.BlueAtBothEnds.tests
+    , TasksBlock2Tests.RainbowOnEmptyTape.tests
+    , TasksBlock2Tests.BallsWithSpaceAfterEachOne.tests
+    , TasksBlock2Tests.SpaceBetweenRedGreenPairs.tests
+    , TasksBlock3Tests.ChangeInputBall.tests
+    , TasksBlock3Tests.ChangeLastBall.tests
+    , TasksBlock3Tests.ReplaceAllWithBlue.tests
+    , TasksBlock3Tests.SwapTwoBalls.tests
+    , TasksBlock3Tests.DeleteAllExceptFirst.tests
+    , TasksBlock3Tests.DeleteAllExceptLast.tests
+    , TasksBlock3Tests.GreenOnLeftYellowOnRight.tests
+    , TasksBlock3Tests.YellowToGreenYellowAfterWord.tests
+    , TasksBlock3Tests.ChangeEachSecond.tests
+    , TasksBlock4Tests.AddSame.tests
     , TasksBlock4Tests.FirstToEnd.tests 
     , TasksBlock4Tests.LastToLeftEnd.tests
     , TasksBlock4Tests.SwapFirstLast.tests
@@ -47,11 +71,6 @@ tests =
     , TasksBlock6Tests.NewRainbowWord.tests
     , TasksBlock6Tests.TurnWord.tests
     , TasksBlock6Tests.DoubleWord.tests
---    , TasksBlock4Tests.ChangeLast.tests
---    , TasksBlock4Tests.CatWoolTest.tests
---    , TasksBlock4Tests.ChangeAndReplace.tests
---    , TasksBlock4Tests.ChangeEachSnd.tests
---    , TasksBlock4Tests.ReplAllWithOne.tests
     ] 
 
 
