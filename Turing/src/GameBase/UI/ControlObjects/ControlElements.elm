@@ -77,7 +77,7 @@ quesButtonDraw =
 
 ------------------------------------------------------------------------------
 helpMsgX : Int
-helpMsgX = 70
+helpMsgX = 25 
 
 helpMsgY : Int
 helpMsgY = 15

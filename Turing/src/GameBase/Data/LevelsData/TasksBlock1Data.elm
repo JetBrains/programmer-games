@@ -91,9 +91,9 @@ transTable1_2 : UserTransTable BallOfWool Kitten
 transTable1_2 =                                                                 
   fromList                                                                      
     [ { key   = (White, Just Red)                                                 
-      , value = { state = EmptyCell                                             
-                , symb  = StableCell (Just Red)                                 
-                , dir   = StableCell (MoveLeft)                                 
+      , value = { state = StableCell (White)
+                , symb  = StableCell (Just Red)
+                , dir   = EmptyCell
                 }                                                               
       , clickNum = 0                                                            
       }                                                                         
@@ -154,42 +154,42 @@ transTable1_3 =
     , { key   = (White, Just Yellow)                                              
       , value = { state = StableCell (White)                                    
                 , symb  = StableCell (Just Yellow)                              
-                , dir   = EmptyCell                                             
+                , dir   = StableCell (MoveRight)                                             
                 }                                                               
       , clickNum = 0                                                            
       }                                                                         
     , { key   = (White, Just Green)                                               
       , value = { state = StableCell (White)                                    
                 , symb  = StableCell (Just Green)                               
-                , dir   = EmptyCell                                             
+                , dir   = StableCell (MoveRight)                                             
                 }                                                               
       , clickNum = 0                                                            
       }                                                                         
     , { key   = (White, Nothing)                                                  
       , value = { state = EmptyCell                                             
-                , symb  = EmptyCell                                             
+                , symb  = StableCell (Just Blue)                                             
                 , dir   = EmptyCell                                             
                 }                                                               
       , clickNum = 0                                                            
       }                                                                         
     , { key   = (LightGrey, Just Red)                                             
-      , value = { state = EmptyCell                                             
+      , value = { state = StableCell (LightGrey)                                
                 , symb  = StableCell (Just Red)                                 
-                , dir   = EmptyCell                                             
+                , dir   = StableCell (MoveLeft)                                             
                 }                                                               
       , clickNum = 0                                                            
       }       
     , { key   = (LightGrey, Just Yellow)                                          
-      , value = { state = EmptyCell                                             
+      , value = { state = StableCell (LightGrey)                                             
                 , symb  = StableCell (Just Yellow)                              
-                , dir   = EmptyCell                                             
+                , dir   = StableCell (MoveLeft)                                             
                 }                                                               
       , clickNum = 0                                                            
       }                                                                         
     , { key   = (LightGrey, Just Green)                                           
-      , value = { state = EmptyCell                                             
+      , value = { state = StableCell (LightGrey)                                            
                 , symb  = StableCell (Just Green)                               
-                , dir   = EmptyCell                                             
+                , dir   = StableCell (MoveLeft)                                             
                 }                                                               
       , clickNum = 0                                                            
       }                                                                         

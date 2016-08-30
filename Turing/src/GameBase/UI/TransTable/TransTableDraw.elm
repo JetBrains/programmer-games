@@ -7,7 +7,8 @@ import GameBase.UI.TransTable.CellsDraw exposing (cellsProccessing,cellW,cellH)
 import GameBase.Data.GameTypes exposing (Model)           
 
 import Svg exposing (Svg, image, text, text')                              
-import Svg.Attributes exposing (width,height,x,y,xlinkHref,fontStyle,fontSize)  
+import Svg.Attributes exposing (width,height,x,y,xlinkHref,fontStyle,fontSize, 
+                                fontFamily, fontWeight)  
 
 
 trTableW : Int 
@@ -37,11 +38,11 @@ transTableDraw m =
                  
 
 notFullMsgX : Int
-notFullMsgX = 65
+notFullMsgX = 63
 
 
 notFullMsgY : Int
-notFullMsgY = 460
+notFullMsgY = 460 
 
 
 -- draw msg about table is not full
@@ -50,9 +51,11 @@ tableNotFullDraw m =
   if m.flags.ifTableFull == False                                                     
      then [ text'                                                               
               [ x ((toString notFullMsgX) ++ "px")                                                        
-              , y ((toString notFullMsgY) ++ "px")                                                       
+              , y ((toString notFullMsgY) ++ "px")      
+              --, fontFamily "Courier"
+              , fontWeight "bold"
               , fontStyle "italic"                                              
-              , fontSize "15px"                                                 
+              , fontSize "14px"                                                 
               ]                                                                 
               [ text "Table is not full, fill the gaps to run the machine!" ]   
           ]                                                                     
