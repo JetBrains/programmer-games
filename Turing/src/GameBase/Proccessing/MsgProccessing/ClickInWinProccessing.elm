@@ -37,11 +37,11 @@ playGameFlags model =
           , ifCatLooks  = model.flags.ifCatLooks
           , ifTableFull = model.flags.ifTableFull
           }
-  }    
+  }
 
 
-showHistoryModel : Model -> Model
-showHistoryModel model =
+showNextHistoryModel : Model -> Model
+showNextHistoryModel model =
   let                                                                           
     nextPageNum = model.imgParam.gameHistPage + 1                                   
   in 
@@ -68,6 +68,37 @@ showHistoryModel model =
             , gameHistImg  = "../img/windows/gameHistory" ++ 
                              (toString nextPageNum) ++ ".jpg"                      
             }   
+    }
+
+
+showPrevHistoryModel : Model -> Model                                           
+showPrevHistoryModel model =                                                    
+  let                                                                           
+    prevPageNum = model.imgParam.gameHistPage - 1                               
+  in                                                                            
+    { model                                                                     
+        | flags =                                                               
+            { ifPushRun   = model.flags.ifPushRun                               
+            , ifStart     = False                                               
+            , ifPlay      = False                                               
+            , ifHistory   = True                                                
+            , ifRules     = model.flags.ifRules                                 
+            , ifAuthors   = model.flags.ifAuthors                               
+            , ifEnd       = model.flags.ifEnd                                   
+            , ifCatLooks  = model.flags.ifCatLooks                              
+            , ifTableFull = model.flags.ifTableFull                             
+            }                                                                   
+        , imgParam =                                                            
+            { catLeft      = model.imgParam.catLeft                             
+            , menuCatTop   = model.imgParam.menuCatTop                          
+            , catPos       = model.imgParam.catPos                              
+            , gameHistPage = prevPageNum                                        
+            , catImg       = model.imgParam.catImg                              
+            , helpImg      = model.imgParam.helpImg                             
+            , finalImg     = model.imgParam.finalImg                            
+            , gameHistImg  = "../img/windows/gameHistory" ++                    
+                             (toString prevPageNum) ++ ".jpg"                   
+            }                                                                   
     }
 
 
@@ -104,7 +135,7 @@ clickInMenuWin m pos =
           pos.x >= menuItemLeftFrom && 
           pos.x <= sndMenuItemLength
           then ( (getInitByLevel 1 m)  
-                 |> showHistoryModel
+                 |> showNextHistoryModel 
                  -- dont start time because catLooks img should not be showed 
                  -- during history
                , Cmd.none
@@ -190,6 +221,26 @@ clickInAuthorsRulesWin m pos =
           ) 
   else (m, Cmd.none)
 
+
+-------------------- 
+prevButtonTopFrom : Int                                                         
+prevButtonTopFrom = 650                                                         
+                                                                                
+prevButtonTopTo : Int                                                           
+prevButtonTopTo = prevButtonTopFrom + prevButtonH                               
+                                                                                
+prevButtonLeftFrom : Int                                                        
+prevButtonLeftFrom = 85 
+                                                                                
+prevButtonLeftTo : Int                                                          
+prevButtonLeftTo = prevButtonLeftFrom + prevButtonW                             
+                                                                                
+prevButtonW : Int                                                               
+prevButtonW = 180 
+                                                                                
+prevButtonH : Int                                                               
+prevButtonH = 20  
+--------------------
                                         
 skipButtonTopFrom : Int 
 skipButtonTopFrom = 650
@@ -198,16 +249,17 @@ skipButtonTopTo : Int
 skipButtonTopTo = skipButtonTopFrom + skipButtonH
 
 skipButtonLeftFrom : Int  
-skipButtonLeftFrom = 105
+skipButtonLeftFrom = 515 
 
 skipButtonLeftTo : Int
 skipButtonLeftTo = skipButtonLeftFrom + skipButtonW
 
 skipButtonW : Int 
-skipButtonW = 85
+skipButtonW = 90 
                                                                                 
 skipButtonH : Int 
 skipButtonH = 20
+-------------------- 
 
 nextButtonTopFrom : Int                                                         
 nextButtonTopFrom = 650
@@ -216,7 +268,7 @@ nextButtonTopTo : Int
 nextButtonTopTo = nextButtonTopFrom + nextButtonH                                                              
                                                                                 
 nextButtonLeftFrom : Int                                                        
-nextButtonLeftFrom = 825
+nextButtonLeftFrom = 850
                                                                                 
 nextButtonLeftTo : Int                                                          
 nextButtonLeftTo = nextButtonLeftFrom + nextButtonW 
@@ -226,33 +278,50 @@ nextButtonW = 90
                                                                                 
 nextButtonH : Int                                                               
 nextButtonH = 20 
+-------------------- 
 
 
 clickInGameHistWin : Model -> Position -> ( Model, Cmd Msg )                
 clickInGameHistWin m pos =
+  -- click Previous button
+  if pos.y >= prevButtonTopFrom  &&                                        
+     pos.y <= prevButtonTopTo    &&                                        
+     pos.x >= prevButtonLeftFrom &&                                        
+     pos.x <= prevButtonLeftTo                                             
+     then if m.imgParam.gameHistPage == 1  ||      
+             m.imgParam.gameHistPage == 9  ||     
+             m.imgParam.gameHistPage == 10 ||     
+             m.imgParam.gameHistPage == 11 ||     
+             m.imgParam.gameHistPage == 12 ||      
+             m.imgParam.gameHistPage == 13 ||      
+             m.imgParam.gameHistPage == 14         
+             then (m, Cmd.none)
+             else                                                             
+                 ( (showPrevHistoryModel m) -- go to prev hist img                  
+                 , Cmd.none                                                     
+                 )  
   -- click Skip button
-  if pos.y >= skipButtonTopFrom  &&                                         
-     pos.y <= skipButtonTopTo    &&                                           
-     pos.x >= skipButtonLeftFrom &&                                        
-     pos.x <= skipButtonLeftTo                                             
-     then 
-       if m.imgParam.gameHistPage < 3 
-          then ({ m 
-                    | imgParam =                                                              
-                        { catLeft      = m.imgParam.catLeft                               
-                        , menuCatTop   = m.imgParam.menuCatTop                            
-                        , catPos       = m.imgParam.catPos                                
-                        , gameHistPage = m.imgParam.gameHistPage + 
-                                         (3 - m.imgParam.gameHistPage)
-                        , catImg       = m.imgParam.catImg                                
-                        , helpImg      = m.imgParam.helpImg                               
-                        , finalImg     = m.imgParam.finalImg                              
-                        , gameHistImg  = m.imgParam.gameHistImg                        
-                        }     
-                }
-                |> playGameFlags
-               , perform (\_ -> Debug.crash "time") Tick now
-               )
+  else if pos.y >= skipButtonTopFrom  &&                                         
+          pos.y <= skipButtonTopTo    &&                                           
+          pos.x >= skipButtonLeftFrom &&                                        
+          pos.x <= skipButtonLeftTo                                             
+          then if m.imgParam.gameHistPage < 8
+                  then ({ m 
+                            | imgParam =                                                              
+                                { catLeft      = m.imgParam.catLeft                               
+                                , menuCatTop   = m.imgParam.menuCatTop                            
+                                , catPos       = m.imgParam.catPos                                
+                                , gameHistPage = m.imgParam.gameHistPage + 
+                                                 (8 - m.imgParam.gameHistPage)
+                                , catImg       = m.imgParam.catImg                                
+                                , helpImg      = m.imgParam.helpImg                               
+                                , finalImg     = m.imgParam.finalImg                              
+                                , gameHistImg  = m.imgParam.gameHistImg                        
+                                }     
+                        }
+                        |> playGameFlags
+                       , perform (\_ -> Debug.crash "time") Tick now
+                       )
        else
           ( (playGameFlags m)    
           , perform (\_ -> Debug.crash "time") Tick now  
@@ -263,19 +332,19 @@ clickInGameHistWin m pos =
           pos.x >= nextButtonLeftFrom &&   
           pos.x <= nextButtonLeftTo  
           -- go from hist to game
-          then if m.imgParam.gameHistPage == 3 || -- after start history 
-                  m.imgParam.gameHistPage == 4 || -- after block 1 history
-                  m.imgParam.gameHistPage == 5 || -- after block 2 history
-                  m.imgParam.gameHistPage == 6 || -- after block 3 history 
-                  m.imgParam.gameHistPage == 7 || -- after block 4 history
-                  m.imgParam.gameHistPage == 8 || -- after block 5 history
-                  m.imgParam.gameHistPage == 9    -- after block 6 history  
+          then if m.imgParam.gameHistPage == 8  || -- after start history 
+                  m.imgParam.gameHistPage == 9  || -- after block 1 history
+                  m.imgParam.gameHistPage == 10 || -- after block 2 history
+                  m.imgParam.gameHistPage == 11 || -- after block 3 history 
+                  m.imgParam.gameHistPage == 12 || -- after block 4 history
+                  m.imgParam.gameHistPage == 13 || -- after block 5 history
+                  m.imgParam.gameHistPage == 14    -- after block 6 history  
                   then
                     ( (playGameFlags m)   
                     , perform (\_ -> Debug.crash "time") Tick now                                                    
                     )     
                else   
-                 ( (showHistoryModel m) -- go to next hist img
+                 ( (showNextHistoryModel m) -- go to next hist img
                  , Cmd.none                                                            
                  )                                                                     
   else (m, Cmd.none)
@@ -423,7 +492,7 @@ clickInFinalPosImg m pos =
             then
               ( (getInitByLevel m.levels.currLevel m)
                 |> updHPageAfterInit lastPageViewed
-                |> showHistoryModel
+                |> showNextHistoryModel 
               , Cmd.none                 
               )  
          else

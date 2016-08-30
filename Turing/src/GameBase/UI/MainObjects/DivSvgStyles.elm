@@ -14,7 +14,8 @@ import Svg.Attributes exposing
 mainRectW : Int                                                                 
 mainRectW = 1024
                                                                                 
-                                                                                
+
+-- 700 px
 mainRectH : Int                                                                 
 mainRectH = 768                                                                
                                                                                 
