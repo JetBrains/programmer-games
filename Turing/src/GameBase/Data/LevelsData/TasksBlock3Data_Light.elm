@@ -154,14 +154,14 @@ transTable3_3 =
       , clickNum = 0                                                            
       } 
     , { key   = (White, Just Yellow)                                              
-      , value = { state = EmptyCell                                
-                , symb  = StableCell (Just Blue)                       
+      , value = { state = StableCell (White)                                
+                , symb  = EmptyCell
                 , dir   = StableCell (MoveRight)          
                 }                                                               
       , clickNum = 0                                                            
       } 
     , { key   = (White, Just Green)                                              
-      , value = { state = EmptyCell       
+      , value = { state = StableCell (White)      
                 , symb  = StableCell (Just Blue)                       
                 , dir   = StableCell (MoveRight)                             
                 }                                                               
@@ -222,8 +222,8 @@ transTable3_4 =
       , clickNum = 0                                                            
       }  
     , { key   = (White, Just Blue)                                              
-      , value = { state = EmptyCell                                
-                , symb  = StableCell (Just Yellow)        
+      , value = { state = StableCell (White)                               
+                , symb  = EmptyCell        
                 , dir   = StableCell (MoveRight)                              
                 }                                                               
       , clickNum = 0                                                            

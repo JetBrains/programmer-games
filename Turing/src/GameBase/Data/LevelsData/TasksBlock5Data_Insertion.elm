@@ -47,7 +47,7 @@ transTable5_5 =
       }                                                                         
     , { key   = (White, Just Green)                                               
       , value = { state = StableCell (Grey)                                     
-                , symb  = StableCell (Nothing)                                  
+                , symb  = StableCell (Just Yellow)                                  
                 , dir   = StableCell (MoveLeft)                                 
                 }                                                               
       , clickNum = 0                                                            
@@ -60,26 +60,19 @@ transTable5_5 =
       , clickNum = 0                                                            
       }                                                                         
     , { key   = (LightGrey, Nothing)                                              
-      , value = { state = StableCell (Brown)                                    
+      , value = { state = StableCell (Orange)                                    
                 , symb  = StableCell (Just Red)                                 
-                , dir   = EmptyCell                                             
+                , dir   = StableCell (MoveRight)                                             
                 }                                                               
       , clickNum = 0                                                            
       }                                                                         
     , { key   = (Grey, Nothing)                                                   
-      , value = { state = StableCell (Brown)                                    
+      , value = { state = StableCell (Orange)                                    
                 , symb  = StableCell (Just Green)                               
                 , dir   = StableCell (MoveRight)                                
                 }                                                               
       , clickNum = 0                                                            
       } 
-    , { key   = (Brown, Nothing)                                                  
-      , value = { state = StableCell (Orange)                                   
-                , symb  = StableCell (Just Yellow)                              
-                , dir   = StableCell (MoveLeft)                                 
-                }                                                               
-      , clickNum = 0                                                            
-      }                                                                         
     ]                                                                           
                                                                                 
 input5_5 : List (Maybe BallOfWool)                                              
@@ -91,7 +84,7 @@ expectedResult5_5 =
   [Just Red, Just Yellow, Just Green]                                           
                                                                                 
 expectedPos5_5 : Int                                                            
-expectedPos5_5 = 1                                                              
+expectedPos5_5 = 2
                                                                                 
 usedCats5_5 : Array (Cell Kitten)                                               
 usedCats5_5 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,      
@@ -151,7 +144,7 @@ transTable5_6 =
       }                                                                         
     , { key   = (LightGrey, Just Red)                                             
       , value = { state = StableCell (Grey)                                     
-                , symb  = EmptyCell                               
+                , symb  = StableCell (Just Green)                              
                 , dir   = StableCell (MoveLeft)                                 
                 }                                                               
       , clickNum = 0                                                            
@@ -164,7 +157,7 @@ transTable5_6 =
       , clickNum = 0                                                            
       }                                                                         
     , { key   = (LightGrey, Just Blue)                                            
-      , value = { state = EmptyCell                                    
+      , value = { state = StableCell (Brown)                                    
                 , symb  = StableCell (Just Green)                               
                 , dir   = StableCell (MoveLeft)                                 
                 }                                                               

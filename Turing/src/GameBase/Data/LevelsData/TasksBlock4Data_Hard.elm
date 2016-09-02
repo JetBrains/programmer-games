@@ -40,7 +40,7 @@ transTable4_5 =
   fromList                                                                      
     [ { key   = (White, Just Red)                                                 
       , value = { state = EmptyCell                                             
-                , symb  = EmptyCell                                             
+                , symb  = StableCell (Just Red)                                            
                 , dir   = StableCell (MoveRight)                                
                 }                                                               
       , clickNum = 0                                                            
@@ -138,7 +138,7 @@ transTable4_5 =
       }                                                                         
     , { key   = (Brown, Just Blue)                                                
       , value = { state = StableCell (Brown)                                    
-                , symb  = EmptyCell                                             
+                , symb  = StableCell (Nothing)                                            
                 , dir   = StableCell (MoveLeft)                                 
                 }                                                               
       , clickNum = 0                                                            
@@ -302,7 +302,6 @@ transTable4_7 : UserTransTable BallOfWool Kitten
 transTable4_7 =                                                                 
   fromList                                                                      
     [ { key   = (White, Just Blue)                                                
-      --change state to remember that it was Just Blue                          
       , value = { state = EmptyCell                                             
                 , symb  = EmptyCell                                             
                 , dir   = StableCell (MoveRight)                                
@@ -318,7 +317,7 @@ transTable4_7 =
       }                                                                         
     , { key   = (LightGrey, Just Yellow)                                          
       , value = { state = StableCell (LightGrey)                                
-                , symb  = EmptyCell                                             
+                , symb  = StableCell (Just Yellow)                                            
                 , dir   = StableCell (MoveRight)                                
                 }                                                               
       , clickNum = 0                                                            
@@ -353,7 +352,7 @@ transTable4_7 =
       }                                                                         
     , { key   = (Brown, Just Yellow)                                              
       , value = { state = StableCell (Brown)                                    
-                , symb  = EmptyCell                                             
+                , symb  = StableCell (Just Yellow)                                            
                 , dir   = StableCell (MoveLeft)                                 
                 }                                                               
       , clickNum = 0                                                            

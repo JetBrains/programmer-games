@@ -168,13 +168,13 @@ transTable4_2 =
     , { key   = (LightGrey, Just Green)                                              
       , value = { state = StableCell (LightGrey)                                   
                 , symb  = StableCell (Just Green)                                 
-                , dir   = EmptyCell                                 
+                , dir   = StableCell (MoveRight)                              
                 }                                                               
       , clickNum = 0                                                            
       }                              
     , { key   = (LightGrey, Just Blue)                                              
       , value = { state = StableCell (LightGrey)                                   
-                , symb  = EmptyCell                                 
+                , symb  = StableCell (Just Blue)                                 
                 , dir   = StableCell (MoveRight)                                 
                 }
       , clickNum = 0                                 
@@ -237,7 +237,7 @@ transTable4_2 =
       }                                                                           
     , { key   = (Brown, Nothing)                                                  
       , value = { state = StableCell (Orange)                                   
-                , symb  = StableCell (Just Blue)                               
+                , symb  = EmptyCell
                 , dir   = StableCell (MoveLeft)                                 
                 }                                                               
       , clickNum = 0                                                            
@@ -286,7 +286,7 @@ transTable4_3 =
     [ { key   = (White, Just Yellow)                                              
       , value = { state = StableCell (White)                                             
                 , symb  = StableCell (Just Yellow)                                          
-                , dir   = EmptyCell                                
+                , dir   = StableCell (MoveRight)                                
                 }                                                               
       , clickNum = 0                                                            
       }             
@@ -479,7 +479,7 @@ transTable4_4 =
       }                                        
     , { key   = (Brown, Nothing)                                              
       , value = { state = StableCell (Orange)                                    
-                , symb  = EmptyCell                              
+                , symb  = StableCell (Just Blue)                             
                 , dir   = StableCell (MoveRight)                                 
                 }                                                               
       , clickNum = 0                                                            

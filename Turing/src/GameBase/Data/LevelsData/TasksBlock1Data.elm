@@ -37,7 +37,7 @@ transTable1_1 : UserTransTable BallOfWool Kitten
 transTable1_1 =                                                                 
   fromList                                                                      
     [ { key   = (White, Just Red)                                                 
-      , value = { state = StableCell (White)                                    
+      , value = { state = EmptyCell                                    
                 , symb  = StableCell (Just Red)                                 
                 , dir   = StableCell (MoveRight)                                
                 }                                                               
@@ -195,7 +195,7 @@ transTable1_3 =
       }                                                                         
     , { key   = (LightGrey, Nothing)                                              
       , value = { state = StableCell (Orange)                                   
-                , symb  = EmptyCell                                             
+                , symb  = StableCell (Just Blue)
                 , dir   = StableCell (MoveRight)                                
                 }                                                               
       , clickNum = 0                                                            

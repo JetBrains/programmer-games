@@ -94,7 +94,7 @@ main : Program Never
 main =                                                                          
   program
     { init = (init basketsNumbDemo inputDemo machineDemo transTableDemo 
-       fstLevel expectedPosDemo expectedResultDemo usedCatsDemo usedBallsDemo)
+        fstLevel expectedPosDemo expectedResultDemo usedCatsDemo usedBallsDemo)
     , view = view                                                               
     , update = update                                                           
     , subscriptions = subscriptions                      

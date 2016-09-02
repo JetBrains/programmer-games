@@ -232,7 +232,7 @@ transTable5_2 =
       , clickNum = 0                                                            
       }                 
     , { key   = (LightGrey, Just Blue)                                          
-      , value = { state = EmptyCell                                     
+      , value = { state = StableCell (Grey)                                    
                 , symb  = StableCell (Just Yellow)                              
                 , dir   = StableCell (MoveRight)                                
                 }                                                               
@@ -247,7 +247,7 @@ transTable5_2 =
       } 
     , { key   = (LightGrey, Nothing)                                           
       , value = { state = StableCell (Orange)                                   
-                , symb  = EmptyCell                              
+                , symb  = EmptyCell
                 , dir   = StableCell (MoveRight)                                
                 }                                                               
       , clickNum = 0                                                            
@@ -329,7 +329,7 @@ transTable5_3 =
       , clickNum = 0                                                            
       }             
     , { key   = (White, Just Yellow)                                                 
-      , value = { state = StableCell (White)                                
+      , value = { state = EmptyCell                                
                 , symb  = StableCell (Nothing)                                  
                 , dir   = StableCell (MoveRight)                                
                 }                                                               
@@ -366,12 +366,12 @@ transTable5_3 =
     , { key   = (Grey, Just Red)                                             
       , value = { state = StableCell (Grey)                                
                 , symb  = StableCell (Just Red)                                 
-                , dir   = EmptyCell                                
+                , dir   = StableCell (MoveLeft)                                
                 }                                                               
       , clickNum = 0                                                            
       }                                                                         
     , { key   = (Grey, Nothing)                                              
-      , value = { state = EmptyCell 
+      , value = { state = StableCell (White)
                 , symb  = StableCell (Nothing)                                 
                 , dir   = StableCell (MoveRight)                                 
                 }                                                               
@@ -460,7 +460,7 @@ transTable5_4 =
       , clickNum = 0                                                            
       }
     , { key   = (Grey, Just Yellow)                                          
-      , value = { state = StableCell (LightGrey)                                    
+      , value = { state = EmptyCell                                    
                 , symb  = EmptyCell                                  
                 , dir   = StableCell (MoveRight)                                 
                 }                                                               
@@ -474,7 +474,7 @@ transTable5_4 =
       , clickNum = 0                                                            
       }                                                                         
     , { key   = (Grey, Nothing)                                              
-      , value = { state = EmptyCell                                   
+      , value = { state = StableCell (Brown)                                  
                 , symb  = StableCell (Just Blue)                                  
                 , dir   = StableCell (MoveLeft)                                
                 }                                                               

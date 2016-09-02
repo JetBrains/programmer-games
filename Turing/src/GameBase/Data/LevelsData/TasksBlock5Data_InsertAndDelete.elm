@@ -67,9 +67,9 @@ transTable5_7 =
       , clickNum = 0                                                            
       }                                                                         
     , { key   = (LightGrey, Just Yellow)                                          
-      , value = { state = StableCell (Grey)                                     
+      , value = { state = EmptyCell                                     
                 , symb  = EmptyCell                                             
-                , dir   = EmptyCell                                             
+                , dir   = StableCell (MoveLeft) 
                 }                                                               
       , clickNum = 0                                                            
       }   
@@ -159,8 +159,8 @@ transTable5_8 =
       , clickNum = 0                                                            
       }                                                                         
     , { key   = (White, Just Blue)                                                
-      , value = { state = StableCell (Grey)                                     
-                , symb  = EmptyCell                                             
+      , value = { state = EmptyCell                                     
+                , symb  = StableCell (Nothing)                                             
                 , dir   = StableCell (MoveRight)                                
                 }                                                               
       , clickNum = 0                                                            
@@ -173,7 +173,7 @@ transTable5_8 =
       , clickNum = 0                                                            
       }                                                                         
     , { key   = (LightGrey, Just Yellow)                                          
-      , value = { state = StableCell (LightGrey)                                
+      , value = { state = StableCell (LightGrey)                               
                 , symb  = StableCell (Just Yellow)                              
                 , dir   = StableCell (MoveRight)                                
                 }                                                               

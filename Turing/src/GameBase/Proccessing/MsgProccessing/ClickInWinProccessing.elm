@@ -278,7 +278,7 @@ nextButtonW = 90
                                                                                 
 nextButtonH : Int                                                               
 nextButtonH = 20 
--------------------- 
+--------------------
 
 
 clickInGameHistWin : Model -> Position -> ( Model, Cmd Msg )                
@@ -290,11 +290,11 @@ clickInGameHistWin m pos =
      pos.x <= prevButtonLeftTo                                             
      then if m.imgParam.gameHistPage == 1  ||      
              m.imgParam.gameHistPage == 9  ||     
-             m.imgParam.gameHistPage == 10 ||     
              m.imgParam.gameHistPage == 11 ||     
-             m.imgParam.gameHistPage == 12 ||      
-             m.imgParam.gameHistPage == 13 ||      
-             m.imgParam.gameHistPage == 14         
+             m.imgParam.gameHistPage == 13 ||     
+             m.imgParam.gameHistPage == 15 ||      
+             m.imgParam.gameHistPage == 17 ||      
+             m.imgParam.gameHistPage == 19         
              then (m, Cmd.none)
              else                                                             
                  ( (showPrevHistoryModel m) -- go to prev hist img                  
@@ -322,6 +322,114 @@ clickInGameHistWin m pos =
                         |> playGameFlags
                        , perform (\_ -> Debug.crash "time") Tick now
                        )
+               else if m.imgParam.gameHistPage < 10 && 
+                       m.imgParam.gameHistPage > 8
+                  then ({ m                                                     
+                            | imgParam =                                      
+                                { catLeft      = m.imgParam.catLeft             
+                                , menuCatTop   = m.imgParam.menuCatTop          
+                                , catPos       = m.imgParam.catPos              
+                                , gameHistPage = m.imgParam.gameHistPage +      
+                                                 (10 - m.imgParam.gameHistPage)  
+                                , catImg       = m.imgParam.catImg              
+                                , helpImg      = m.imgParam.helpImg             
+                                , finalImg     = m.imgParam.finalImg            
+                                , gameHistImg  = m.imgParam.gameHistImg         
+                                }                                               
+                        }                                                       
+                        |> playGameFlags                                        
+                       , perform (\_ -> Debug.crash "time") Tick now            
+                       ) 
+               else if m.imgParam.gameHistPage < 12 &&                          
+                       m.imgParam.gameHistPage > 10                              
+                  then ({ m                                                     
+                            | imgParam =                                        
+                                { catLeft      = m.imgParam.catLeft             
+                                , menuCatTop   = m.imgParam.menuCatTop          
+                                , catPos       = m.imgParam.catPos              
+                                , gameHistPage = m.imgParam.gameHistPage +      
+                                                 (12 - m.imgParam.gameHistPage) 
+                                , catImg       = m.imgParam.catImg              
+                                , helpImg      = m.imgParam.helpImg             
+                                , finalImg     = m.imgParam.finalImg            
+                                , gameHistImg  = m.imgParam.gameHistImg         
+                                }                                               
+                        }                                                       
+                        |> playGameFlags                                        
+                       , perform (\_ -> Debug.crash "time") Tick now            
+                       )   
+               else if m.imgParam.gameHistPage < 14 &&                          
+                       m.imgParam.gameHistPage > 12                             
+                  then ({ m                                                     
+                            | imgParam =                                        
+                                { catLeft      = m.imgParam.catLeft             
+                                , menuCatTop   = m.imgParam.menuCatTop          
+                                , catPos       = m.imgParam.catPos              
+                                , gameHistPage = m.imgParam.gameHistPage +      
+                                                 (14 - m.imgParam.gameHistPage) 
+                                , catImg       = m.imgParam.catImg              
+                                , helpImg      = m.imgParam.helpImg             
+                                , finalImg     = m.imgParam.finalImg            
+                                , gameHistImg  = m.imgParam.gameHistImg         
+                                }                                               
+                        }                                                       
+                        |> playGameFlags                                        
+                       , perform (\_ -> Debug.crash "time") Tick now            
+                       )  
+               else if m.imgParam.gameHistPage < 16 &&                          
+                       m.imgParam.gameHistPage > 14                             
+                  then ({ m                                                     
+                            | imgParam =                                        
+                                { catLeft      = m.imgParam.catLeft             
+                                , menuCatTop   = m.imgParam.menuCatTop          
+                                , catPos       = m.imgParam.catPos              
+                                , gameHistPage = m.imgParam.gameHistPage +      
+                                                 (16 - m.imgParam.gameHistPage) 
+                                , catImg       = m.imgParam.catImg              
+                                , helpImg      = m.imgParam.helpImg             
+                                , finalImg     = m.imgParam.finalImg            
+                                , gameHistImg  = m.imgParam.gameHistImg         
+                                }                                               
+                        }                                                       
+                        |> playGameFlags                                        
+                       , perform (\_ -> Debug.crash "time") Tick now            
+                       )  
+               else if m.imgParam.gameHistPage < 18 &&                          
+                       m.imgParam.gameHistPage > 16                             
+                  then ({ m                                                     
+                            | imgParam =                                        
+                                { catLeft      = m.imgParam.catLeft             
+                                , menuCatTop   = m.imgParam.menuCatTop          
+                                , catPos       = m.imgParam.catPos              
+                                , gameHistPage = m.imgParam.gameHistPage +      
+                                                 (18 - m.imgParam.gameHistPage) 
+                                , catImg       = m.imgParam.catImg              
+                                , helpImg      = m.imgParam.helpImg             
+                                , finalImg     = m.imgParam.finalImg            
+                                , gameHistImg  = m.imgParam.gameHistImg         
+                                }                                               
+                        }                                                       
+                        |> playGameFlags                                        
+                       , perform (\_ -> Debug.crash "time") Tick now            
+                       )
+               else if m.imgParam.gameHistPage < 21 &&                          
+                       m.imgParam.gameHistPage > 18                             
+                  then ({ m                                                     
+                            | imgParam =                                        
+                                { catLeft      = m.imgParam.catLeft             
+                                , menuCatTop   = m.imgParam.menuCatTop          
+                                , catPos       = m.imgParam.catPos              
+                                , gameHistPage = m.imgParam.gameHistPage +      
+                                                 (21 - m.imgParam.gameHistPage) 
+                                , catImg       = m.imgParam.catImg              
+                                , helpImg      = m.imgParam.helpImg             
+                                , finalImg     = m.imgParam.finalImg            
+                                , gameHistImg  = m.imgParam.gameHistImg         
+                                }                                               
+                        }                                                       
+                        |> playGameFlags                                        
+                       , perform (\_ -> Debug.crash "time") Tick now            
+                       )  
        else
           ( (playGameFlags m)    
           , perform (\_ -> Debug.crash "time") Tick now  
@@ -333,12 +441,12 @@ clickInGameHistWin m pos =
           pos.x <= nextButtonLeftTo  
           -- go from hist to game
           then if m.imgParam.gameHistPage == 8  || -- after start history 
-                  m.imgParam.gameHistPage == 9  || -- after block 1 history
-                  m.imgParam.gameHistPage == 10 || -- after block 2 history
-                  m.imgParam.gameHistPage == 11 || -- after block 3 history 
-                  m.imgParam.gameHistPage == 12 || -- after block 4 history
-                  m.imgParam.gameHistPage == 13 || -- after block 5 history
-                  m.imgParam.gameHistPage == 14    -- after block 6 history  
+                  m.imgParam.gameHistPage == 10 || -- after block 1 history
+                  m.imgParam.gameHistPage == 12 || -- after block 2 history
+                  m.imgParam.gameHistPage == 14 || -- after block 3 history 
+                  m.imgParam.gameHistPage == 16 || -- after block 4 history
+                  m.imgParam.gameHistPage == 18 || -- after block 5 history
+                  m.imgParam.gameHistPage == 21    -- after block 6 history  
                   then
                     ( (playGameFlags m)   
                     , perform (\_ -> Debug.crash "time") Tick now                                                    
@@ -432,18 +540,17 @@ clickInGameWin m pos =
   else (m, Cmd.none) 
 
 
--- G Win is game window                                                         
 returnFromFFImgTopFrom : Int                                                     
-returnFromFFImgTopFrom = 455 
+returnFromFFImgTopFrom = 0 
                                                                                 
 returnFromFFImgTopTo : Int                                                       
-returnFromFFImgTopTo = 490                                                        
+returnFromFFImgTopTo = mainRectH                                                        
                                                                                 
 returnFromFFImgLeftFrom : Int                                                    
-returnFromFFImgLeftFrom = 200                                                    
+returnFromFFImgLeftFrom = 0                                                    
                                                                                 
 returnFromFFImgLeftTo : Int                                                      
-returnFromFFImgLeftTo = 840 
+returnFromFFImgLeftTo = mainRectW 
 
 
 clickInFinalFinImg : Model -> Position -> ( Model, Cmd Msg )                    
@@ -459,16 +566,16 @@ clickInFinalFinImg m pos =
                       
 
 goNextLevTopFrom : Int
-goNextLevTopFrom = 220
+goNextLevTopFrom = 0
 
 goNextLevelTopTo : Int
-goNextLevelTopTo = 250
+goNextLevelTopTo = mainRectH
 
 goNextLevelLeftFrom : Int
-goNextLevelLeftFrom = 240
+goNextLevelLeftFrom = 0
 
 goNextLevelLeftTo : Int
-goNextLevelLeftTo = 860
+goNextLevelLeftTo = mainRectW
 
 
 clickInFinalPosImg : Model -> Position -> ( Model, Cmd Msg )                    
@@ -505,16 +612,16 @@ clickInFinalPosImg m pos =
                                                                                 
 
 tryAgainTopFrom : Int
-tryAgainTopFrom = 590 
+tryAgainTopFrom = 0 
 
 tryAgainTopTo : Int
-tryAgainTopTo = 630
+tryAgainTopTo = mainRectH
 
 tryAgainLeftFrom : Int
-tryAgainLeftFrom = 440
+tryAgainLeftFrom = 0
 
 tryAgainLeftTo : Int
-tryAgainLeftTo = 860
+tryAgainLeftTo = mainRectW
 
 
 clickInFinalNegImg : Model -> Position -> ( Model, Cmd Msg )                    
