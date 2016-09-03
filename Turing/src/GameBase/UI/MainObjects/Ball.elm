@@ -10,20 +10,20 @@ import GameBase.UI.MainObjects.Basket exposing (basketX, basketY)
 
 ballX : Int -> Int -> Int
 ballX ballInd ballsNumb =
-  (basketX ballInd ballsNumb) + 27
+  (basketX ballInd ballsNumb) + 24
 
 
 ballY : Int
 ballY =
-  (basketY) + 15
+  (basketY) + 12
                                                                                 
 
 ballW : Int
-ballW = 50
+ballW = 45
 
 
 ballH : Int
-ballH = 50
+ballH = 45
 
 
 getBallColor : Maybe (Maybe BallOfWool) -> String                               

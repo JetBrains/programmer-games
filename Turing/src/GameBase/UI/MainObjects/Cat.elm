@@ -16,7 +16,7 @@ import Time exposing (Time)
 --GAME CAT PARAMETERS--------------------------------------------
 gameCatY : Int                                                             
 gameCatY =                                                                 
-  basketY + 35                                                         
+  basketY + 25
 
 
 gameCatX : Int -> Int -> Int -> Int                                          
@@ -25,17 +25,17 @@ gameCatX basketInd basketsNumb left =
 
 
 gameCatW : Int
-gameCatW = 165
+gameCatW = 150
 
 
 gameCatH : Int
-gameCatH = 165
+gameCatH = 150
 ----------------------------------------------------------------
 
 
 --LOOKING CAT PARAMETERS----------------------------------------
 lookingCatY : Int
-lookingCatY = 280 
+lookingCatY = 400 
 
 
 lookingCatX : Int
@@ -43,11 +43,11 @@ lookingCatX = 0
 
 
 lookingCatW : Int
-lookingCatW = 513
+lookingCatW = 392
 
 
 lookingCatH : Int
-lookingCatH = 509
+lookingCatH = 310
 ---------------------------------------------------------------
 
 

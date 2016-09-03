@@ -13,11 +13,10 @@ import Svg.Attributes exposing
 --MAIN DIV PARAMETERS--------------------------------------------
 mainRectW : Int                                                                 
 mainRectW = 1024
-                                                                                
 
--- 700 px
+
 mainRectH : Int                                                                 
-mainRectH = 768                                                                
+mainRectH = 700
                                                                                 
                                                                                 
 topMargin : Model -> String                                                     

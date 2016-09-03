@@ -89,13 +89,13 @@ basketX basketInd basketsNumb =
       nineBasketsLeft  + basketInd*basketW + basketInd*nineBasketsInterval   
 
 basketY : Int                                                          
-basketY = 555
+basketY = 525
 
 basketW : Int
-basketW = 100
+basketW = 90
 
 basketH : Int
-basketH = 100
+basketH = 90
 
 oneBasketDraw : Int -> Int -> Svg msg                                                   
 oneBasketDraw basketInd basketsNumb =                                                              
