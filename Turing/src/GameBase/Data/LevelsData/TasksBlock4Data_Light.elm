@@ -12,7 +12,8 @@ import TuringMachine.TuringTypes exposing (Direction(..), Machine,
                                            UserTransTable, Cell(..))           
 import TuringMachine.RunTuring exposing (transFunc)                             
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))            
-import GameBase.UI.MainObjects.Basket exposing (fourBaskets, fiveBaskets)
+import GameBase.UI.MainObjects.Basket exposing (nineBaskets)
+--(fourBaskets, fiveBaskets)
 
 import Array exposing (Array, fromList)
 
@@ -25,12 +26,12 @@ import Array exposing (Array, fromList)
 -- first balls)
 
 basketsNumb4_1 : Int                                                            
-basketsNumb4_1 = fourBaskets
+basketsNumb4_1 = nineBaskets --fourBaskets
 
 machine4_1 : Machine BallOfWool Kitten                                          
 machine4_1 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 1
+  , initHeadPosForDraw = 3 --1
   , initHeadPosForMach = 0                                                      
   , startState  = White                                                          
   , acceptState = Orange                                                        
@@ -100,7 +101,7 @@ expectedResult4_1 =
   [Just Red, Just Red, Nothing]                                           
                                                                                 
 expectedPos4_1 : Int                                                            
-expectedPos4_1 = 1
+expectedPos4_1 = 3 --1
 
 usedCats4_1 : Array (Cell Kitten)                                               
 usedCats4_1 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
@@ -115,12 +116,12 @@ usedBalls4_1 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- empty word, one symb word, few symb word)
 
 basketsNumb4_2 : Int                                                            
-basketsNumb4_2 = fiveBaskets
+basketsNumb4_2 = nineBaskets --fiveBaskets
 
 machine4_2 : Machine BallOfWool Kitten                                          
 machine4_2 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0
+  , initHeadPosForDraw = 2 --0
   , initHeadPosForMach = 0                                                      
   , startState  = White                                                          
   , acceptState = Orange                                                        
@@ -253,7 +254,7 @@ expectedResult4_2 =
   [Nothing, Just Green, Just Blue, Just Yellow]                                                 
                                                                                 
 expectedPos4_2 : Int                                                            
-expectedPos4_2 = 2                                                              
+expectedPos4_2 = 4 --2                                                              
                                                                                 
 usedCats4_2 : Array (Cell Kitten)                                               
 usedCats4_2 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
@@ -268,12 +269,12 @@ usedBalls4_2 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- word, one symb word, few symb word)
 
 basketsNumb4_3 : Int                                                            
-basketsNumb4_3 = fourBaskets                                                    
+basketsNumb4_3 = nineBaskets --fourBaskets                                                    
                                                                                 
 machine4_3 : Machine BallOfWool Kitten                                          
 machine4_3 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0                                                      
+  , initHeadPosForDraw = 3 --0                                                      
   , initHeadPosForMach = 1                                                      
   , startState  = White                                                          
   , acceptState = Orange                                                        
@@ -378,7 +379,7 @@ expectedResult4_3 =
   [Just Green, Just Yellow, Nothing, Nothing]                                 
                                                                                 
 expectedPos4_3 : Int                                                            
-expectedPos4_3 = 1                                                             
+expectedPos4_3 = 4 --1                                                             
                                                                                 
 usedCats4_3 : Array (Cell Kitten)                                               
 usedCats4_3 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
@@ -392,12 +393,12 @@ usedBalls4_3 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- 4_4 - Swap the first and the last balls
 
 basketsNumb4_4 : Int                                                            
-basketsNumb4_4 = fiveBaskets                                                    
+basketsNumb4_4 = nineBaskets --fiveBaskets                                                    
                                                                                 
 machine4_4 : Machine BallOfWool Kitten                                          
 machine4_4 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0                                                      
+  , initHeadPosForDraw = 2 --0                                                      
   , initHeadPosForMach = 1                                                     
   , startState  = White                                                          
   , acceptState = Orange                                                        
@@ -495,7 +496,7 @@ expectedResult4_4 =
   [Nothing, Just Blue, Just Green, Just Yellow, Nothing]                                   
                                                                                 
 expectedPos4_4 : Int                                                            
-expectedPos4_4 = 2  
+expectedPos4_4 = 4 --2  
 
 usedCats4_4 : Array (Cell Kitten)                                               
 usedCats4_4 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,

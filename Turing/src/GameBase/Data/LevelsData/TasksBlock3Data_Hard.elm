@@ -14,8 +14,8 @@ import TuringMachine.TuringTypes exposing (Direction(..), Machine,
                                            UserTransTable, Cell(..))            
 import TuringMachine.RunTuring exposing (transFunc)                             
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))            
-import GameBase.UI.MainObjects.Basket exposing                                  
-  (fiveBaskets, sixBaskets, sevenBaskets, eightBaskets, nineBaskets)            
+import GameBase.UI.MainObjects.Basket exposing (nineBaskets)
+--(fiveBaskets, sixBaskets, sevenBaskets, eightBaskets, nineBaskets)            
                                                                                 
 import Array exposing (Array, fromList)                                         
                                                                                 
@@ -26,12 +26,12 @@ import Array exposing (Array, fromList)
 -- 3_5 - Delete all balls except the first ball (dont change empty word)
                                                                                 
 basketsNumb3_5 : Int                                                            
-basketsNumb3_5 = fiveBaskets                                                    
+basketsNumb3_5 = nineBaskets --fiveBaskets                                                    
                                                                                 
 machine3_5 : Machine BallOfWool Kitten                                          
 machine3_5 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0                                                      
+  , initHeadPosForDraw = 2 --0                                                      
   , initHeadPosForMach = 0                                                      
   , startState  = White                                                         
   , acceptState = Orange                                                        
@@ -122,7 +122,7 @@ expectedResult3_5 =
   [Just Red, Nothing, Nothing, Nothing, Nothing]                                
                                                                                 
 expectedPos3_5 : Int                                                            
-expectedPos3_5 = 3                                                              
+expectedPos3_5 = 5 --3                                                              
                                                                                 
 usedCats3_5 : Array (Cell Kitten)                                               
 usedCats3_5 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,      
@@ -136,12 +136,12 @@ usedBalls3_5 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- 3_6 - Delete all balls except the last ball (dont change empty word)  
                                                                                 
 basketsNumb3_6 : Int                                                            
-basketsNumb3_6 = sixBaskets                                                     
+basketsNumb3_6 = nineBaskets --sixBaskets                                                     
                                                                                 
 machine3_6 : Machine BallOfWool Kitten                                          
 machine3_6 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0                                                      
+  , initHeadPosForDraw = 1 --0                                                      
   , initHeadPosForMach = 1                                                      
   , startState  = White                                                         
   , acceptState = Orange                                                        
@@ -267,7 +267,7 @@ expectedResult3_6 =
   [Nothing, Nothing, Nothing, Nothing, Just Blue, Nothing]                      
                                                                                 
 expectedPos3_6 : Int                                                            
-expectedPos3_6 = 1                                                              
+expectedPos3_6 = 2 --1                                                              
                                                                                 
 usedCats3_6 : Array (Cell Kitten)                                               
 usedCats3_6 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,      
@@ -281,8 +281,8 @@ usedBalls3_6 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- 3_7 - Put green balls on the left side, yellow balls on the right side
 
 basketsNumb3_7 : Int                                                            
-basketsNumb3_7 = eightBaskets                                                   
-                                                                                
+basketsNumb3_7 = nineBaskets --eightBaskets
+
 machine3_7 : Machine BallOfWool Kitten                                          
 machine3_7 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
@@ -292,7 +292,55 @@ machine3_7 =
   , acceptState = Orange                                                        
   , rejectState = Violet                                                        
   }                                                                             
-                                                                                
+   
+transTable3_7 : UserTransTable BallOfWool Kitten                                
+transTable3_7 =                                                                 
+  fromList                                                                      
+    [ { key   = (White, Just Green)                                               
+      , value = { state = StableCell (White)                                    
+                , symb  = StableCell (Just Green)                               
+                , dir   = StableCell (MoveRight)                                
+                }                                                               
+      , clickNum = 0                                                            
+      }                                                                         
+    , { key   = (White, Just Yellow)                                              
+      , value = { state = EmptyCell                                              
+                , symb  = EmptyCell                               
+                , dir   = StableCell (MoveRight)                                
+                }                                                               
+      , clickNum = 0                                                            
+      }                                                                         
+    , { key   = (White, Nothing)                                                  
+      , value = { state = StableCell (Orange)                                   
+                , symb  = StableCell (Nothing)                                  
+                , dir   = StableCell (MoveLeft)                                 
+                }                                                               
+      , clickNum = 0                                                            
+      }                                                                         
+    , { key   = (LightGrey, Just Green)                                           
+      , value = { state = StableCell (LightGrey)                                            
+                , symb  = EmptyCell                                              
+                , dir   = StableCell (MoveRight)                                            
+                }                                                               
+      , clickNum = 0                                                            
+      }  
+    , { key   = (LightGrey, Just Yellow)                                         
+      , value = { state = StableCell (LightGrey)                                     
+                , symb  = StableCell (Just Yellow)                              
+                , dir   = StableCell (MoveRight)                                 
+                }                                                               
+      , clickNum = 0                                                            
+      }
+    , { key   = (LightGrey, Nothing)                                                
+      , value = { state = StableCell (Orange)                                   
+                , symb  = StableCell (Nothing)                                  
+                , dir   = StableCell (MoveLeft)                                 
+                }                                                               
+      , clickNum = 0                                                            
+      } 
+    ]
+
+{-- alternative transTable3_7 and input3_7                                                                           
 transTable3_7 : UserTransTable BallOfWool Kitten                                
 transTable3_7 =                                                                 
   fromList                                                                      
@@ -366,12 +414,17 @@ transTable3_7 =
                 }                                                               
       , clickNum = 0                                                            
       }                                                                         
-    ]                                                                           
-                                                                                
+    ]
+
 input3_7 : List (Maybe BallOfWool)                                              
 input3_7 =                                                                      
   [Just Green, Just Yellow, Just Green, Just Yellow, Just Green, Just Yellow]   
-                                                                                
+--}
+
+input3_7 : List (Maybe BallOfWool)                                              
+input3_7 =                                                                      
+  [Just Green, Just Green, Just Yellow, Just Yellow, Just Green, Just Yellow]   
+                                                                           
 expectedResult3_7 : List (Maybe BallOfWool)                                     
 expectedResult3_7 =                                                             
   [Just Green, Just Green, Just Green, Just Yellow, Just Yellow, Just Yellow,   
@@ -393,18 +446,18 @@ usedBalls3_7 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- balls after input word
 
 basketsNumb3_8 : Int                                                            
-basketsNumb3_8 = sevenBaskets                                                   
+basketsNumb3_8 = nineBaskets --sevenBaskets                                                   
                                                                                 
 machine3_8 : Machine BallOfWool Kitten                                          
 machine3_8 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0                                                      
+  , initHeadPosForDraw = 1 --0                                                      
   , initHeadPosForMach = 0                                                      
   , startState  = White                                                          
   , acceptState = Orange                                                        
   , rejectState = Violet                                                        
-  }                                                                             
-                                                                                
+  }
+
 transTable3_8 : UserTransTable BallOfWool Kitten                                
 transTable3_8 =                                                                 
   fromList                                                                      
@@ -504,7 +557,7 @@ expectedResult3_8 =
    Just Yellow, Just Yellow]                                                    
                                                                                 
 expectedPos3_8 : Int                                                            
-expectedPos3_8 = 3                                                              
+expectedPos3_8 = 4 --3                                                              
                                                                                 
 usedCats3_8 : Array (Cell Kitten)                                               
 usedCats3_8 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,      

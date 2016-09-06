@@ -10,7 +10,8 @@ import TuringMachine.TuringTypes exposing (Direction(..), Machine,
                                            UserTransTable, Cell(..))            
 import TuringMachine.RunTuring exposing (transFunc)                             
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))            
-import GameBase.UI.MainObjects.Basket exposing (fourBaskets, sevenBaskets)            
+import GameBase.UI.MainObjects.Basket exposing (nineBaskets)
+--(fourBaskets, sevenBaskets)            
                                                                                 
 import Array exposing (Array, fromList)
 
@@ -23,12 +24,12 @@ import Array exposing (Array, fromList)
 -- word, else change it to the empty word
 
 basketsNumb4_5 : Int                                                            
-basketsNumb4_5 = sevenBaskets                                                   
+basketsNumb4_5 = nineBaskets --sevenBaskets                                                   
                                                                                 
 machine4_5 : Machine BallOfWool Kitten                                          
 machine4_5 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0                                                      
+  , initHeadPosForDraw = 1 --0                                                      
   , initHeadPosForMach = 1                                                      
   , startState  = White                                                         
   , acceptState = Orange                                                        
@@ -161,7 +162,7 @@ expectedResult4_5 =
   [Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing]               
                                                                                 
 expectedPos4_5 : Int                                                            
-expectedPos4_5 = 1                                                              
+expectedPos4_5 = 2 --1                                                              
                                                                                 
 usedCats4_5 : Array (Cell Kitten)                                               
 usedCats4_5 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
@@ -176,7 +177,7 @@ usedBalls4_5 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- else add the first ball to the right end
                                                                                 
 basketsNumb4_6 : Int                                                            
-basketsNumb4_6 = fourBaskets                                                    
+basketsNumb4_6 = nineBaskets --fourBaskets                                                    
                                                                                 
 machine4_6 : Machine BallOfWool Kitten                                          
 machine4_6 =                                                                    
@@ -286,7 +287,7 @@ usedBalls4_6 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- 4_7 - Delete right half of the word
                                                                                 
 basketsNumb4_7 : Int                                                            
-basketsNumb4_7 = sevenBaskets                                                   
+basketsNumb4_7 = nineBaskets --sevenBaskets                                                   
                                                                                 
 machine4_7 : Machine BallOfWool Kitten                                          
 machine4_7 =                                                                    
