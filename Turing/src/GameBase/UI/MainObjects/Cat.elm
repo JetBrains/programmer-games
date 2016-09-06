@@ -88,7 +88,7 @@ getCatColour state =
     Brown     -> "B"
     DarkBrown -> "DB"
     Orange    -> "O"                                                               
-    Violet    -> "V" 
+    Violet    -> "SB" 
 
 
 catPushX : Int

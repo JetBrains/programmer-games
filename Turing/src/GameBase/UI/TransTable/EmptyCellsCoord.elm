@@ -13,7 +13,9 @@ ifSymbEmpty : (UserKeyValue BallOfWool Kitten) -> Int ->
                List (Int, Int, Int, Int, Int, String)     
 ifSymbEmpty userKV arrInd =                                                            
   case userKV.value.symb of                                                     
-    EmptyCell ->                                                                
+    StableCell sym -> 
+      [] 
+    _ -> -- EmptyCell or UserCell
       let                                                                       
         topFrom = cellY (userKV.key, userKV.value, "symb")              
         topTo = topFrom + cellH                                            
@@ -21,14 +23,15 @@ ifSymbEmpty userKV arrInd =
         leftTo = leftFrom + cellW                                           
       in                                                                        
         [(topFrom, topTo, leftFrom, leftTo, arrInd, "symb")]                                   
-    _ -> []                                                                     
                                                                                 
                                                                                 
 ifStateEmpty : (UserKeyValue BallOfWool Kitten) -> Int -> 
                 List (Int, Int, Int, Int, Int, String)    
 ifStateEmpty userKV arrInd =                                                           
-  case userKV.value.state of                                                    
-    EmptyCell ->                                                                
+  case userKV.value.state of  
+    StableCell st -> 
+      [] 
+    _ -> -- EmptyCell or UserCell                                                                
       let                                                                       
         topFrom = cellY (userKV.key, userKV.value, "state")             
         topTo = topFrom + cellH                                            
@@ -36,14 +39,15 @@ ifStateEmpty userKV arrInd =
         leftTo = leftFrom + cellW                                           
       in                                                                        
         [(topFrom, topTo, leftFrom, leftTo, arrInd, "state")]                                   
-    _ -> []                                                                     
-                                                                                
-                                                                                
+
+
 ifDirEmpty : (UserKeyValue BallOfWool Kitten) -> Int -> 
               List (Int, Int, Int, Int, Int, String)      
 ifDirEmpty userKV arrInd =                                                         
-  case userKV.value.dir of                                                      
-    EmptyCell ->                                                                
+  case userKV.value.dir of   
+    StableCell d -> 
+      []     
+    _ -> -- EmptyCell or UserCell                                                        
       let                                                                       
         topFrom = cellY (userKV.key, userKV.value, "dir")               
         topTo = topFrom + cellH                                            
@@ -51,11 +55,10 @@ ifDirEmpty userKV arrInd =
         leftTo = leftFrom + cellW                                           
       in                                                                        
         [(topFrom, topTo, leftFrom, leftTo, arrInd, "dir")]                                   
-    _ -> [] 
 
 
 ifEmptyComputeCoord : Maybe (UserKeyValue BallOfWool Kitten) -> Int -> 
-                  List (Int, Int, Int, Int, Int, String)                                     
+                      List (Int, Int, Int, Int, Int, String)                                     
 ifEmptyComputeCoord maybeUserKV arrInd =                                               
   case maybeUserKV of                                                           
     Just userKV ->                                                              

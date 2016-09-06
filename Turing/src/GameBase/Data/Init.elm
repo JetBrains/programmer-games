@@ -1,13 +1,14 @@
-module GameBase.Data.Init exposing (init, getInitByLevel)
+module GameBase.Data.Init exposing 
+                    (init, getInitByLevel, getInitByLevelWithOldTable)
 
-import TuringMachine.InitUpdate exposing (initMachineCfg) 
-import TuringMachine.TuringTypes exposing (Machine, UserTransTable, 
-                                           Direction(..), Cell(..))
-import GameBase.Data.GameTypes exposing                                         
-                        (BallOfWool(..), Kitten(..), Position, Msg(..), Model,  
-                         ModelOptions, ModelMachine, ModelTransTables,          
-                         ModelImgParam, ModelLevels, ModelExpResults,           
-                         ModelFlags, ModelObjectsSet)  
+import TuringMachine.InitUpdate exposing (initMachineCfg)                   
+import TuringMachine.TuringTypes exposing (Machine, UserTransTable,         
+                                           Direction(..), Cell(..))          
+import GameBase.Data.GameTypes exposing                                          
+                        (BallOfWool(..), Kitten(..), Position,               
+                         Msg(..), Model, ModelOptions, ModelMachine,       
+                         ModelTransTables, ModelImgParam, ModelLevels,  
+                         ModelExpResults, ModelFlags, ModelObjectsSet)  
 import GameBase.Data.LevelsData.DemoLevelData exposing                                     
             (levelsNumber, basketsNumbDemo, machineDemo, inputDemo, 
              transTableDemo, expectedResultDemo, expectedPosDemo, 
@@ -347,3 +348,148 @@ getInitByLevel level oldModel =
       (initModel oldModel.options.winSize basketsNumb6_4 input6_4 machine6_4    
                            transTable6_4 35 expectedPos6_4 expectedResult6_4    
                            usedCats6_4 usedBalls6_4) 
+
+
+getInitByLevelWithOldTable : Int -> Model -> Model                                          
+getInitByLevelWithOldTable failedLevel oldModel =                                                 
+  case failedLevel of                                                                 
+    1  -> -- Demo                                                               
+      (initModel oldModel.options.winSize basketsNumbDemo inputDemo             
+                 machineDemo oldModel.transTables.trTableUser 1 
+                 expectedPosDemo expectedResultDemo usedCatsDemo usedBallsDemo)      
+    2  -> -- 1_1                                                                
+      (initModel oldModel.options.winSize basketsNumb1_1 input1_1 machine1_1    
+                 oldModel.transTables.trTableUser 2 expectedPos1_1 
+                 expectedResult1_1 usedCats1_1 usedBalls1_1)                           
+    3  -> -- 1_2                                                                
+      (initModel oldModel.options.winSize basketsNumb1_2 input1_2 machine1_2    
+                 oldModel.transTables.trTableUser 3 expectedPos1_2 
+                 expectedResult1_2 usedCats1_2 usedBalls1_2)                           
+    4  -> -- 1_3                                                               
+      (initModel oldModel.options.winSize basketsNumb1_3 input1_3 machine1_3    
+                 oldModel.transTables.trTableUser 4 expectedPos1_3 
+                 expectedResult1_3 usedCats1_3 usedBalls1_3)                           
+    5  -> -- 2_1                                                                
+      (initModel oldModel.options.winSize basketsNumb2_1 input2_1 machine2_1    
+                 oldModel.transTables.trTableUser 5 expectedPos2_1 
+                 expectedResult2_1 usedCats2_1 usedBalls2_1)                           
+    6  -> -- 2_2                                                                
+      (initModel oldModel.options.winSize basketsNumb2_2 input2_2 machine2_2    
+                 oldModel.transTables.trTableUser 6 expectedPos2_2 
+                 expectedResult2_2 usedCats2_2 usedBalls2_2)                           
+    7  -> -- 2_3                                                                
+      (initModel oldModel.options.winSize basketsNumb2_3 input2_3 machine2_3    
+                 oldModel.transTables.trTableUser 7 expectedPos2_3 
+                 expectedResult2_3 usedCats2_3 usedBalls2_3)                           
+    8  -> -- 3_1                                                                
+      (initModel oldModel.options.winSize basketsNumb3_1 input3_1 machine3_1    
+                 oldModel.transTables.trTableUser 8 expectedPos3_1 
+                 expectedResult3_1 usedCats3_1 usedBalls3_1)                           
+    9  -> -- 3_2                                                                
+      (initModel oldModel.options.winSize basketsNumb3_2 input3_2 machine3_2    
+                 oldModel.transTables.trTableUser 9 expectedPos3_2 
+                 expectedResult3_2 usedCats3_2 usedBalls3_2)                           
+    10 -> -- 3_3                                                                
+      (initModel oldModel.options.winSize basketsNumb3_3 input3_3 machine3_3    
+                 oldModel.transTables.trTableUser 10 expectedPos3_3 
+                 expectedResult3_3 usedCats3_3 usedBalls3_3)                 
+    11 -> -- 3_4                                                                
+      (initModel oldModel.options.winSize basketsNumb3_4 input3_4 machine3_4    
+                 oldModel.transTables.trTableUser 11 expectedPos3_4 
+                 expectedResult3_4 usedCats3_4 usedBalls3_4)                            
+    12 -> -- 3_5                                                                
+      (initModel oldModel.options.winSize basketsNumb3_5 input3_5 machine3_5    
+                 oldModel.transTables.trTableUser 12 expectedPos3_5 
+                 expectedResult3_5 usedCats3_5 usedBalls3_5)                            
+    13 -> -- 3_6                                                                
+      (initModel oldModel.options.winSize basketsNumb3_6 input3_6 machine3_6    
+                 oldModel.transTables.trTableUser 13 expectedPos3_6 
+                 expectedResult3_6 usedCats3_6 usedBalls3_6)                            
+    14 -> -- 3_7                                                                
+      (initModel oldModel.options.winSize basketsNumb3_7 input3_7 machine3_7    
+                 oldModel.transTables.trTableUser 14 expectedPos3_7 
+                 expectedResult3_7 usedCats3_7 usedBalls3_7)                            
+    15 -> -- 3_8                                                                
+      (initModel oldModel.options.winSize basketsNumb3_8 input3_8 machine3_8    
+                 oldModel.transTables.trTableUser 15 expectedPos3_8 
+                 expectedResult3_8 usedCats3_8 usedBalls3_8)                            
+    16 -> -- 3_9                                                                
+      (initModel oldModel.options.winSize basketsNumb3_9 input3_9 machine3_9    
+                 oldModel.transTables.trTableUser 16 expectedPos3_9 
+                 expectedResult3_9 usedCats3_9 usedBalls3_9)                            
+    17 -> -- 4_1                                                                
+      (initModel oldModel.options.winSize basketsNumb4_1 input4_1 machine4_1    
+                 oldModel.transTables.trTableUser 17 expectedPos4_1 
+                 expectedResult4_1 usedCats4_1 usedBalls4_1)                            
+    18 -> -- 4_2                                                                
+      (initModel oldModel.options.winSize basketsNumb4_2 input4_2 machine4_2    
+                 oldModel.transTables.trTableUser 18 expectedPos4_2 
+                 expectedResult4_2 usedCats4_2 usedBalls4_2)                            
+    19 -> -- 4_3                                                                
+      (initModel oldModel.options.winSize basketsNumb4_3 input4_3 machine4_3    
+                 oldModel.transTables.trTableUser 19 expectedPos4_3 
+                 expectedResult4_3 usedCats4_3 usedBalls4_3)                            
+    20 -> -- 4_4                                                                
+      (initModel oldModel.options.winSize basketsNumb4_4 input4_4 machine4_4    
+                 oldModel.transTables.trTableUser 20 expectedPos4_4 
+                 expectedResult4_4 usedCats4_4 usedBalls4_4)                            
+    21 -> -- 4_5                                                                
+      (initModel oldModel.options.winSize basketsNumb4_5 input4_5 machine4_5    
+                 oldModel.transTables.trTableUser 21 expectedPos4_5 
+                 expectedResult4_5 usedCats4_5 usedBalls4_5)                            
+    22 -> -- 4_6                                                                
+      (initModel oldModel.options.winSize basketsNumb4_6 input4_6 machine4_6    
+                 oldModel.transTables.trTableUser 22 expectedPos4_6 
+                 expectedResult4_6 usedCats4_6 usedBalls4_6)                            
+    23 -> -- 4_7                                                                
+      (initModel oldModel.options.winSize basketsNumb4_7 input4_7 machine4_7    
+                 oldModel.transTables.trTableUser 23 expectedPos4_7 
+                 expectedResult4_7 usedCats4_7 usedBalls4_7)                            
+    24 -> -- 5_1                                                                
+      (initModel oldModel.options.winSize basketsNumb5_1 input5_1 machine5_1    
+                 oldModel.transTables.trTableUser 24 expectedPos5_1 
+                 expectedResult5_1 usedCats5_1 usedBalls5_1)                           
+    25 -> -- 5_2                                                                
+      (initModel oldModel.options.winSize basketsNumb5_2 input5_2 machine5_2    
+                 oldModel.transTables.trTableUser 25 expectedPos5_2 
+                 expectedResult5_2 usedCats5_2 usedBalls5_2)                            
+    26 -> -- 5_3                                                                
+      (initModel oldModel.options.winSize basketsNumb5_3 input5_3 machine5_3    
+                 oldModel.transTables.trTableUser 26 expectedPos5_3 
+                 expectedResult5_3 usedCats5_3 usedBalls5_3)                            
+    27 -> -- 5_4                                                                
+      (initModel oldModel.options.winSize basketsNumb5_4 input5_4 machine5_4    
+                 oldModel.transTables.trTableUser 27 expectedPos5_4 
+                 expectedResult5_4 usedCats5_4 usedBalls5_4)                            
+    28 -> -- 5_5                                                                
+      (initModel oldModel.options.winSize basketsNumb5_5 input5_5 machine5_5    
+                 oldModel.transTables.trTableUser 28 expectedPos5_5 
+                 expectedResult5_5 usedCats5_5 usedBalls5_5)                            
+    29 -> -- 5_6                                                                
+      (initModel oldModel.options.winSize basketsNumb5_6 input5_6 machine5_6    
+                 oldModel.transTables.trTableUser 29 expectedPos5_6 
+                 expectedResult5_6 usedCats5_6 usedBalls5_6)                            
+    30 -> -- 5_7                                                                
+      (initModel oldModel.options.winSize basketsNumb5_7 input5_7 machine5_7    
+                 oldModel.transTables.trTableUser 30 expectedPos5_7 
+                 expectedResult5_7 usedCats5_7 usedBalls5_7)                            
+    31 -> -- 5_8                                                                
+      (initModel oldModel.options.winSize basketsNumb5_8 input5_8 machine5_8    
+                 oldModel.transTables.trTableUser 31 expectedPos5_8 
+                 expectedResult5_8 usedCats5_8 usedBalls5_8)                            
+    32 -> -- 6_1                                                               
+      (initModel oldModel.options.winSize basketsNumb6_1 input6_1 machine6_1    
+                 oldModel.transTables.trTableUser 32 expectedPos6_1 
+                 expectedResult6_1 usedCats6_1 usedBalls6_1)                            
+    33 -> -- 6_2                                                                
+      (initModel oldModel.options.winSize basketsNumb6_2 input6_2 machine6_2    
+                 oldModel.transTables.trTableUser 33 expectedPos6_2 
+                 expectedResult6_2 usedCats6_2 usedBalls6_2)                            
+    34 -> -- 6_3                                                                
+      (initModel oldModel.options.winSize basketsNumb6_3 input6_3 machine6_3    
+                 oldModel.transTables.trTableUser 34 expectedPos6_3 
+                 expectedResult6_3 usedCats6_3 usedBalls6_3)                            
+    _  -> -- 6_4                                                                
+      (initModel oldModel.options.winSize basketsNumb6_4 input6_4 machine6_4    
+                 oldModel.transTables.trTableUser 35 expectedPos6_4 
+                 expectedResult6_4 usedCats6_4 usedBalls6_4)    

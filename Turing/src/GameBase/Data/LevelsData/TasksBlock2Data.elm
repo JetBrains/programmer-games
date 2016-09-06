@@ -10,8 +10,8 @@ import TuringMachine.TuringTypes exposing ( Direction(..), Machine,
                                             UserTransTable, Cell(..))           
 import TuringMachine.RunTuring exposing (transFunc)                             
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))            
-import GameBase.UI.MainObjects.Basket exposing 
-                             (sixBaskets, sevenBaskets, nineBaskets)
+import GameBase.UI.MainObjects.Basket exposing (nineBaskets)
+--(sixBaskets, sevenBaskets, nineBaskets)
                                                                                 
 import Array exposing (Array, fromList)
 
@@ -22,12 +22,12 @@ import Array exposing (Array, fromList)
 -- 2_1 - Arrange balls in colors of the rainbow (on empty tape)
 
 basketsNumb2_1 : Int                                                            
-basketsNumb2_1 = sixBaskets
+basketsNumb2_1 = nineBaskets --sixBaskets
 
 machine2_1 : Machine BallOfWool Kitten                                          
 machine2_1 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 1
+  , initHeadPosForDraw = 2 --1
   , initHeadPosForMach = 0                                                      
   , startState  = White                                                          
   , acceptState = Orange                                                        
@@ -76,7 +76,7 @@ expectedResult2_1 =
   [Just Red, Just Yellow, Just Green, Just Blue, Nothing]                                           
                                                                                 
 expectedPos2_1 : Int                                                            
-expectedPos2_1 = 5
+expectedPos2_1 = 6 --5
 
 usedCats2_1 : Array (Cell Kitten)                                               
 usedCats2_1 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,      
@@ -158,12 +158,12 @@ usedBalls2_2 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- 2_3 - Put pairs of red and green balls and separate them by a space          
 
 basketsNumb2_3 : Int                                                            
-basketsNumb2_3 = sevenBaskets
+basketsNumb2_3 = nineBaskets --sevenBaskets
 
 machine2_3 : Machine BallOfWool Kitten                                          
 machine2_3 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 1
+  , initHeadPosForDraw = 2 --1
   , initHeadPosForMach = 0                                                      
   , startState  = White                                                          
   , acceptState = Orange                                                        
@@ -212,7 +212,7 @@ expectedResult2_3 =
   [Just Red, Just Green, Nothing, Just Red, Just Green, Nothing]      
                                                                                 
 expectedPos2_3 : Int                                                            
-expectedPos2_3 = 5
+expectedPos2_3 = 6 --5
                                                                                 
 usedCats2_3 : Array (Cell Kitten)                                               
 usedCats2_3 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,      

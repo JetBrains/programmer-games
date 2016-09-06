@@ -6,7 +6,7 @@ import TuringMachine.TuringTypes exposing ( Direction(..), Machine,
                                             UserTransTable, Cell(..))           
 import TuringMachine.RunTuring exposing (transFunc)                             
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))            
-import GameBase.UI.MainObjects.Basket exposing (threeBaskets)  
+import GameBase.UI.MainObjects.Basket exposing (nineBaskets) --(threeBaskets)  
 
 import Array exposing (Array, fromList)                                         
                                                                                 
@@ -20,12 +20,12 @@ levelsNumber = 35
 -- 0 - Change input ball to red ball
 
 basketsNumbDemo : Int
-basketsNumbDemo = threeBaskets
+basketsNumbDemo = nineBaskets --threeBaskets
 
 machineDemo : Machine BallOfWool Kitten                                         
 machineDemo =                                                                   
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 1
+  , initHeadPosForDraw = 4 --1
   , initHeadPosForMach = 0
   , startState = White                                                          
   , acceptState = Orange                                                        
@@ -53,7 +53,7 @@ expectedResultDemo =
   [Just Red, Nothing]                                                           
                                                                                 
 expectedPosDemo : Int                                                           
-expectedPosDemo = 2                                                      
+expectedPosDemo = 5 --2                                                      
                                                                                 
 usedCatsDemo : Array (Cell Kitten)                                              
 usedCatsDemo = fromList [UserCell White]

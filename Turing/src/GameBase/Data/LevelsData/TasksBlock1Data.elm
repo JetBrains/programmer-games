@@ -10,7 +10,8 @@ import TuringMachine.TuringTypes exposing ( Direction(..), Machine,
                                             UserTransTable, Cell(..))           
 import TuringMachine.RunTuring exposing (transFunc)                             
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))            
-import GameBase.UI.MainObjects.Basket exposing (fourBaskets, sevenBaskets) 
+import GameBase.UI.MainObjects.Basket exposing (nineBaskets) 
+--(fourBaskets, sevenBaskets) 
 
 import Array exposing (Array, fromList) 
 
@@ -21,12 +22,12 @@ import Array exposing (Array, fromList)
 -- 1_1 - Put blue ball at the right end of word                                 
 
 basketsNumb1_1 : Int            
-basketsNumb1_1 = fourBaskets 
+basketsNumb1_1 = nineBaskets --fourBaskets 
 
 machine1_1 : Machine BallOfWool Kitten                                          
 machine1_1 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 1
+  , initHeadPosForDraw = 4 --1
   , initHeadPosForMach = 0                                                      
   , startState  = White                                                          
   , acceptState = Orange                                                        
@@ -61,7 +62,7 @@ expectedResult1_1 =
   [Just Red, Just Blue]                                                         
                                                                                 
 expectedPos1_1 : Int                                                            
-expectedPos1_1 = 1
+expectedPos1_1 = 4 --1
                                                                                 
 usedCats1_1 : Array (Cell Kitten)                                               
 usedCats1_1 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
@@ -75,12 +76,12 @@ usedBalls1_1 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- 1_2 - Put blue ball at the left end of word
 
 basketsNumb1_2 : Int                                                            
-basketsNumb1_2 = fourBaskets 
+basketsNumb1_2 = nineBaskets --fourBaskets 
 
 machine1_2 : Machine BallOfWool Kitten                                          
 machine1_2 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 1 
+  , initHeadPosForDraw = 3 --1 
   , initHeadPosForMach = 1                                                      
   , startState  = White                                                          
   , acceptState = Orange                                                        
@@ -115,7 +116,7 @@ expectedResult1_2 =
   [Just Blue, Just Red]                                                         
                                                                                 
 expectedPos1_2 : Int                                                            
-expectedPos1_2 = 2
+expectedPos1_2 = 4 --2
                                                                                 
 usedCats1_2 : Array (Cell Kitten)                                               
 usedCats1_2 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,      
@@ -129,12 +130,12 @@ usedBalls1_2 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- 1_3 - Put blue balls at the both ends of word                                
 
 basketsNumb1_3 : Int                                                            
-basketsNumb1_3 = sevenBaskets
+basketsNumb1_3 = nineBaskets --sevenBaskets
 
 machine1_3 : Machine BallOfWool Kitten                                          
 machine1_3 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 1
+  , initHeadPosForDraw = 2 --1
   , initHeadPosForMach = 1                                                      
   , startState  = White                                                          
   , acceptState = Orange                                                        
@@ -211,7 +212,7 @@ expectedResult1_3 =
   [Just Blue, Just Red, Just Yellow, Just Green, Just Blue]                     
                                                                                 
 expectedPos1_3 : Int                                                            
-expectedPos1_3 = 2                                                              
+expectedPos1_3 = 3 --2                                                              
                                                                                 
 usedCats1_3 : Array (Cell Kitten)                                               
 usedCats1_3 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,      

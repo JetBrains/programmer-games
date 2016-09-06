@@ -4,7 +4,7 @@ module GameBase.Proccessing.MsgProccessing.ClickInWinProccessing exposing
                 clickInFinalFinImg, clickInFinalPosImg, clickInFinalNegImg)
 
 import GameBase.Data.GameTypes exposing (Msg(..), Model, Position)              
-import GameBase.Data.Init exposing (getInitByLevel)
+import GameBase.Data.Init exposing (getInitByLevel, getInitByLevelWithOldTable)
 import GameBase.UI.MainObjects.DivSvgStyles exposing (mainRectW, mainRectH)
 import GameBase.UI.TransTable.TransTableDraw exposing 
                                          (trTableW, trTableH)           
@@ -633,7 +633,7 @@ clickInFinalNegImg m pos =
        pos.y <= tryAgainTopTo && 
        pos.x >= tryAgainLeftFrom && 
        pos.x <= tryAgainLeftTo   
-       then ( (getInitByLevel m.levels.currLevel m)
+       then ( (getInitByLevelWithOldTable m.levels.currLevel m)
               |> updHPageAfterInit lastPageViewed
               |> playGameFlags
             , Cmd.none
