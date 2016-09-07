@@ -8,7 +8,8 @@ import TuringMachine.TuringTypes exposing (Direction(..), Machine,
                                            UserTransTable, Cell(..))            
 import TuringMachine.RunTuring exposing (transFunc)                             
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))            
-import GameBase.UI.MainObjects.Basket exposing (fiveBaskets, eightBaskets)
+import GameBase.UI.MainObjects.Basket exposing (nineBaskets) 
+--(fiveBaskets, eightBaskets)
                                                                                 
 import Array exposing (Array, fromList)                                         
                                                                                 
@@ -23,12 +24,12 @@ import Array exposing (Array, fromList)
 -- else dont change the word
 
 basketsNumb5_5 : Int                                                            
-basketsNumb5_5 = fiveBaskets                                                    
+basketsNumb5_5 = nineBaskets --fiveBaskets                                                    
                                                                                 
 machine5_5 : Machine BallOfWool Kitten                                          
 machine5_5 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 1                                                      
+  , initHeadPosForDraw = 3 --1                                                      
   , initHeadPosForMach = 1                                                      
   , startState  = White                                                         
   , acceptState = Orange                                                        
@@ -84,7 +85,7 @@ expectedResult5_5 =
   [Just Red, Just Yellow, Just Green]                                           
                                                                                 
 expectedPos5_5 : Int                                                            
-expectedPos5_5 = 2
+expectedPos5_5 = 4 --2
                                                                                 
 usedCats5_5 : Array (Cell Kitten)                                               
 usedCats5_5 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,      
@@ -99,7 +100,7 @@ usedBalls5_5 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- exists, else dont change the word
                                                                                 
 basketsNumb5_6 : Int                                                            
-basketsNumb5_6 = eightBaskets                                                   
+basketsNumb5_6 = nineBaskets --eightBaskets                                                   
                                                                                 
 machine5_6 : Machine BallOfWool Kitten                                          
 machine5_6 =                                                                    

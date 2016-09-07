@@ -1,5 +1,5 @@
-module GameBase.Proccessing.MsgProccessing.ClickOnCtrlElemProccessing  exposing 
-        (clickTrTableProccessing, clickHelpProccessing, clickRunProccessing)
+module GameBase.Proccessing.MsgProccessing.ClickOnCtrlElemProccessing exposing 
+        (clickTrTableProccessing, clickRunProccessing) --clickHelpProccessing)
 
 import GameBase.Proccessing.WorkWithCfg exposing (getAllCfgs)       
 import GameBase.Data.GameTypes exposing (Model, Position, BallOfWool(..),

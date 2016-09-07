@@ -182,7 +182,7 @@ basketsNumb4_6 = nineBaskets --fourBaskets
 machine4_6 : Machine BallOfWool Kitten                                          
 machine4_6 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0                                                      
+  , initHeadPosForDraw = 3 --0                                                      
   , initHeadPosForMach = 0                                                      
   , startState  = White                                                         
   , acceptState = Orange                                                        
@@ -273,7 +273,7 @@ expectedResult4_6 =
   [Just Red, Just Yellow, Just Green, Just Red]                                 
                                                                                 
 expectedPos4_6 : Int                                                            
-expectedPos4_6 = 2                                                              
+expectedPos4_6 = 5 --2                                                              
                                                                                 
 usedCats4_6 : Array (Cell Kitten)                                               
 usedCats4_6 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
@@ -292,7 +292,7 @@ basketsNumb4_7 = nineBaskets --sevenBaskets
 machine4_7 : Machine BallOfWool Kitten                                          
 machine4_7 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0                                                      
+  , initHeadPosForDraw = 1 --0                                                      
   , initHeadPosForMach = 0                                                      
   , startState  = White                                                         
   , acceptState = Orange                                                        
@@ -384,7 +384,7 @@ expectedResult4_7 =
   [Just Blue, Just Blue, Just Blue, Nothing, Nothing, Nothing, Nothing]         
                                                                                 
 expectedPos4_7 : Int                                                            
-expectedPos4_7 = 2                                                              
+expectedPos4_7 = 3 --2                                                              
                                                                                 
 usedCats4_7 : Array (Cell Kitten)                                               
 usedCats4_7 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,

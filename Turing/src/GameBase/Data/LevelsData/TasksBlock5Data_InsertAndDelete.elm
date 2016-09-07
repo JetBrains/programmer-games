@@ -8,7 +8,8 @@ import TuringMachine.TuringTypes exposing (Direction(..), Machine,
                                            UserTransTable, Cell(..))            
 import TuringMachine.RunTuring exposing (transFunc)                             
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))            
-import GameBase.UI.MainObjects.Basket exposing (sixBaskets, eightBaskets)
+import GameBase.UI.MainObjects.Basket exposing (nineBaskets)
+--(sixBaskets, eightBaskets)
                                                                                 
 import Array exposing (Array, fromList)                                         
                                                                                 
@@ -23,7 +24,7 @@ import Array exposing (Array, fromList)
 -- green balls)
 
 basketsNumb5_7 : Int                                                            
-basketsNumb5_7 = eightBaskets                                                   
+basketsNumb5_7 = nineBaskets --eightBaskets                                                   
                                                                                 
 machine5_7 : Machine BallOfWool Kitten                                          
 machine5_7 =                                                                    
@@ -136,12 +137,12 @@ usedBalls5_7 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- yellow-blue balls, insert red)
                                                                                 
 basketsNumb5_8 : Int                                                            
-basketsNumb5_8 = sixBaskets                                                     
+basketsNumb5_8 = nineBaskets --sixBaskets                                                     
                                                                                 
 machine5_8 : Machine BallOfWool Kitten                                          
 machine5_8 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0                                                      
+  , initHeadPosForDraw = 1 --0                                                      
   , initHeadPosForMach = 0                                                      
   , startState  = White                                                         
   , acceptState = Orange                                                        
@@ -225,7 +226,7 @@ expectedResult5_8 =
   [Nothing, Just Blue, Just Yellow, Just Yellow, Just Red, Nothing]             
                                                                                 
 expectedPos5_8 : Int                                                            
-expectedPos5_8 = 5                                                              
+expectedPos5_8 = 6 --5                                                              
                                                                                 
 usedCats5_8 : Array (Cell Kitten)                                               
 usedCats5_8 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,

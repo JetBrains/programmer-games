@@ -64,10 +64,10 @@ nineBaskets : Int
 nineBaskets = 9
 
 nineBasketsLeft : Int                                                           
-nineBasketsLeft = 15
+nineBasketsLeft = 40 
 
 nineBasketsInterval : Int
-nineBasketsInterval = 23
+nineBasketsInterval = 18
 ---------------------------------
 
 basketX : Int -> Int -> Int 

@@ -4,7 +4,7 @@ import GameBase.UI.MainObjects.Ball exposing (ballsOfOneCfgDraw)
 import GameBase.UI.MainObjects.Basket exposing (allBasketsDraw) 
 import GameBase.UI.MainObjects.Cat exposing (gameCatDraw, lookingCatDraw)
 import GameBase.UI.ControlObjects.ControlElements exposing 
-    (runButtonDraw, runFastButtonDraw, quesButtonDraw, helpMsgDraw, levelDraw)
+    (runButtonDraw, runFastButtonDraw, helpMsgDraw, levelDraw)--quesButtonDraw)
 import GameBase.UI.TransTable.TransTableDraw exposing 
                                             (transTableDraw, tableNotFullDraw) 
 import GameBase.UI.MainObjects.DivSvgStyles exposing (fullScreenImg, svgStyle) 
@@ -74,8 +74,8 @@ addMainPanel model =
         runFastButtonDraw
         ++
         runButtonDraw 
-        ++
-        quesButtonDraw
+        --++
+        --quesButtonDraw
         ++
         (helpMsgDraw model.imgParam.helpImg)
         ++

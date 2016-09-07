@@ -1,7 +1,7 @@
 module GameBase.UI.ControlObjects.ControlElements exposing 
-     (runButtonDraw, runFastButtonDraw, quesButtonDraw, helpMsgDraw, levelDraw,
-      runButtonX, runButtonY, runButtonW, runButtonH, fastRunButtonX, 
-      quesButtonX, quesButtonY, quesButtonW, quesButtonH)
+     (runButtonDraw, runFastButtonDraw, helpMsgDraw, levelDraw,
+      runButtonX, runButtonY, runButtonW, runButtonH, fastRunButtonX) 
+      --quesButtonDraw, quesButtonX, quesButtonY, quesButtonW, quesButtonH)
 import Svg exposing (Svg, image, text, text')
 import Svg.Attributes exposing ( fontSize, fontStyle, width, height, x, y,      
                                  xlinkHref)  

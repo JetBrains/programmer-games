@@ -12,8 +12,8 @@ import TuringMachine.TuringTypes exposing (Direction(..), Machine,
                                            UserTransTable, Cell(..))           
 import TuringMachine.RunTuring exposing (transFunc)                             
 import GameBase.Data.GameTypes exposing (BallOfWool(..), Kitten(..))            
-import GameBase.UI.MainObjects.Basket exposing (fourBaskets, fiveBaskets,
-                                                sevenBaskets, nineBaskets)
+import GameBase.UI.MainObjects.Basket exposing (nineBaskets)
+--(fourBaskets, fiveBaskets, sevenBaskets, nineBaskets)
 
 import Array exposing (Array, fromList)
 
@@ -28,12 +28,12 @@ import Array exposing (Array, fromList)
 -- to empty word
 
 basketsNumb5_1 : Int                                                            
-basketsNumb5_1 = fourBaskets
+basketsNumb5_1 = nineBaskets --fourBaskets
 
 machine5_1 : Machine BallOfWool Kitten                                          
 machine5_1 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0
+  , initHeadPosForDraw = 2 --0
   , initHeadPosForMach = 0                                                      
   , startState  = White                                                          
   , acceptState = Orange                                                        
@@ -166,7 +166,7 @@ expectedResult5_1 =
   [Nothing, Just Red, Just Green, Nothing]                                           
                                                                                 
 expectedPos5_1 : Int                                                            
-expectedPos5_1 = 2
+expectedPos5_1 = 4 --2
 
 usedCats5_1 : Array (Cell Kitten)                                               
 usedCats5_1 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
@@ -181,12 +181,12 @@ usedBalls5_1 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- word to empty word
 
 basketsNumb5_2 : Int                                                            
-basketsNumb5_2 = fiveBaskets 
+basketsNumb5_2 = nineBaskets --fiveBaskets 
 
 machine5_2 : Machine BallOfWool Kitten                                          
 machine5_2 =                                                                    
   { transition = (transFunc (fromList []) (Violet, Nothing, MoveLeft))          
-  , initHeadPosForDraw = 0
+  , initHeadPosForDraw = 2 --0
   , initHeadPosForMach = 0                                                      
   , startState  = White                                                          
   , acceptState = Orange                                                        
@@ -291,7 +291,7 @@ expectedResult5_2 =
   [Nothing, Just Blue, Just Yellow, Just Green, Nothing]                                                 
                                                                                 
 expectedPos5_2 : Int                                                            
-expectedPos5_2 = 3
+expectedPos5_2 = 5 --3
                                                                                 
 usedCats5_2 : Array (Cell Kitten)                                               
 usedCats5_2 = fromList [UserCell White, UserCell LightGrey, UserCell Grey,
@@ -306,7 +306,7 @@ usedBalls5_2 = fromList [UserCell (Just Red), UserCell (Just Yellow),
 -- the word
 
 basketsNumb5_3 : Int                                                            
-basketsNumb5_3 = sevenBaskets                                                    
+basketsNumb5_3 = nineBaskets --sevenBaskets                                                    
                                                                                 
 machine5_3 : Machine BallOfWool Kitten                                          
 machine5_3 =                                                                    

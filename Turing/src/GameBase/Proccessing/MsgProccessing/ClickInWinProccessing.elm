@@ -13,10 +13,10 @@ import GameBase.UI.ControlObjects.ControlLabelsParam exposing
          (menuItemTopFrom, menuItemTopTo, menuItemLeftFrom, fstMenuItemLength, 
           sndMenuItemLength, thirdMenuItemLength, fourthMenuItemLength)
 import GameBase.UI.ControlObjects.ControlElements exposing                      
-              (runButtonX, runButtonY, runButtonW, runButtonH, fastRunButtonX, 
-               quesButtonX, quesButtonY, quesButtonW, quesButtonH) 
+              (runButtonX, runButtonY, runButtonW, runButtonH, fastRunButtonX)
+               --quesButtonX, quesButtonY, quesButtonW, quesButtonH) 
 import GameBase.Proccessing.MsgProccessing.ClickOnCtrlElemProccessing exposing                  
-        (clickTrTableProccessing, clickHelpProccessing, clickRunProccessing)    
+        (clickTrTableProccessing, clickRunProccessing) --clickHelpProccessing)    
  
 import Task exposing (perform)  
 import Window exposing (size)
@@ -531,12 +531,12 @@ clickInGameWin m pos =
           pos.y <= runButtonY + runButtonH && 
           pos.x >= fastRunButtonX && 
           pos.x <= fastRunButtonX + runButtonW          
-          then (clickRunProccessing m millisecond)                              
-  else if pos.y >= quesButtonY && 
+          then (clickRunProccessing m millisecond)    
+{--  else if pos.y >= quesButtonY && 
           pos.y <= quesButtonY + quesButtonH && 
           pos.x >= quesButtonX && 
           pos.x <= quesButtonX + quesButtonW          
-          then (clickHelpProccessing m)                                         
+          then (clickHelpProccessing m) --}                                         
   else (m, Cmd.none) 
 
 
