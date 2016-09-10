@@ -34,7 +34,7 @@ menuDiv model =
 gameDiv : Model -> List (Html msg)                                              
 gameDiv model =                                                                 
   [ div                                                                         
-      [ (divStyle model "grey") ]                                               
+      [ (divStyle model "#e29e5f") ]                                               
       [ (addMainPanel model) ]                                                  
   ]    
 

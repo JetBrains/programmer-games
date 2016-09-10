@@ -5,7 +5,7 @@ module GameBase.UI.ControlObjects.ControlLabelsParam exposing
 
 
 fstItemTopFrom : Int 
-fstItemTopFrom = 250
+fstItemTopFrom = 180
 
 
 menuItemsInterval : Int 
@@ -13,7 +13,7 @@ menuItemsInterval = 70
 
 
 menuItemHeight : Int
-menuItemHeight = 27
+menuItemHeight = 30
 
 
 menuItemTopFrom : Int -> Int 
@@ -35,12 +35,12 @@ fstMenuItemLength = 670
 
 
 sndMenuItemLength : Int    
-sndMenuItemLength = 670   
+sndMenuItemLength = 690   
 
 
 thirdMenuItemLength : Int  
-thirdMenuItemLength = 585  
+thirdMenuItemLength = 630  
 
 
 fourthMenuItemLength : Int  
-fourthMenuItemLength = 910
+fourthMenuItemLength = 690

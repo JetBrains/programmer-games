@@ -89,7 +89,7 @@ basketX basketInd basketsNumb =
       nineBasketsLeft  + basketInd*basketW + basketInd*nineBasketsInterval   
 
 basketY : Int                                                          
-basketY = 525
+basketY = 448
 
 basketW : Int
 basketW = 90

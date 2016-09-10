@@ -6,25 +6,25 @@ import TuringMachine.TuringTypes exposing (UserValue)
 
 
 trTableX : Int                                                         
-trTableX = 270 
+trTableX = 283 
     
 
 trTableY : Int                                                          
-trTableY = 70 
+trTableY = 5
 
 
 -- elem [0..2], column [0..2]                                                   
 -- symb is 0 elem, dir is 1 elem, state is 2 elem                               
 fromParamToLeftMargin : Int -> Int -> Int                                       
 fromParamToLeftMargin elem column =                                             
-  trTableX + 205 + column*105 + elem*20
+  trTableX + 191 + column*105 + elem*20
                                                                                 
                                                                                 
 -- ifDir is 0 or 1 (bool), row [0..4]                                           
 -- "dir" is 1, _ is 0                                                           
 fromParamToTopMargin : Int -> Int -> Int                                        
 fromParamToTopMargin ifDir row =                                                
-  trTableY + 55 + ifDir*25 + row*55
+  trTableY + 70 + ifDir*25 + row*60
                                                                                 
                                                                                 
 -- get left margin from key parameters                                          

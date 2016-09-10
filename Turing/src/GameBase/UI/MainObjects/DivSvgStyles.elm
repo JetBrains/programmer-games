@@ -16,7 +16,7 @@ mainRectW = 1024
 
 
 mainRectH : Int                                                                 
-mainRectH = 700
+mainRectH = 640 --700
                                                                                 
                                                                                 
 topMargin : Model -> String                                                     

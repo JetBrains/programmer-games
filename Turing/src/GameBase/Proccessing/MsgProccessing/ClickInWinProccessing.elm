@@ -185,16 +185,16 @@ clickInMenuWin m pos =
 
 -- AR Win is authors and rules windows
 returnFromARWinTopFrom : Int                                                    
-returnFromARWinTopFrom = 670                                                                                
+returnFromARWinTopFrom = 600                                                                                
                                                                                 
 returnFromARWinTopTo : Int                                                      
-returnFromARWinTopTo = 740                                                      
+returnFromARWinTopTo = 620                                                      
                                                                                 
 returnFromARWinLeftFrom : Int                                                   
-returnFromARWinLeftFrom = 660
+returnFromARWinLeftFrom = 605
                                                                                 
 returnFromARWinLeftTo : Int                                                     
-returnFromARWinLeftTo = 980 
+returnFromARWinLeftTo = 950 
 
 
 clickInAuthorsRulesWin : Model -> Position -> ( Model, Cmd Msg )                
@@ -224,60 +224,60 @@ clickInAuthorsRulesWin m pos =
 
 -------------------- 
 prevButtonTopFrom : Int                                                         
-prevButtonTopFrom = 650                                                         
+prevButtonTopFrom = 590                                                         
                                                                                 
 prevButtonTopTo : Int                                                           
 prevButtonTopTo = prevButtonTopFrom + prevButtonH                               
                                                                                 
 prevButtonLeftFrom : Int                                                        
-prevButtonLeftFrom = 85 
+prevButtonLeftFrom = 180 
                                                                                 
 prevButtonLeftTo : Int                                                          
 prevButtonLeftTo = prevButtonLeftFrom + prevButtonW                             
                                                                                 
 prevButtonW : Int                                                               
-prevButtonW = 180 
+prevButtonW = 85
                                                                                 
 prevButtonH : Int                                                               
 prevButtonH = 20  
 --------------------
                                         
 skipButtonTopFrom : Int 
-skipButtonTopFrom = 650
+skipButtonTopFrom = 595
                                                                                 
 skipButtonTopTo : Int
 skipButtonTopTo = skipButtonTopFrom + skipButtonH
 
 skipButtonLeftFrom : Int  
-skipButtonLeftFrom = 515 
+skipButtonLeftFrom = 470 
 
 skipButtonLeftTo : Int
 skipButtonLeftTo = skipButtonLeftFrom + skipButtonW
 
 skipButtonW : Int 
-skipButtonW = 90 
+skipButtonW = 180 
                                                                                 
 skipButtonH : Int 
-skipButtonH = 20
+skipButtonH = 15
 -------------------- 
 
 nextButtonTopFrom : Int                                                         
-nextButtonTopFrom = 650
+nextButtonTopFrom = 595
                                                                                 
 nextButtonTopTo : Int                                                           
 nextButtonTopTo = nextButtonTopFrom + nextButtonH                                                              
                                                                                 
 nextButtonLeftFrom : Int                                                        
-nextButtonLeftFrom = 850
+nextButtonLeftFrom = 825
                                                                                 
 nextButtonLeftTo : Int                                                          
 nextButtonLeftTo = nextButtonLeftFrom + nextButtonW 
 
 nextButtonW : Int                                                               
-nextButtonW = 90
+nextButtonW = 115
                                                                                 
 nextButtonH : Int                                                               
-nextButtonH = 20 
+nextButtonH = 15 
 --------------------
 
 
@@ -460,16 +460,16 @@ clickInGameHistWin m pos =
 
 -- G Win is game window
 returnFromGWinTopFrom : Int                                                    
-returnFromGWinTopFrom = 20 
+returnFromGWinTopFrom = 8 
                                                                                 
 returnFromGWinTopTo : Int                                                      
-returnFromGWinTopTo = 40
+returnFromGWinTopTo = 30
                                                                                 
 returnFromGWinLeftFrom : Int                                                   
-returnFromGWinLeftFrom = 690
+returnFromGWinLeftFrom = 60
                                                                                 
 returnFromGWinLeftTo : Int                                                     
-returnFromGWinLeftTo = 930
+returnFromGWinLeftTo = returnFromGWinLeftFrom + 190 
 
 clickInGameWin : Model -> Position -> ( Model, Cmd Msg )                        
 clickInGameWin m pos =                                                          

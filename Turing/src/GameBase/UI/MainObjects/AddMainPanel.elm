@@ -4,7 +4,7 @@ import GameBase.UI.MainObjects.Ball exposing (ballsOfOneCfgDraw)
 import GameBase.UI.MainObjects.Basket exposing (allBasketsDraw) 
 import GameBase.UI.MainObjects.Cat exposing (gameCatDraw, lookingCatDraw)
 import GameBase.UI.ControlObjects.ControlElements exposing 
-    (runButtonDraw, runFastButtonDraw, helpMsgDraw, levelDraw)--quesButtonDraw)
+    (runButtonDraw, runFastButtonDraw, levelDraw) --helpMsgDraw,quesButtonDraw)
 import GameBase.UI.TransTable.TransTableDraw exposing 
                                             (transTableDraw, tableNotFullDraw) 
 import GameBase.UI.MainObjects.DivSvgStyles exposing (fullScreenImg, svgStyle) 
@@ -21,7 +21,7 @@ mirrorX : Int
 mirrorX = 0
 
 mirrorY : Int
-mirrorY = 90
+mirrorY = 50
 
 mirrorW : Int
 mirrorW = 440 
@@ -76,8 +76,8 @@ addMainPanel model =
         runButtonDraw 
         --++
         --quesButtonDraw
-        ++
-        (helpMsgDraw model.imgParam.helpImg)
+        --++
+        --(helpMsgDraw model.imgParam.helpImg)
         ++
         (levelDraw model.levels.currLevel model.levels.maxLevel)
         ++

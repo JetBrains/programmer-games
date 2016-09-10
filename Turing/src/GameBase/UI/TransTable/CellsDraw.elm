@@ -12,11 +12,11 @@ import List exposing (drop, head)
 
 
 cellW : Int                                                                 
-cellW = 25
+cellW = 30
 
 
 cellH : Int                                                                
-cellH = 25 
+cellH = 30 
 
 
 getHeadKey : Maybe (UserKeyValue BallOfWool Kitten) ->                          

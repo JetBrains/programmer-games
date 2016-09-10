@@ -38,11 +38,11 @@ transTableDraw m =
                  
 
 notFullMsgX : Int
-notFullMsgX = 63
+notFullMsgX = 60
 
 
 notFullMsgY : Int
-notFullMsgY = 460 
+notFullMsgY = 400 
 
 
 -- draw msg about table is not full
@@ -53,9 +53,9 @@ tableNotFullDraw m =
               [ x ((toString notFullMsgX) ++ "px")                                                        
               , y ((toString notFullMsgY) ++ "px")      
               --, fontFamily "Courier"
-              , fontWeight "bold"
+              --, fontWeight "bold"
               , fontStyle "italic"                                              
-              , fontSize "14px"                                                 
+              , fontSize "16px"              
               ]                                                                 
               [ text "Table is not full, fill the gaps to run the machine!" ]   
           ]                                                                     

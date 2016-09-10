@@ -1,23 +1,23 @@
 module GameBase.UI.ControlObjects.ControlElements exposing 
-     (runButtonDraw, runFastButtonDraw, helpMsgDraw, levelDraw,
+     (runButtonDraw, runFastButtonDraw, levelDraw,
       runButtonX, runButtonY, runButtonW, runButtonH, fastRunButtonX) 
-      --quesButtonDraw, quesButtonX, quesButtonY, quesButtonW, quesButtonH)
+--helpMsgDraw,quesButtonDraw,quesButtonX,quesButtonY,quesButtonW,quesButtonH)
 import Svg exposing (Svg, image, text, text')
 import Svg.Attributes exposing ( fontSize, fontStyle, width, height, x, y,      
                                  xlinkHref)  
                                  
 ------------------------------------------------------------------------------
 runButtonX : Int
-runButtonX = 588
+runButtonX = 593
 
 runButtonY : Int
-runButtonY = 430
+runButtonY = 385
 
 runButtonW : Int
-runButtonW = 50
+runButtonW = 40
 
 runButtonH : Int
-runButtonH = 50
+runButtonH = 40
 
 runButtonDraw : List (Svg msg)                                                  
 runButtonDraw =                                                                 
@@ -50,6 +50,7 @@ runFastButtonDraw =
 ------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------
+{--
 quesButtonX : Int                                                                
 quesButtonX = runButtonX + 102
                                                                                 
@@ -72,7 +73,7 @@ quesButtonDraw =
       , xlinkHref ("../img/elements/ques.png")   
       ]                                                                       
       []                                                                      
-  ]                                                                             
+  ]
 ------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------
@@ -98,15 +99,16 @@ helpMsgDraw hmsg =
       , xlinkHref (hmsg)                                                      
       ]                                                                       
       []                                                                      
-  ]  
+  ]
+--}
 ------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------
 levelLabelX : Int
-levelLabelX = quesButtonX + 86
+levelLabelX = runButtonX + 84
 
 levelLabelY : Int
-levelLabelY = quesButtonY + 36
+levelLabelY = runButtonY + 36
 
 levelDraw : Int -> Int -> List (Svg msg)                                        
 levelDraw level max =                                                           
