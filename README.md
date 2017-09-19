@@ -1,3 +1,5 @@
+[![JetBrains team project](http://jb.gg/badges/team.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
+
 ### **The project LearnElm_1:**
 
 2 buttons with + and -, changing the number N in between 3 and 12.
